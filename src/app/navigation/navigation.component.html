@@ -1,8 +1,12 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">Link 1</a>
@@ -17,10 +21,20 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        *ngIf="isHandset$ | async"
+      >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>angular-petsozial</span>
+      <span>Petzocial</span>
+      <span class="fill-remaining-space"></span>
+      <button
+        mat-raised-button
+        color="accent"
+        style="margin-left: auto"
+        (click)="openLogin()"
+      >
+        Login
+      </button>
     </mat-toolbar>
     <!-- Add Content Here -->
     <app-welcome></app-welcome>

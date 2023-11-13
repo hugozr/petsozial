@@ -9,29 +9,35 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { WelcomeComponent } from '../panels/welcome/welcome.component';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-navigation',
-    templateUrl: './navigation.component.html',
-    styleUrls: ['./navigation.component.css'],
-    standalone: true,
-    imports: [
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatListModule,
-        MatIconModule,
-        AsyncPipe,
-        NgIf,
-        WelcomeComponent
-    ]
+  selector: 'app-navigation',
+  templateUrl: './navigation.component.html',
+  styleUrls: ['./navigation.component.css'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    AsyncPipe,
+    NgIf,
+    WelcomeComponent,
+  ]
 })
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
+
+  openLogin() {
+    console.log("abriendo login");
+  }
 }
