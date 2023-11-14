@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { WelcomeComponent } from '../panels/welcome/welcome.component';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -25,11 +25,12 @@ import { Router } from '@angular/router';
     AsyncPipe,
     NgIf,
     WelcomeComponent,
+    RouterOutlet
   ]
 })
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
-  
+  constructor(private router: Router) { }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -39,5 +40,9 @@ export class NavigationComponent {
 
   openLogin() {
     console.log("abriendo login");
+  }
+
+  routing(path: string) {
+    this.router.navigate([path]);
   }
 }
