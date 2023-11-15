@@ -1,42 +1,44 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
-  >
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>
-        <img class="logo-image" src="assets/macallan.jpg" alt="Logotipo">
+      <img class="logo-image" src="assets/macallan.jpg" alt="Logotipo">
     </mat-toolbar>
     <mat-nav-list>
+      <!-- <a mat-list-item (click)="routing('/')">Welcome</a>
       <a mat-list-item (click)="routing('/master')">Pets & owners</a>
       <a mat-list-item (click)="routing('/pet-health')">Pet health</a>
       <a mat-list-item (click)="routing('/pet-care')">Pet care</a>
       <a mat-list-item (click)="routing('/community')">Community</a>
-      <a mat-list-item (click)="routing('/users')">Security</a>
+      <a mat-list-item (click)="routing('/users')">Security</a> -->
+      <div *ngFor="let op of appOptions">
+        <a mat-list-item  [routerLink]="op.redirect">{{op.name}}</a>
+      </div>
+
+      <!-- <a mat-list-item *ngFor="let op of appOptions" (click)="routing('/users')">Security</a> -->
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Petzocial</span>
+      <!-- <span>Petzocial</span> -->
+
+      <mat-toolbar>
+        <span>Petzocial</span>
+        <span class="spacer"></span>
+        <button routerLink = "/favorites" mat-icon-button class="example-icon favorite-icon" aria-label="They are the best">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <button routerLink = "/notifications" mat-icon-button class="example-icon" aria-label="Notifications for pet lovers ">
+          <mat-icon>notifications</mat-icon>
+        </button>
+      </mat-toolbar>
+
       <span class="fill-remaining-space"></span>
-      <button
-        mat-raised-button
-        color="accent"
-        style="margin-left: auto"
-        (click)="openLogin()"
-      >
+      <button mat-raised-button color="accent" style="margin-left: auto" (click)="openLogin()">
         Login
       </button>
     </mat-toolbar>

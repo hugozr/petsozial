@@ -1,9 +1,14 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './modules/security/login/login.component';
+import { WelcomeComponent } from './panels/welcome/welcome.component';
+import { FavoritesComponent } from './panels/favorites/favorites.component';
+import { NotificationsComponent } from './panels/notifications/notifications.component';
 
 export const routes: Routes = [
-    { path: "", redirectTo: "login", pathMatch: "full"  },
+    { path: "", component: WelcomeComponent},
     { path: "login", component: LoginComponent  },
+    { path: "favorites", component: FavoritesComponent  },
+    { path: "notifications", component: NotificationsComponent  },
     { path: "users", loadChildren: () => import("./modules/security/security.module").then(x => x.SecurityModule)  },
     { path: "master", loadChildren: () => import("./modules/master/master.module").then(x => x.MasterModule)  },
     { path: "pet-care", loadChildren: () => import("./modules/pet-care/pet-care.module").then(x => x.PetCareModule)  },

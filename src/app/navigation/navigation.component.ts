@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,9 +7,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { WelcomeComponent } from '../panels/welcome/welcome.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { OptionsService } from '../services/options.service';
+import { AppOption } from '../interfaces/appOption';
 
 @Component({
   selector: 'app-navigation',
@@ -25,24 +27,41 @@ import { Router, RouterOutlet } from '@angular/router';
     AsyncPipe,
     NgIf,
     WelcomeComponent,
-    RouterOutlet
-  ]
+    RouterLink,
+    RouterOutlet,
+    CommonModule
+  ],
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit{
   private breakpointObserver = inject(BreakpointObserver);
-  constructor(private router: Router) { }
+  appOptions: AppOption[] = [];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  constructor(private router: Router, private optionsService: OptionsService) { }
+
+
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 
-  openLogin() {
-    console.log("abriendo login");
+  ngOnInit(): void {
+    this.loadOptions();
   }
 
-  routing(path: string) {
-    this.router.navigate([path]);
+  loadOptions(){
+    this.optionsService.getOptions().subscribe( (data: any) => {
+      data.docs.map( (elem: any) => {
+        this.appOptions.push({name: elem.name, redirect: elem.redirect});
+      });
+      console.log(this.appOptions);
+    })
   }
+
+  openLogin() {
+    console.log('abriendo login');
+  }
+
+
 }
