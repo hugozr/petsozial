@@ -62,6 +62,4 @@ export class NavigationComponent implements OnInit{
   openLogin() {
     console.log('abriendo login');
   }
-
-
 }
