@@ -2,5 +2,12 @@ table {
     width: 100%;
   }
   
-  
-  
+.mat-mdc-row:hover {
+  background-color: #f0f8ff; 
+  cursor: pointer; 
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}

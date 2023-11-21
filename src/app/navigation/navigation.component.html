@@ -16,10 +16,11 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-
+      
       <mat-toolbar>
         <span>Petzocial</span>
         <span class="spacer"></span>
+        <app-my-communities></app-my-communities>
         <button routerLink = "/favorites" mat-icon-button class="example-icon favorite-icon" aria-label="They are the best">
           <mat-icon>favorite</mat-icon>
         </button>

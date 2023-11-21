@@ -12,6 +12,7 @@ import { WelcomeComponent } from '../panels/welcome/welcome.component';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { OptionsService } from '../services/options.service';
 import { AppOption } from '../interfaces/appOption';
+import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
 
 @Component({
   selector: 'app-navigation',
@@ -29,7 +30,8 @@ import { AppOption } from '../interfaces/appOption';
     WelcomeComponent,
     RouterLink,
     RouterOutlet,
-    CommonModule
+    CommonModule,
+    MyCommunitiesComponent
   ],
 })
 export class NavigationComponent implements OnInit{
