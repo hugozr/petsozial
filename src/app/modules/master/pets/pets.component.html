@@ -1,10 +1,11 @@
 <div class="container">
   <mat-toolbar>
     <span>Pets & owners</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" routerLink="/master/pet">Add</button>
   </mat-toolbar>
 
-  <!-- @if (pets.length > 0) { -->
-  <!-- <div *ngIf="pets.length > 0"> -->
+  <div [hidden]="pets.length == 0">
     <mat-form-field>
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Filtering by..." #input>
@@ -68,10 +69,4 @@
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of pets"></mat-paginator>
     </div>
-  <!-- </div>
-  <h2 *ngIf="pets.length == 0">No pet records to show</h2> -->
-
-  <!-- } @else {
-  <h2>No pet records to show</h2>
-} 
-   -->
+  <h2 [hidden]="pets.length > 0">No pet records to show</h2> -->

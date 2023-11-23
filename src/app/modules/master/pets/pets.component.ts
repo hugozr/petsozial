@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-pets',
@@ -19,6 +21,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     MatToolbarModule,
+    MatButtonModule,
     MatTableModule,
     MatIconModule,
     MatMenuModule,
@@ -26,7 +29,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    RouterModule
   ],
   templateUrl: './pets.component.html',
   styleUrl: './pets.component.css',
@@ -54,9 +58,9 @@ export class PetsComponent implements OnInit  {
     ) {}
 
   ngOnInit(): void {
-    
-    this.loadPets();
+     this.loadPets();
   }
+
   async loadPets() {
     const data: any = await lastValueFrom(this.petsService.getPets());
     this.pets = [];
@@ -72,8 +76,13 @@ export class PetsComponent implements OnInit  {
       });
     });
     this.dataSource = new MatTableDataSource(this.pets);
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  ngAfterViewInit(){
+    //  this.dataSource.paginator = this.paginator;
+    //  this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {

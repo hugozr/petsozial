@@ -1,0 +1,50 @@
+<div class="container">
+    <mat-toolbar>
+        <span>Pet</span>
+    </mat-toolbar>
+    <mat-card>
+        <mat-card-content>
+            <form>
+                <mat-grid-list cols="2" rowHeight="100px">
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Pet's name">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=5 [style.background]="'red'">
+                        imagen
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        raza y sexo
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Human</mat-label>
+                            <input matInput placeholder="Pet's human">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Story</mat-label>
+                            <textarea matInput style="margin-top: 10px;"></textarea>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input matInput placeholder="Pet's address">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <button mat-raised-button color="primary">Insert pet</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                        <button mat-raised-button color="primary">Change image</button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
