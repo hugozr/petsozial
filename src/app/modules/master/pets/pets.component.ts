@@ -13,7 +13,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-pets',
@@ -38,6 +38,7 @@ import { RouterModule } from '@angular/router';
 export class PetsComponent implements OnInit  {
   displayedColumns: string[] = [
     'name',
+    'human',
     'comment',
     'specie',
     'breed',
@@ -49,12 +50,13 @@ export class PetsComponent implements OnInit  {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  pets: Pet[] = [];
+  pets: any[] = [];
   dataSource = new MatTableDataSource(this.pets);
-
+  
   constructor(
     private petsService: PetsService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
     ) {}
 
   ngOnInit(): void {
@@ -62,16 +64,17 @@ export class PetsComponent implements OnInit  {
   }
 
   async loadPets() {
-    const data: any = await lastValueFrom(this.petsService.getPets());
+    const data: any = await this.petsService.getPets();
     this.pets = [];
-    data.docs.map((elem: any) => {
+    data.map((elem: any) => {
       this.pets.push({
         id: elem.id,
         name: elem.name,
+        human: elem.human,
         sex: elem.sex,
-        specie: elem.specie,
+        specie: elem.specie.name,
+        breed: elem.breed.name,
         birthday: elem.birthday,
-        breed: elem.breed,
         comment: elem.comment,
       });
     });
@@ -92,19 +95,19 @@ export class PetsComponent implements OnInit  {
 
   async eliminar(element: any) {
     // Lógica para la acción eliminar
-    console.log('Eliminar', element);
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
     this.loadPets(); //TODO: No volver a cargar la tabla
-  }
-
-  modificar() {
-    // Lógica para la acción modificar
-    console.log('Modificar');
     this._snackBar.open('Pet record successfully deleted', 'View details', {
       duration: 2000,
       horizontalPosition: "center",
       verticalPosition: "bottom",
     });
+  }
+
+  modificar(element: any) {
+    // Lógica para la acción modificar
+    console.log('Modificar');
+    this.router.navigate(['/master/pet/', element.id]);
   }
 
   otraAccion() {

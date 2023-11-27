@@ -14,6 +14,9 @@ import { OptionsService } from '../services/options.service';
 import { AppOption } from '../interfaces/appOption';
 import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
 
+//https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
+//TODO: Investigar multiselect
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',

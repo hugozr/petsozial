@@ -6,34 +6,31 @@
     </mat-toolbar>
     <mat-nav-list>
       <div *ngFor="let op of appOptions">
-        <a mat-list-item  [routerLink]="op.redirect">{{op.name}}</a>
+        <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="custom-toolbar">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      
-      <mat-toolbar>
-        <span>Petzocial</span>
-        <span class="spacer"></span>
-        <app-my-communities></app-my-communities>
-        <button routerLink = "/favorites" mat-icon-button class="example-icon favorite-icon" aria-label="They are the best">
-          <mat-icon>favorite</mat-icon>
-        </button>
-        <button routerLink = "/notifications" mat-icon-button class="example-icon" aria-label="Notifications for pet lovers ">
-          <mat-icon>notifications</mat-icon>
-        </button>
-      </mat-toolbar>
-
-      <span class="fill-remaining-space"></span>
+      <span>Petzocial</span>
+      <span class="spacer"></span>
+      <app-my-communities></app-my-communities>
+      <button routerLink="/favorites" mat-icon-button class="example-icon favorite-icon" aria-label="They are the best">
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button routerLink="/notifications" mat-icon-button class="example-icon"
+        aria-label="Notifications for pet lovers ">
+        <mat-icon>notifications</mat-icon>
+      </button>
       <button mat-raised-button color="accent" style="margin-left: auto" (click)="openLogin()">
         Login
       </button>
     </mat-toolbar>
+
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>

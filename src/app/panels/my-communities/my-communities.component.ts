@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,9 @@ interface zociedadGroup {
     FormsModule,
     ReactiveFormsModule,
     MatInputModule
+  ],
+  providers:[
+    
   ],
   templateUrl: './my-communities.component.html',
   styleUrl: './my-communities.component.css'

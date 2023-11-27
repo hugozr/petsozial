@@ -6,6 +6,7 @@ import { PetComponent } from './pets/pet/pet.component';
 const routes: Routes = [
   {path: "", component: PetsComponent},
   {path: "pet", component: PetComponent},
+  {path: "pet/:id", component: PetComponent},
 ];
 
 @NgModule({

@@ -1,3 +1,7 @@
 .full-width {
-    width:95%;
-  }
+  width: 99%;
+}
+
+.container1{
+  display: flex;
+}

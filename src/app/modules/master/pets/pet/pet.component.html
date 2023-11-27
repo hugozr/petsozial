@@ -4,46 +4,71 @@
     </mat-toolbar>
     <mat-card>
         <mat-card-content>
-            <form>
-                <mat-grid-list cols="2" rowHeight="100px">
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Name</mat-label>
-                            <input matInput placeholder="Pet's name">
-                        </mat-form-field>
+            <form [formGroup]="form" (ngSubmit)="savePet()">
+                <mat-grid-list cols="2" rowHeight="50px">
+                    <mat-grid-tile [rowspan]="rowspan">
+                        <div class="container" class="full-width">
+                            <div class="full-width">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput placeholder="Pet's name" formControlName="name">
+                                </mat-form-field>
+                            </div>
+                            <div class="full-width" style="display: flex;">
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Specie</mat-label>
+                                        <mat-select name="specie" 
+                                            (selectionChange)="selectedSpecieChanged($event.value)" 
+                                            formControlName="specie">
+                                            @for (specie of species; track specie) {
+                                            <mat-option [value]="specie.id">{{specie.name}}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Breed</mat-label>
+                                        <mat-select name="breed"  formControlName="breed">
+                                            @for (breed of breeds; track breed) {
+                                            <mat-option [value]="breed.id">{{breed.name}}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            
+                            <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Human</mat-label>
+                                    <input matInput placeholder="Pet's human"  formControlName="human">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput style="margin-top: 0px"  formControlName="comment"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Address</mat-label>
+                                    <input matInput placeholder="Pet's address"  formControlName="address">
+                                </mat-form-field>
+                            </div>
+                        </div>
                     </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=5 [style.background]="'red'">
-                        imagen
+                    <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
+                        <div>Imagen</div>
                     </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        raza y sexo
+                    <mat-grid-tile>
+                        <button type="submit" mat-raised-button color="primary">{{insert ? "Insert pet" : "Update pet"}}</button>
                     </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Human</mat-label>
-                            <input matInput placeholder="Pet's human">
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Story</mat-label>
-                            <textarea matInput style="margin-top: 10px;"></textarea>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Address</mat-label>
-                            <input matInput placeholder="Pet's address">
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
-                        <button mat-raised-button color="primary">Insert pet</button>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]=1 [rowspan]=1>
+                    <mat-grid-tile>
                         <button mat-raised-button color="primary">Change image</button>
                     </mat-grid-tile>
                 </mat-grid-list>
-
             </form>
         </mat-card-content>
     </mat-card>

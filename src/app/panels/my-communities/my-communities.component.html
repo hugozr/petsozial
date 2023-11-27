@@ -1,7 +1,7 @@
-<div style="margin-top: 22px">
-  <mat-form-field>
-    <mat-label>Mis comunidades</mat-label>
-    <mat-select [formControl]="zociedadControl">
+<div style="margin-top: 22px" style="display: flex; align-items: center; height: 100vh;">
+  <!-- <mat-form-field style="background-color: white; width: 300px" appearance="outline"> -->
+    <!-- <mat-label>My communities</mat-label> -->
+    <!-- <mat-select [formControl]="zociedadControl">
       <mat-option>-- None --</mat-option>
       @for (group of zociedadGroups; track group) {
       <mat-optgroup [label]="group.name" [disabled]="group.disabled">
@@ -10,6 +10,16 @@
         }
       </mat-optgroup>
       }
-    </mat-select>
-  </mat-form-field>
+    </mat-select> -->
+    <!-- <mat-hint  style="height: 210px; color: black;" >You can pick up your favorite car here</mat-hint> -->
+  <!-- </mat-form-field> -->
+  <mat-select class="custom-select" style="background-color: aliceblue; width: 300px; height: 30px;"  placeholder="Selecciona una opción">
+    @for (group of zociedadGroups; track group) {
+      <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+        @for (zociedad of group.zociedad; track zociedad) {
+        <mat-option [value]="zociedad.value">{{ zociedad.viewValue }}</mat-option>
+        }
+      </mat-optgroup>
+      }
+  </mat-select>
 </div>
