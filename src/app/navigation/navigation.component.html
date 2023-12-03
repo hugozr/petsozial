@@ -2,9 +2,9 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>
-      <img class="logo-image" src="assets/macallan.jpg" alt="Logotipo">
+        <img class="logo-image" src="assets/macallan.jpg" alt="Logotipo">
     </mat-toolbar>
-    <mat-nav-list>
+    <mat-nav-list style="margin-top: 20px;">
       <div *ngFor="let op of appOptions">
         <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
       </div>

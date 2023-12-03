@@ -3,3 +3,6 @@
     color: red; /* Puedes cambiar el color según tus preferencias */
     cursor: pointer; /* Cambia el cursor al pasar el mouse */
   }
+.welcome {
+  padding: 20px;
+}
