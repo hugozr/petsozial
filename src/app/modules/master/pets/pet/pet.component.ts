@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { environment } from '../../../../../environments/environment';
 
 
 interface Food {
@@ -52,7 +53,7 @@ export class PetComponent {
   form!: FormGroup;
   petToEdit!: Pet;
   insert = true;
-  backendURL = "http://localhost:3000";
+  backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-picture.png";
   selectedSex = "";
 

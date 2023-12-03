@@ -14,6 +14,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { UtilsService } from '../../../services/utils.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-pets',
@@ -53,12 +55,12 @@ export class PetsComponent implements OnInit  {
 
   pets: any[] = [];
   dataSource = new MatTableDataSource(this.pets);
-  backendURL = "http://localhost:3000";
+  backendURL = environment.backendPetZocialURL;
 
   
   constructor(
     private petsService: PetsService,
-    private _snackBar: MatSnackBar,
+    private _utilsService: UtilsService,
     private router: Router
     ) {}
 
@@ -90,30 +92,21 @@ export class PetsComponent implements OnInit  {
     console.log(this.dataSource);
   }
 
-  ngAfterViewInit(){
-    //  this.dataSource.paginator = this.paginator;
-    //  this.dataSource.sort = this.sort;
-  }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue;
   }
 
-  async eliminar(element: any) {
+  async delete(element: any) {
     // Lógica para la acción eliminar
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
     this.loadPets(); //TODO: No volver a cargar la tabla
-    this._snackBar.open('Pet record successfully deleted', 'View details', {
-      duration: 2000,
-      horizontalPosition: "center",
-      verticalPosition: "bottom",
-    });
+    if(deleted){
+      this._utilsService.showMessage("Pet record successfully deleted");
+    }
   }
 
-  modificar(element: any) {
-    // Lógica para la acción modificar
-    console.log('Modificar');
+  edit(element: any) {
     this.router.navigate(['/master/pet/', element.id]);
   }
 

@@ -11,7 +11,7 @@ import { PortalService } from '../../services/portal.service';
   styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
-  htmlText = '<p>¡Hola! Este es un texto en formato HTML.</p>';
+  htmlText = '';
 
   constructor(
     private portalService: PortalService
