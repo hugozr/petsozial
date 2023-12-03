@@ -15,3 +15,9 @@ table {
 .spacer {
   flex: 1 1 auto;
 }
+
+img {
+  border-radius: 50px;   /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  /* Difuminado en los bordes */
+  max-width: 100px;      /* Ancho máximo de la imagen */
+}

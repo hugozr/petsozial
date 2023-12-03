@@ -44,6 +44,7 @@ export class PetsComponent implements OnInit  {
     'breed',
     'sex',
     'birthday',
+    'thumbnail',
     'actions',
   ];
 
@@ -52,6 +53,8 @@ export class PetsComponent implements OnInit  {
 
   pets: any[] = [];
   dataSource = new MatTableDataSource(this.pets);
+  backendURL = "http://localhost:3000";
+
   
   constructor(
     private petsService: PetsService,
@@ -67,6 +70,8 @@ export class PetsComponent implements OnInit  {
     const data: any = await this.petsService.getPets();
     this.pets = [];
     data.map((elem: any) => {
+      const imagePath = elem.petImage?.sizes?.thumbnail?.url
+
       this.pets.push({
         id: elem.id,
         name: elem.name,
@@ -76,11 +81,13 @@ export class PetsComponent implements OnInit  {
         breed: elem.breed.name,
         birthday: elem.birthday,
         comment: elem.comment,
+        thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     });
     this.dataSource = new MatTableDataSource(this.pets);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    console.log(this.dataSource);
   }
 
   ngAfterViewInit(){

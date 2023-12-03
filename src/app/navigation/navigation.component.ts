@@ -10,7 +10,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { WelcomeComponent } from '../panels/welcome/welcome.component';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { OptionsService } from '../services/options.service';
+import { PortalService } from '../services/portal.service';
 import { AppOption } from '../interfaces/appOption';
 import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
 
@@ -41,7 +41,9 @@ export class NavigationComponent implements OnInit{
   private breakpointObserver = inject(BreakpointObserver);
   appOptions: AppOption[] = [];
 
-  constructor(private router: Router, private optionsService: OptionsService) { }
+  constructor(
+    private router: Router,
+    private portalService: PortalService) { }
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -56,7 +58,7 @@ export class NavigationComponent implements OnInit{
   }
 
   loadOptions(){
-    this.optionsService.getOptions().subscribe( (data: any) => {
+    this.portalService.getOptions().subscribe( (data: any) => {
       data.docs.map( (elem: any) => {
         this.appOptions.push({name: elem.name, redirect: elem.redirect});
       });

@@ -18,5 +18,5 @@ import { HttpClientModule } from '@angular/common/http';
   ],
 })
 export class AppComponent {
-  title = 'angular-petsozial';
+  title = 'Petzocial';
 }

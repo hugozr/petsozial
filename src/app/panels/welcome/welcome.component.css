@@ -1,0 +1,5 @@
+.highlight:hover {
+    font-size: 1.2em; /* Ajusta el tamaño que desees al pasar el mouse */
+    color: red; /* Puedes cambiar el color según tus preferencias */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+  }

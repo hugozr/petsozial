@@ -6,10 +6,13 @@ import { AppOption } from '../interfaces/appOption';
 @Injectable({
   providedIn: 'root',
 })
-export class OptionsService {
+export class PortalService {
   constructor(private http: HttpClient) {}
 
   getOptions(): Observable<AppOption[]> {
     return this.http.get<AppOption[]>('http://localhost:3000/api/options?sort=order');
+  }
+  getWelcome(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:3000/api/globals/welcome');
   }
 }

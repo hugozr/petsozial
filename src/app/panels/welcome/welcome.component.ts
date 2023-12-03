@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { PortalService } from '../../services/portal.service';
 
 @Component({
   selector: 'app-welcome',
@@ -10,5 +11,20 @@ import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
   styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
+  htmlText = '<p>¡Hola! Este es un texto en formato HTML.</p>';
 
+  constructor(
+    private portalService: PortalService
+    ) { }
+
+  ngOnInit(): void {
+    this.loadWelcome();
+  }
+
+  loadWelcome(){
+    this.portalService.getWelcome().subscribe( (data: any) => {
+      console.log(data);
+      this.htmlText = data.html;
+    })
+  }
 }

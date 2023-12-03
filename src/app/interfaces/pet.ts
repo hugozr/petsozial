@@ -8,6 +8,7 @@ export interface Pet {
     breed: Breed,
     sex?: string,
     birthday?: Date,
+    petImage?: any,
 }
 
 interface Specie {

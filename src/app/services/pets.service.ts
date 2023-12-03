@@ -26,8 +26,12 @@ export class PetsService {
   async updatePet(id: any, pet: Pet): Promise<Pet> {
     return await lastValueFrom(this.http.put<Pet>('http://localhost:3000/api/pets/'+id, pet));
   }
-
-
+  
+  async patchPet(id: any, petData: any): Promise<Pet> {
+    const pet = await lastValueFrom(this.http.patch<Pet>('http://localhost:3000/api/pets/'+id, petData));
+    console.log(pet, "tdjdjjdjdj");
+    return pet;
+  }
 
   deletePet(id: string): Observable<Pet> {
     console.log("..........", id);
