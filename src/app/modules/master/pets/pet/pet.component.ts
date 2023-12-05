@@ -19,12 +19,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { environment } from '../../../../../environments/environment';
 
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'app-pet',
   standalone: true,
@@ -54,7 +48,7 @@ export class PetComponent {
   petToEdit!: Pet;
   insert = true;
   backendURL = environment.backendPetZocialURL;
-  loadMyPicture = "/assets/load-my-picture.png";
+  loadMyPicture = "/assets/load-my-pet-picture.png";
   selectedSex = "";
 
   constructor(
@@ -140,10 +134,10 @@ export class PetComponent {
       }
     }
   }
-  cargarImagen() {
+  loadImage() {
     this.fileInput.nativeElement.click();
   }
-  manejarCambioImagen(event: Event) {
+  changeImage(event: Event) {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];
     console.log(archivo);

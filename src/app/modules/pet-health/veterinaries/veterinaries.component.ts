@@ -38,7 +38,7 @@ import { VetsService } from '../../../services/vets.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-pets',
+  selector: 'app-veterinaries',
   standalone: true,
   imports: [
     CommonModule,
@@ -124,7 +124,7 @@ export class VeterinariesComponent implements OnInit  {
   }
 
   edit(element: any) {
-    this.router.navigate(['/master/vet/', element.id]);
+    this.router.navigate(['/pet-health/veterinary/', element.id]);
   }
 
   otraAccion() {

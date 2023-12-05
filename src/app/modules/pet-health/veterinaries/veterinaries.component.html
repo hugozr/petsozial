@@ -3,7 +3,7 @@
     <mat-toolbar>
       <span>Veterinaries</span>
       <span class="spacer"></span>
-      <button mat-raised-button color="primary" routerLink="/master/vet">Add</button>
+      <button mat-raised-button color="primary" routerLink="/pet-health/veterinary">Add</button>
     </mat-toolbar>
   
     <div [hidden]="vets.length == 0">
@@ -79,6 +79,9 @@
                 </button>
                 <button mat-menu-item (click)="otraAccion()">
                   <mat-icon>pets</mat-icon> Pets
+                </button>
+                <button mat-menu-item (click)="otraAccion()">
+                  <mat-icon>location_on</mat-icon> Ubication
                 </button>
               </mat-menu>
   

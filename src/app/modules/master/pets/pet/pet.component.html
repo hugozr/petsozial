@@ -79,8 +79,8 @@
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
                         <img id="imagen" class="image" [src]="form.get('image')?.value" alt="Imagen"
-                            (click)="cargarImagen()">
-                        <input type="file" #fileInput style="display: none" (change)="manejarCambioImagen($event)">
+                            (click)="loadImage()">
+                        <input type="file" #fileInput style="display: none" (change)="changeImage($event)">
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="1">
                         <button type="submit" mat-raised-button color="primary">{{insert ? "Insert pet's data" : "Update

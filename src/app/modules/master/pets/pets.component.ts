@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PetsService } from '../../../services/pets.service';
-import { Pet } from '../../../interfaces/pet';
 import { lastValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
