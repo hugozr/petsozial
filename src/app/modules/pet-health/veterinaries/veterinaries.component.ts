@@ -36,6 +36,8 @@ import { Router, RouterModule } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
 import { VetsService } from '../../../services/vets.service';
 import { environment } from '../../../../environments/environment';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { HealthServicesComponent } from '../health-services/health-services.component';
 
 @Component({
   selector: 'app-veterinaries',
@@ -52,12 +54,13 @@ import { environment } from '../../../../environments/environment';
     MatPaginatorModule,
     MatSortModule,
     MatSnackBarModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule
   ],
   templateUrl: './veterinaries.component.html',
   styleUrl: './veterinaries.component.css'
 })
-export class VeterinariesComponent implements OnInit  {
+export class VeterinariesComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'social',
@@ -76,15 +79,16 @@ export class VeterinariesComponent implements OnInit  {
   dataSource = new MatTableDataSource(this.vets);
   backendURL = environment.backendPetZocialURL;
 
-  
+
   constructor(
     private vetsService: VetsService,
     private _utilsService: UtilsService,
-    private router: Router
-    ) {}
+    private router: Router,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-     this.loadVets();
+    this.loadVets();
   }
 
   async loadVets() {
@@ -118,13 +122,27 @@ export class VeterinariesComponent implements OnInit  {
   async delete(element: any) {
     const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
     this.loadVets(); //TODO: No volver a cargar la tabla
-    if(deleted){
+    if (deleted) {
       this._utilsService.showMessage("Vet record successfully deleted");
     }
   }
 
   edit(element: any) {
     this.router.navigate(['/pet-health/veterinary/', element.id]);
+  }
+
+  healthServices(element: any) {
+    console.log(element,"esto paso")
+    const dialogRef = this.dialog.open(HealthServicesComponent, {
+      width: '500px', // Ajusta el ancho según tus necesidades
+      height: "500px",
+      data: element, // Puedes pasar cualquier dato que necesites al modal
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
+      // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
+    });
   }
 
   otraAccion() {
