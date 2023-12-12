@@ -5,7 +5,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { VetsService } from '../../../services/vets.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({

@@ -13,13 +13,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
-import { VetsService } from '../../../services/vets.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { HealthServicesComponent } from '../health-services/health-services.component';
+import { HumansService } from '../../../services/humans.service';
 
 @Component({
-  selector: 'app-veterinaries',
+  selector: 'app-humans',
   standalone: true,
   imports: [
     CommonModule,
@@ -36,11 +35,12 @@ import { HealthServicesComponent } from '../health-services/health-services.comp
     RouterModule,
     MatDialogModule
   ],
-  templateUrl: './veterinaries.component.html',
-  styleUrl: './veterinaries.component.css'
+  templateUrl: './humans.component.html',
+  styleUrl: './humans.component.css'
 })
-export class VeterinariesComponent implements OnInit {
+export class HumansComponent implements OnInit {
   displayedColumns: string[] = [
+    'nickName',
     'name',
     'social',
     'comment',
@@ -54,42 +54,42 @@ export class VeterinariesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  vets: any[] = [];
-  dataSource = new MatTableDataSource(this.vets);
+  humans: any[] = [];
+  dataSource = new MatTableDataSource(this.humans);
   backendURL = environment.backendPetZocialURL;
 
 
   constructor(
-    private vetsService: VetsService,
+    private humansService: HumansService,
     private _utilsService: UtilsService,
     private router: Router,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.loadVets();
+    this.loadHumans();
   }
 
-  async loadVets() {
-    const data: any = await this.vetsService.getVets();
-    this.vets = [];
+  async loadHumans() {
+    const data: any = await this.humansService.getHumans();
+    this.humans = [];
     data.map((elem: any) => {
       const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
-      this.vets.push({
+      this.humans.push({
         id: elem.id,
+        nickName: elem.nickName,
         name: elem.name,
         comment: elem.comment,
         email: elem.email,
         address: elem.address,
         phone: elem.phone,
-        url: elem.url,
+        socialUrl: elem.socialUrl,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     });
-    this.dataSource = new MatTableDataSource(this.vets);
+    this.dataSource = new MatTableDataSource(this.humans);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
   }
 
 
@@ -99,30 +99,17 @@ export class VeterinariesComponent implements OnInit {
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    this.loadVets(); //TODO: No volver a cargar la tabla
+    const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
+    this.loadHumans(); //TODO: No volver a cargar la tabla
     if (deleted) {
       this._utilsService.showMessage("Vet record successfully deleted");
     }
   }
 
   edit(element: any) {
-    this.router.navigate(['/pet-health/veterinary/', element.id]);
+    this.router.navigate(['/master/human/', element.id]);
   }
 
-  healthServices(element: any) {
-    console.log(element,"esto paso")
-    const dialogRef = this.dialog.open(HealthServicesComponent, {
-      width: '500px', // Ajusta el ancho según tus necesidades
-      height: "500px",
-      data: element, // Puedes pasar cualquier dato que necesites al modal
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Modal cerrado:', result);
-      // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
-    });
-  }
 
   otraAccion() {
     console.log('Otra Acción');
