@@ -74,7 +74,7 @@ export class HumansComponent implements OnInit {
     const data: any = await this.humansService.getHumans();
     this.humans = [];
     data.map((elem: any) => {
-      const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
+      const imagePath = elem.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
         id: elem.id,
         nickName: elem.nickName,

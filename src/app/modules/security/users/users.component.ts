@@ -13,9 +13,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
-import { VetsService } from '../../../services/vets.service';
+import { UsersService } from '../../../services/users.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
+
 
 @Component({
   selector: 'app-users',
@@ -40,12 +42,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 })
 export class UsersComponent implements OnInit {
   displayedColumns: string[] = [
+    'username',
     'name',
-    'social',
-    'comment',
-    'phone',
-    'address',
     'email',
+    'roles',
     'thumbnail',
     'actions',
   ];
@@ -53,39 +53,37 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  vets: any[] = [];
-  dataSource = new MatTableDataSource(this.vets);
+  users: any[] = [];
+  dataSource = new MatTableDataSource(this.users);
   backendURL = environment.backendPetZocialURL;
 
 
   constructor(
-    private vetsService: VetsService,
+    private usersService: UsersService,
     private _utilsService: UtilsService,
     private router: Router,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.loadVets();
+    this.loadUsers();
   }
 
-  async loadVets() {
-    const data: any = await this.vetsService.getVets();
-    this.vets = [];
+  async loadUsers() {
+    const data: any = await this.usersService.getUsers();
+    this.users = [];
     data.map((elem: any) => {
-      const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
-      this.vets.push({
+      const imagePath = elem.human?.humanImage?.sizes?.thumbnail?.url;
+      this.users.push({
         id: elem.id,
-        name: elem.name,
-        comment: elem.comment,
+        username: elem.username,
+        name: elem.human.name,
+        roles: this.usersService.getRoleLabels(elem.roles),
         email: elem.email,
-        address: elem.address,
-        phone: elem.phone,
-        url: elem.url,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     });
-    this.dataSource = new MatTableDataSource(this.vets);
+    this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     console.log(this.dataSource);
@@ -98,15 +96,15 @@ export class UsersComponent implements OnInit {
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    this.loadVets(); //TODO: No volver a cargar la tabla
+    const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
+    this.loadUsers(); //TODO: No volver a cargar la tabla
     if (deleted) {
-      this._utilsService.showMessage("Vet record successfully deleted");
+      this._utilsService.showMessage("User record successfully deleted");
     }
   }
 
   edit(element: any) {
-    this.router.navigate(['/pet-health/veterinary/', element.id]);
+    this.router.navigate(['/security/user/', element.id]);
   }
 
 

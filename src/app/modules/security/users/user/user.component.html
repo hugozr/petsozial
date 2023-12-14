@@ -1,0 +1,58 @@
+<div class="container">
+    <mat-toolbar>
+        <span>User</span>
+    </mat-toolbar>
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="saveUser()">
+                <mat-grid-list cols="2" rowHeight="54px">
+                    <mat-grid-tile [rowspan]="rowspan">
+                        <div class="container" class="full-width">
+                            <div class="full-width">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>username</mat-label>
+                                    <input matInput placeholder="User's username" formControlName="username">
+                                    @if(form.get('username')!.hasError('required')){
+                                        <mat-error>Please enter a valid username</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput placeholder="User's email" formControlName="email">
+                                    @if(form.get('email')!.hasError('required')){
+                                        <mat-error>Please enter an email address</mat-error>
+                                    }
+                                    @if (form.get('email')!.hasError('email'))
+                                    {
+                                        <mat-error>Please enter a valid email address</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                            <div class="full-width">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>roles</mat-label>
+                                    <input matInput placeholder="User's username" formControlName="username">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
+                        configuracion del usuario
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <button 
+                        type="submit"
+                        mat-raised-button color="primary"
+                        [disabled]="form.invalid"
+                        >
+                        {{insert ? "Insert user's data" : "Update user's data"}}
+                        </button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

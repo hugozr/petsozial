@@ -40,4 +40,5 @@ export class UtilsService {
     const result = array.find((item: any) => item[searchKey] === identifier);
     return result ? result[returnKey] || '' : '';
   }
+
 }
