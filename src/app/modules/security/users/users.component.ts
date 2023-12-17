@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit {
       this.users.push({
         id: elem.id,
         username: elem.username,
-        name: elem.human.name,
+        name: elem.human ? elem.human.name : null,    //HZUMAETA: Si existe humano registrado va, sino no va
         roles: this.usersService.getRoleLabels(elem.roles),
         email: elem.email,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
@@ -99,14 +99,13 @@ export class UsersComponent implements OnInit {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
     this.loadUsers(); //TODO: No volver a cargar la tabla
     if (deleted) {
-      this._utilsService.showMessage("User record successfully deleted");
+      this._utilsService.showMessage("User record successfully deleted",2000,true);
     }
   }
 
   edit(element: any) {
     this.router.navigate(['/security/user/', element.id]);
   }
-
 
   otraAccion() {
     console.log('Otra Acción');

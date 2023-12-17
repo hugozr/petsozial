@@ -12,6 +12,9 @@
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>username</mat-label>
                                     <input matInput placeholder="User's username" formControlName="username">
+                                    @if(form.get('username')!.hasError('containsWhitespace')){
+                                        <mat-error>The username must not contain white spaces</mat-error>
+                                    }
                                     @if(form.get('username')!.hasError('required')){
                                         <mat-error>Please enter a valid username</mat-error>
                                     }
@@ -32,23 +35,37 @@
                                 </mat-form-field>
                             </div>
                             <div class="full-width">
-                                <mat-form-field appearance="outline" class="full-width">
-                                    <mat-label>roles</mat-label>
-                                    <input matInput placeholder="User's username" formControlName="username">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select name="roles" formControlName="roles" multiple>
+                                        @for (role of roles; track role) {
+                                        <mat-option [value]="role.value">{{role.label}}</mat-option>
+                                        }
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
-                        configuracion del usuario
+                        <div style="width: 95%;">
+                            @if(!userToEdit?.human){
+                                <div class="format-tile">This user is not associated with a human.</div>
+                                <div class="format-tile">
+                                    <button mat-raised-button color="primary" (click)="associateHuman($event)">
+                                        Associate me with a human
+                                    </button>
+                                </div>
+                            }
+                            @else {
+                                <!-- <app-human-card [human]="userToEdit?.human" [imageUrl]="'/assets/load-my-user-picture.png'"> -->
+                                <app-human-card [human]="userToEdit?.human" [imageUrl]="humanImage">
+                                </app-human-card>
+                            }
+                        </div>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="1">
-                        <button 
-                        type="submit"
-                        mat-raised-button color="primary"
-                        [disabled]="form.invalid"
-                        >
-                        {{insert ? "Insert user's data" : "Update user's data"}}
+                        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
+                            {{insert ? "Insert user's data" : "Update user's data"}}
                         </button>
                     </mat-grid-tile>
                 </mat-grid-list>

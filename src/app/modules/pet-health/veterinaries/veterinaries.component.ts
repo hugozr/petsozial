@@ -102,7 +102,7 @@ export class VeterinariesComponent implements OnInit {
     const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
     this.loadVets(); //TODO: No volver a cargar la tabla
     if (deleted) {
-      this._utilsService.showMessage("Vet record successfully deleted");
+      this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }
   }
 

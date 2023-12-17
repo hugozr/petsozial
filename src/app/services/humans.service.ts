@@ -28,16 +28,16 @@ export class HumansService {
     return pet;
   }
 
-  async insertHuman(pet: Human): Promise<Human> {
-    return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/Humans/`, pet));
+  async insertHuman(human: Human): Promise<Human> {
+    return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/Humans/`, human));
   }
 
-  async updateHuman(id: any, pet: Human): Promise<Human> {
-    return await lastValueFrom(this.http.put<Human>(`${this.backendURL}/api/Humans/${id}`, pet));
+  async updateHuman(id: any, human: Human): Promise<Human> {
+    return await lastValueFrom(this.http.put<Human>(`${this.backendURL}/api/Humans/${id}`, human));
   }
   
-  async patchHuman(id: any, petData: any): Promise<Human> {
-    const pet = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/Humans/${id}`, petData));
+  async patchHuman(id: any, humanData: any): Promise<Human> {
+    const pet = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/Humans/${id}`, humanData));
     return pet;
   }
 

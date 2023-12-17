@@ -91,7 +91,7 @@ export class VeterinaryComponent {
     }
     const petResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
     if (petResult){
-      this._utilsService.showMessage("Vet's data was successfully updated");
+      this._utilsService.showMessage("Vet's data was successfully updated",2000,true);
       if(this.insert){
         this.router.navigate(["/pet-health"]);
       }
@@ -111,7 +111,7 @@ export class VeterinaryComponent {
           const media: any  = {file: archivo, alt: this.vetToEdit.name, objId:this.vetToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
           const updatedPet = await this.vetsService.patchVet(this.vetToEdit.id,{"vetImage": uploadedFile.doc.id});
-          if(updatedPet) this._utilsService.showMessage("The vet's image has been successfully updated");
+          if(updatedPet) this._utilsService.showMessage("The vet's image has been successfully updated",2000,true);
         } 
         this.form.patchValue({
           image: lector.result

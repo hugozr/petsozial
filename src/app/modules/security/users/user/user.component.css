@@ -1,13 +1,17 @@
 .full-width {
     width: 99%;
 }
-
+/* 
 .container1 {
     display: flex;
-}
+} */
 
 .image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.format-tile{
+    padding: 10px;
 }

@@ -33,7 +33,7 @@ import { HumansService } from '../../../services/humans.service';
     MatSortModule,
     MatSnackBarModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './humans.component.html',
   styleUrl: './humans.component.css'
@@ -102,7 +102,7 @@ export class HumansComponent implements OnInit {
     const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
     this.loadHumans(); //TODO: No volver a cargar la tabla
     if (deleted) {
-      this._utilsService.showMessage("Vet record successfully deleted");
+      this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }
   }
 

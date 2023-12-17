@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, lastValueFrom } from 'rxjs';
-import { AppOption } from '../interfaces/appOption';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { lastValueFrom } from 'rxjs';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,9 +16,11 @@ export class UtilsService {
     private snackBar: MatSnackBar
   ) {}
 
-  showMessage (message: string, duration?: number) {
+  showMessage (message: string, duration?: number, isSuccess: boolean = true) {
+    const panelClass = isSuccess ? ['mat-toolbar', 'mat-primary'] : ['mat-toolbar', 'mat-warn'];
     this.snackBar.open(message, 'Cerrar', {
-      duration: duration || 2000, // duración en milisegundos
+      duration: duration || 2000, 
+      panelClass: panelClass //TODO controlar los colores del snackbar
     });
   }
 

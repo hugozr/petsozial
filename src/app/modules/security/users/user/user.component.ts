@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -7,12 +7,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators  } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
-import { environment } from '../../../../../environments/environment';
 import { UsersService } from '../../../../services/users.service';
 import { User } from '../../../../interfaces/user';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HumanCardComponent } from '../../../master/humans/human-card/human-card.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user',
@@ -28,6 +30,9 @@ import { User } from '../../../../interfaces/user';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
+    HumanCardComponent
+
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
@@ -37,6 +42,8 @@ export class UserComponent {
   rowspan = 6;
   form!: FormGroup;
   userToEdit!: User;
+  humanImage: string = "";
+  backendURL = environment.backendPetZocialURL;
   roles!: any;
   insert = true;
   constructor(
@@ -45,22 +52,35 @@ export class UserComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
-  ) { 
+  ) {
+  }
+
+  noWhitespaceValidator(control: any) {
+    const value = control.value || '';
+    const hasWhitespace = /\s/.test(value); // Verificar si hay espacios en blanco
+    const isValid = !hasWhitespace;
+    return isValid ? null : { 'containsWhitespace': true };
   }
 
   ngOnInit(): void {
     this.roles = this.usersService.getRoles();
-    console.log(this.roles,"ssssssssssssssss");
     this.form = this.formBuilder.group({
-      username: ["", Validators.required],
+      username: ["", [Validators.required, this.noWhitespaceValidator]],
       email: ["", [Validators.required, Validators.email]],
       roles: [[]],
       humanId: [""],
     });
     this.route.params.subscribe(async (params: any) => {
-      if(params.id){
+      if (params.id) {
         this.insert = false;
         this.userToEdit = await this.usersService.getUser(params.id);
+
+        const urlImage = this.userToEdit?.human?.humanImage?.sizes?.tablet?.url
+        this.humanImage = urlImage ? this.backendURL + urlImage : "/assets/load-my-user-picture.png"
+
+        this.form.get('username')!.disable();
+        this.form.get('email')!.disable();
+
         this.form.setValue({
           username: this.userToEdit.username,
           email: this.userToEdit.email,
@@ -75,18 +95,33 @@ export class UserComponent {
       "username": this.form.value.username,
       "email": this.form.value.email,
       "roles": this.form.value.roles,
+      "human": null
     }
+
+    if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
     const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
-    if (userResult){
-      this._utilsService.showMessage("User's data was successfully updated");
-      if(this.insert){
+    if (userResult) {
+      this._utilsService.showMessage("User's data was successfully updated", 2000, true);
+      if (this.insert) {
         this.router.navigate(["/security"]);
       }
+    }
+  }
+  async associateHuman(event: Event) {
+    event.preventDefault();
+    const userId: string = this.userToEdit.id ?? "";
+    const associatedUser = await this.usersService.associateUserToHuman(userId);
+    if(associatedUser){
+      this._utilsService.showMessage("usuario asociado a humano", 2000, false);
+      this.userToEdit = await this.usersService.getUser(userId);
+      console.log(this.userToEdit, "saco la imagen")
+    } else {
+      this._utilsService.showMessage("NO se ha podido asociar", 2000, false);
     }
   }
   loadImage() {
     this.fileInput.nativeElement.click();
   }
-
-  
 }
+
+

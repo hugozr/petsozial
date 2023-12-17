@@ -128,7 +128,7 @@ export class PetComponent {
     }
     const petResult = this.insert ? await this.petsService.insertPet(pet) : await this.petsService.updatePet(this.petToEdit.id, pet);
     if (petResult){
-      this._utilsService.showMessage("Pet's data was successfully updated");
+      this._utilsService.showMessage("Pet's data was successfully updated",2000,true);
       if(this.insert){
         this.router.navigate(["/master"]);
       }

@@ -1,0 +1,23 @@
+.two-column-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .left-column {
+    flex: 3;
+  }
+
+  .right-column {
+    flex: 2;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  
+.format-tile{
+  padding: 10px;
+}

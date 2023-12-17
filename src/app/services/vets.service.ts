@@ -28,16 +28,16 @@ export class VetsService {
     return pet;
   }
 
-  async insertVet(pet: Vet): Promise<Vet> {
-    return await lastValueFrom(this.http.post<Vet>(`${this.backendURL}/api/vets/`, pet));
+  async insertVet(vet: Vet): Promise<Vet> {
+    return await lastValueFrom(this.http.post<Vet>(`${this.backendURL}/api/vets/`, vet));
   }
 
-  async updateVet(id: any, pet: Vet): Promise<Vet> {
-    return await lastValueFrom(this.http.put<Vet>(`${this.backendURL}/api/vets/${id}`, pet));
+  async updateVet(id: any, vet: Vet): Promise<Vet> {
+    return await lastValueFrom(this.http.put<Vet>(`${this.backendURL}/api/vets/${id}`, vet));
   }
   
-  async patchVet(id: any, petData: any): Promise<Vet> {
-    const pet = await lastValueFrom(this.http.patch<Vet>(`${this.backendURL}/api/vets/${id}`, petData));
+  async patchVet(id: any, vetData: any): Promise<Vet> {
+    const pet = await lastValueFrom(this.http.patch<Vet>(`${this.backendURL}/api/vets/${id}`, vetData));
     return pet;
   }
 

@@ -41,17 +41,22 @@ export class UsersService {
     return pet;
   }
 
-  async insertUser(pet: User): Promise<User> {
-    return await lastValueFrom(this.http.post<User>(`${this.backendURL}/api/users/`, pet));
+  async insertUser(user: User): Promise<User> {
+    return await lastValueFrom(this.http.post<User>(`${this.backendURL}/api/users/`, user));
   }
 
-  async updateUser(id: any, pet: User): Promise<User> {
-    return await lastValueFrom(this.http.put<User>(`${this.backendURL}/api/users/${id}`, pet));
+  async updateUser(id: any, user: User): Promise<User> {
+    return await lastValueFrom(this.http.put<User>(`${this.backendURL}/api/users/${id}`, user));
   }
   
-  async patchUser(id: any, petData: any): Promise<User> {
-    const pet = await lastValueFrom(this.http.patch<User>(`${this.backendURL}/api/users/${id}`, petData));
+  async patchUser(id: any, userData: any): Promise<User> {
+    const pet = await lastValueFrom(this.http.patch<User>(`${this.backendURL}/api/users/${id}`, userData));
     return pet;
+  }
+
+  //Servicios de negocio: Son los servicios que implementan las reglas de negocio
+  async associateUserToHuman(userId?:string): Promise<any> {
+    return await lastValueFrom(this.http.post<User>(`${this.backendURL}/api/users/${userId}/associate`,null));
   }
 
   deleteUser(id: string): Observable<User> {

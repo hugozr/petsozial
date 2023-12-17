@@ -90,7 +90,7 @@ export class HumanComponent {
     }
     const humanResult = this.insert ? await this.humansService.insertHuman(human) : await this.humansService.updateHuman(this.humanToEdit.id, human);
     if (humanResult){
-      this._utilsService.showMessage("Human's data was successfully updated");
+      this._utilsService.showMessage("Human's data was successfully updated",2000,true);
       if(this.insert){
         this.router.navigate(["/master/humans"]);
       }

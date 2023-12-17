@@ -101,7 +101,7 @@ export class PetsComponent implements OnInit  {
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
     this.loadPets(); //TODO: No volver a cargar la tabla
     if(deleted){
-      this._utilsService.showMessage("Pet record successfully deleted");
+      this._utilsService.showMessage("Pet record successfully deleted",2000,true);
     }
   }
 
