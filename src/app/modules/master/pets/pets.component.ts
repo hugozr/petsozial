@@ -8,9 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
@@ -36,7 +36,7 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './pets.component.html',
   styleUrl: './pets.component.css',
 })
-export class PetsComponent implements OnInit  {
+export class PetsComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'human',
@@ -56,23 +56,25 @@ export class PetsComponent implements OnInit  {
   dataSource = new MatTableDataSource(this.pets);
   backendURL = environment.backendPetZocialURL;
 
-  
+  pageSize: number = 10;
+  totalRows: number = 0;
+  pageSizeOptions: number[] = [10, 50, 100];
+
   constructor(
     private petsService: PetsService,
     private _utilsService: UtilsService,
     private router: Router
-    ) {}
+  ) { }
 
   ngOnInit(): void {
-     this.loadPets();
+    this.loadPets(this.pageSize, 0);
   }
 
-  async loadPets() {
-    const data: any = await this.petsService.getPets();
+  async loadPets(pageSize: number, page: number ) {
+    const data: any = await this.petsService.getPets(pageSize, page);
     this.pets = [];
-    data.map((elem: any) => {
+    data.docs.map((elem: any) => {
       const imagePath = elem.petImage?.sizes?.thumbnail?.url
-
       this.pets.push({
         id: elem.id,
         name: elem.name,
@@ -87,8 +89,13 @@ export class PetsComponent implements OnInit  {
     });
     this.dataSource = new MatTableDataSource(this.pets);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    
+    this.totalRows = data.totalDocs;
+    this.pageSize = data.limit;
+  }
+
+  pageChanged(event: PageEvent) {
+    this.loadPets(event.pageSize, event.pageIndex + 1);
   }
 
   applyFilter(event: Event) {
@@ -99,9 +106,9 @@ export class PetsComponent implements OnInit  {
   async delete(element: any) {
     // Lógica para la acción eliminar
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
-    this.loadPets(); //TODO: No volver a cargar la tabla
-    if(deleted){
-      this._utilsService.showMessage("Pet record successfully deleted",2000,true);
+    this.loadPets(this.pageSize, 0); //TODO: No volver a cargar la tabla
+    if (deleted) {
+      this._utilsService.showMessage("Pet record successfully deleted", 2000, true);
     }
   }
 

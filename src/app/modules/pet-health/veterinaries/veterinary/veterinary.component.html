@@ -17,6 +17,18 @@
                                     }
                                 </mat-form-field>
                             </div>
+
+                            <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Vet's type</mat-label>
+                                    <mat-select name="vet-type" formControlName="vetType">
+                                        @for (type of vetTypes; track type) {
+                                        <mat-option [value]="type.id">{{type.name}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
                             <div>
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Phone</mat-label>
@@ -32,7 +44,7 @@
                                     <input matInput placeholder="Vet's email" formControlName="email">
                                     @if(form.get('email')!.hasError('required')){
                                         <mat-error>Please enter an email address</mat-error>
-                                    }
+                                        }
                                     @if (form.get('email')!.hasError('email'))
                                     {
                                             <mat-error>Please enter a valid email address</mat-error>

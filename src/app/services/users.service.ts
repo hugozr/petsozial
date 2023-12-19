@@ -31,14 +31,15 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  async getUsers(): Promise<User[]> {
-    const pets: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users?sort=-createdAt&limit=100`)); 
-    return pets.docs;
+  async getUsers(limit: number, page: number): Promise<User[]> {
+    const url = `${this.backendURL}/api/users?sort=-createdAt&limit=${limit}&page=${page}`;
+    const users: any = await lastValueFrom(this.http.get<User[]>(url)); 
+    return users;
   }
 
   async getUser(id: string): Promise<User> {
-    const pet: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`)); 
-    return pet;
+    const user: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`)); 
+    return user;
   }
 
   async insertUser(user: User): Promise<User> {
@@ -50,8 +51,8 @@ export class UsersService {
   }
   
   async patchUser(id: any, userData: any): Promise<User> {
-    const pet = await lastValueFrom(this.http.patch<User>(`${this.backendURL}/api/users/${id}`, userData));
-    return pet;
+    const user = await lastValueFrom(this.http.patch<User>(`${this.backendURL}/api/users/${id}`, userData));
+    return user;
   }
 
   //Servicios de negocio: Son los servicios que implementan las reglas de negocio

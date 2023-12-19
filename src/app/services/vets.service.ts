@@ -4,6 +4,7 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { Vet } from '../interfaces/vet';
 import { environment } from '../../environments/environment';
 import { HealthService } from '../interfaces/healthService';
+import { VetType } from '../interfaces/vetType';
 
 @Injectable({
   providedIn: 'root',
@@ -13,19 +14,24 @@ export class VetsService {
 
   constructor(private http: HttpClient) {}
 
-  async getVets(): Promise<Vet[]> {
-    const pets: any = await lastValueFrom(this.http.get<Vet[]>(`${this.backendURL}/api/vets?sort=-createdAt&limit=100`)); 
-    return pets.docs;
+  async getVets(limit: number, page: number): Promise<Vet[]> {
+    const url = `${this.backendURL}/api/vets?sort=-createdAt&limit=${limit}&page=${page}`
+    const vets: any = await lastValueFrom(this.http.get<Vet[]>(url)); 
+    return vets;
   }
 
+  async getVetTypes(): Promise<VetType[]> {
+    const healthService: any = await lastValueFrom(this.http.get<VetType[]>(`${this.backendURL}/api/vet-types?sort=-name&limit=0`)); 
+    return healthService.docs;
+  }
   async getHealthService(): Promise<HealthService[]> {
-    const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
+    const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=0`)); 
     return healthService.docs;
   }
 
   async getVet(id: string): Promise<Vet> {
-    const pet: any = await lastValueFrom(this.http.get<Vet[]>(`${this.backendURL}/api/vets/${id}`)); 
-    return pet;
+    const vet: any = await lastValueFrom(this.http.get<Vet[]>(`${this.backendURL}/api/vets/${id}`)); 
+    return vet;
   }
 
   async insertVet(vet: Vet): Promise<Vet> {

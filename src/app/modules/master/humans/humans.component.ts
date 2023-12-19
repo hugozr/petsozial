@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -58,6 +58,10 @@ export class HumansComponent implements OnInit {
   dataSource = new MatTableDataSource(this.humans);
   backendURL = environment.backendPetZocialURL;
 
+  //xxx
+  pageSize: number = 10;
+  totalRows: number = 0;
+  pageSizeOptions: number[] = [10, 50, 100];
 
   constructor(
     private humansService: HumansService,
@@ -67,13 +71,14 @@ export class HumansComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadHumans();
+    this.loadHumans(this.pageSize, 0);
   }
 
-  async loadHumans() {
-    const data: any = await this.humansService.getHumans();
+  async loadHumans(pageSize: number, page: number ) {
+    const data: any = await this.humansService.getHumans(pageSize, page);
+
     this.humans = [];
-    data.map((elem: any) => {
+    data.docs.map((elem: any) => {     //xxx: puse data.docs
       const imagePath = elem.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
         id: elem.id,
@@ -89,10 +94,17 @@ export class HumansComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.humans);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    //xxx
+    this.totalRows = data.totalDocs;
+    this.pageSize = data.limit;
   }
 
-
+  //xxx
+  pageChanged(event: PageEvent) {
+    console.log({ event });
+    this.loadHumans(event.pageSize, event.pageIndex + 1);
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue;
@@ -100,7 +112,7 @@ export class HumansComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
-    this.loadHumans(); //TODO: No volver a cargar la tabla
+    this.loadHumans(this.pageSize, 0); 
     if (deleted) {
       this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }
@@ -109,7 +121,6 @@ export class HumansComponent implements OnInit {
   edit(element: any) {
     this.router.navigate(['/master/human/', element.id]);
   }
-
 
   otraAccion() {
     console.log('Otra Acción');

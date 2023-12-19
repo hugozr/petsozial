@@ -13,9 +13,10 @@ export class HumansService {
 
   constructor(private http: HttpClient) {}
 
-  async getHumans(): Promise<Human[]> {
-    const pets: any = await lastValueFrom(this.http.get<Human[]>(`${this.backendURL}/api/Humans?sort=-createdAt&limit=100`)); 
-    return pets.docs;
+  async getHumans(limit: number, page: number): Promise<Human[]> {
+    const url = `${this.backendURL}/api/humans?sort=-createdAt&limit=${limit}&page=${page}`;
+    const humans: any = await lastValueFrom(this.http.get<Human[]>(url)); 
+    return humans;    //xxx: quite docs
   }
 
   async getHealthService(): Promise<HealthService[]> {

@@ -16,8 +16,6 @@ import { environment } from '../../../../../environments/environment';
 import { Vet } from '../../../../interfaces/vet';
 import { VetsService } from '../../../../services/vets.service';
 
-
-
 @Component({
   selector: 'app-veterinary',
   standalone: true,
@@ -38,10 +36,13 @@ import { VetsService } from '../../../../services/vets.service';
 })
 export class VeterinaryComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 9;
+  rowspan = 10;
   form!: FormGroup;
   vetToEdit!: Vet;
   insert = true;
+
+  vetTypes: any = [];
+
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-vet-picture.png";
 
@@ -51,15 +52,16 @@ export class VeterinaryComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
-    
   ) { 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.vetTypes = await this.vetsService.getVetTypes();
     this.form = this.formBuilder.group({
       name: ["", Validators.required],
       comment: [""],
       address: ["", Validators.required],
+      vetType: [""],
       phone: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       image: [this.loadMyPicture]
@@ -68,6 +70,9 @@ export class VeterinaryComponent {
       if(params.id){
         this.insert = false;
         this.vetToEdit = await this.vetsService.getVet(params.id);
+
+        console.log(this.vetToEdit, "aaaaaaaaaaa");
+
         const imagePath = this.vetToEdit?.vetImage?.url;
 
         this.form.setValue({
@@ -75,6 +80,7 @@ export class VeterinaryComponent {
           comment: this.vetToEdit.comment,
           phone: this.vetToEdit.phone,
           email: this.vetToEdit.email,
+          vetType: this.vetToEdit.vetType,
           address: this.vetToEdit.address || "",
           image: imagePath ?  (this.backendURL + imagePath) : this.loadMyPicture
         });
@@ -88,6 +94,7 @@ export class VeterinaryComponent {
       "address": this.form.value.address,
       "phone": this.form.value.phone,
       "email": this.form.value.email,
+      "vetType": this.form.value.vetType,
     }
     const petResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
     if (petResult){

@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,6 +57,9 @@ export class UsersComponent implements OnInit {
   dataSource = new MatTableDataSource(this.users);
   backendURL = environment.backendPetZocialURL;
 
+  pageSize: number = 10;
+  totalRows: number = 0;
+  pageSizeOptions: number[] = [10, 50, 100];
 
   constructor(
     private usersService: UsersService,
@@ -66,13 +69,13 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadUsers(this.pageSize, 0);
   }
 
-  async loadUsers() {
-    const data: any = await this.usersService.getUsers();
+  async loadUsers(pageSize: number, page: number) {
+    const data: any = await this.usersService.getUsers(pageSize, page);
     this.users = [];
-    data.map((elem: any) => {
+    data.docs.map((elem: any) => {
       const imagePath = elem.human?.humanImage?.sizes?.thumbnail?.url;
       this.users.push({
         id: elem.id,
@@ -85,10 +88,14 @@ export class UsersComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    
+    this.totalRows = data.totalDocs;
+    this.pageSize = data.limit;
   }
 
+  pageChanged(event: PageEvent) {
+    this.loadUsers(event.pageSize, event.pageIndex + 1);
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -97,7 +104,7 @@ export class UsersComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
-    this.loadUsers(); //TODO: No volver a cargar la tabla
+    this.loadUsers(this.pageSize, 0); 
     if (deleted) {
       this._utilsService.showMessage("User record successfully deleted",2000,true);
     }

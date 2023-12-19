@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,7 +57,9 @@ export class VeterinariesComponent implements OnInit {
   vets: any[] = [];
   dataSource = new MatTableDataSource(this.vets);
   backendURL = environment.backendPetZocialURL;
-
+  pageSize: number = 10;
+  totalRows: number = 0;
+  pageSizeOptions: number[] = [10, 50, 100];
 
   constructor(
     private vetsService: VetsService,
@@ -67,13 +69,13 @@ export class VeterinariesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadVets();
+    this.loadVets(this.pageSize, 0);
   }
 
-  async loadVets() {
-    const data: any = await this.vetsService.getVets();
+  async loadVets(pageSize: number, page: number) {
+    const data: any = await this.vetsService.getVets(pageSize, page);
     this.vets = [];
-    data.map((elem: any) => {
+    data.docs.map((elem: any) => {
       const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
       this.vets.push({
         id: elem.id,
@@ -88,11 +90,14 @@ export class VeterinariesComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.vets);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    this.totalRows = data.totalDocs;
+    this.pageSize = data.limit;
   }
 
-
+  pageChanged(event: PageEvent) {
+    this.loadVets(event.pageSize, event.pageIndex + 1);
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue;
@@ -100,7 +105,7 @@ export class VeterinariesComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    this.loadVets(); //TODO: No volver a cargar la tabla
+    this.loadVets(this.pageSize, 0); //TODO: No volver a cargar la tabla
     if (deleted) {
       this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }
@@ -111,7 +116,6 @@ export class VeterinariesComponent implements OnInit {
   }
 
   healthServices(element: any) {
-    console.log(element,"esto paso")
     const dialogRef = this.dialog.open(HealthServicesComponent, {
       width: '500px', // Ajusta el ancho según tus necesidades
       height: "500px",
