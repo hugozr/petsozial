@@ -21,9 +21,10 @@ export class VetsService {
   }
 
   async getVetTypes(): Promise<VetType[]> {
-    const healthService: any = await lastValueFrom(this.http.get<VetType[]>(`${this.backendURL}/api/vet-types?sort=-name&limit=0`)); 
-    return healthService.docs;
+    const types: any = await lastValueFrom(this.http.get<VetType[]>(`${this.backendURL}/api/vet-types?sort=-name&limit=0`)); 
+    return types.docs;
   }
+
   async getHealthService(): Promise<HealthService[]> {
     const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=0`)); 
     return healthService.docs;

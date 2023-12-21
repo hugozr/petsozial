@@ -4,6 +4,7 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HealthService } from '../interfaces/healthService';
 import { Community } from '../interfaces/community';
+import { CommunityType } from '../interfaces/communityType';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,11 @@ export class CommunitiesService {
     const url = `${this.backendURL}/api/communities?sort=-createdAt&limit=${limit}&page=${page}`
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url)); 
     return comms;
+  }
+
+  async getCommunityTypes(): Promise<CommunityType[]> {
+    const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0`)); 
+    return healthService.docs;
   }
 
   async getHealthService(): Promise<HealthService[]> {

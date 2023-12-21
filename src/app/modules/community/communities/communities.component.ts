@@ -42,6 +42,7 @@ export class CommunitiesComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'social',
+    'type',
     'comment',
     'address',
     'thumbnail',
@@ -79,6 +80,7 @@ export class CommunitiesComponent implements OnInit {
         id: elem.id,
         name: elem.name,
         comment: elem.comment,
+        type: elem.type?.name,
         address: elem.address,
         url: elem.url,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null

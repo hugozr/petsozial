@@ -4,7 +4,7 @@
     </mat-toolbar>
     <mat-card>
         <mat-card-content>
-            <form [formGroup]="form" (ngSubmit)="saveVet()">
+            <form [formGroup]="myForm" (ngSubmit)="saveVet()">
                 <mat-grid-list cols="2" rowHeight="54px">
                     <mat-grid-tile [rowspan]="rowspan">
                         <div class="container" class="full-width">
@@ -12,7 +12,7 @@
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>Vet's name</mat-label>
                                     <input matInput placeholder="Vet's name" formControlName="name">
-                                    @if(form.get('name')!.hasError('required')){
+                                    @if(myForm.get('name')!.hasError('required')){
                                         <mat-error>Please enter a valid name</mat-error>
                                     }
                                 </mat-form-field>
@@ -33,7 +33,7 @@
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Phone</mat-label>
                                     <input matInput placeholder="Vet's phone" formControlName="phone">
-                                    @if(form.get('phone')!.hasError('required')){
+                                    @if(myForm.get('phone')!.hasError('required')){
                                         <mat-error>Please enter a phone number</mat-error>
                                     }
                                 </mat-form-field>
@@ -42,10 +42,10 @@
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Email</mat-label>
                                     <input matInput placeholder="Vet's email" formControlName="email">
-                                    @if(form.get('email')!.hasError('required')){
+                                    @if(myForm.get('email')!.hasError('required')){
                                         <mat-error>Please enter an email address</mat-error>
                                         }
-                                    @if (form.get('email')!.hasError('email'))
+                                    @if (myForm.get('email')!.hasError('email'))
                                     {
                                             <mat-error>Please enter a valid email address</mat-error>
                                     }
@@ -56,9 +56,15 @@
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Address</mat-label>
                                     <input matInput placeholder="Pet's address" formControlName="address">
-                                    @if(form.get('address')!.hasError('required')){
+                                    @if(myForm.get('address')!.hasError('required')){
                                         <mat-error>Please enter an address</mat-error>
                                     }
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Web page</mat-label>
+                                    <input matInput placeholder="Social network url" formControlName="url">
                                 </mat-form-field>
                             </div>
                             <div>
@@ -70,7 +76,7 @@
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
-                        <img id="imagen" class="image" [src]="form.get('image')?.value" alt="Imagen"
+                        <img id="imagen" class="image" [src]="myForm.get('image')?.value" alt="Imagen"
                             (click)="loadImage()">
                         <input type="file" #fileInput style="display: none" (change)="changeImage($event)">
                     </mat-grid-tile>
@@ -78,7 +84,7 @@
                         <button 
                         type="submit"
                         mat-raised-button color="primary"
-                        [disabled]="form.invalid"
+                        [disabled]="myForm.invalid"
                         >
                         {{insert ? "Insert vet's data" : "Update vet's data"}}
                         </button>
