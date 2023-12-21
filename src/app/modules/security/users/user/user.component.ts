@@ -91,19 +91,30 @@ export class UserComponent {
     });
   }
   async saveUser() {
-    const user: User = {
-      "username": this.form.value.username,
-      "email": this.form.value.email,
-      "roles": this.form.value.roles,
-      "human": null
-    }
-
-    if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
-    const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
-    if (userResult) {
-      this._utilsService.showMessage("User's data was successfully updated", 2000, true);
-      if (this.insert) {
-        this.router.navigate(["/security"]);
+    try{
+      const user: User = {
+        "username": this.form.value.username,
+        "email": this.form.value.email,
+        "roles": this.form.value.roles,
+        "human": null
+      }
+      if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
+      const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
+      if (userResult) {
+        this._utilsService.showMessage("User's data was successfully updated", 2000, true);
+        if (this.insert) {
+          this.router.navigate(["/security"]);
+        }
+      }
+    } catch (error: any) {
+      const e:any = error.error.errors;
+      console.log(e)
+      // if (error.error.errors[0].name === 'ValidationError') {
+      if (e[0].name === 'ValidationError') {
+        const errorMessage = e[0].data[0].message ;
+        this._utilsService.showMessage(errorMessage, 5000, false);
+      } else {
+        console.error('Error:', error);
       }
     }
   }
