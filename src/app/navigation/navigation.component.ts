@@ -13,6 +13,9 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { PortalService } from '../services/portal.service';
 import { AppOption } from '../interfaces/appOption';
 import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
+import { KeycloakService } from 'keycloak-angular';
+import { AuthService } from '../services/auth.service';
+import { StorageService } from '../services/storage.service';
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
 //TODO: Investigar multiselect
@@ -41,9 +44,16 @@ export class NavigationComponent implements OnInit{
   private breakpointObserver = inject(BreakpointObserver);
   appOptions: AppOption[] = [];
 
+  userLoggedIn = false;
+  tokenParsed: any; 
+  userName!: string;
+  IsLogin: boolean = false;
+
   constructor(
-    private router: Router,
-    private portalService: PortalService) { }
+    private portalService: PortalService,
+    private _authService: AuthService,
+    private _storageService: StorageService
+    ) { }
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -54,7 +64,27 @@ export class NavigationComponent implements OnInit{
     );
 
   ngOnInit(): void {
+    this.initLogged();
     this.loadOptions();
+  }
+
+  initLogged(){
+    this.userLoggedIn = this._authService.isLoggedIn();
+    // this.tokenParsed = this._keycloakService.getTokenParsed() ?? this.storageService.getItem('lg_user');;
+    // if(this.tokenParsed){
+      this.userName = this._authService.userName;
+      // this._storageService.setItem('lg_user',this.tokenParsed);
+    // }
+    this.IsLogin = this._authService.isLoggedIn();
+    console.log(this.userName,"aaaaaaaaaaaaaaaaaaaaaaaa");
+  }
+
+  public login(){
+    this._authService.login();
+  }
+  public logout(){
+    this._authService.logout();
+    this._storageService.removeItem('lg_user');
   }
 
   loadOptions(){
@@ -62,11 +92,11 @@ export class NavigationComponent implements OnInit{
       data.docs.map( (elem: any) => {
         this.appOptions.push({name: elem.name, redirect: elem.redirect});
       });
-      console.log(this.appOptions);
     })
   }
 
   openLogin() {
     console.log('abriendo login');
+    this._authService.login();
   }
 }

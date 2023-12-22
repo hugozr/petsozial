@@ -109,7 +109,6 @@ export class UserComponent {
     } catch (error: any) {
       const e:any = error.error.errors;
       console.log(e)
-      // if (error.error.errors[0].name === 'ValidationError') {
       if (e[0].name === 'ValidationError') {
         const errorMessage = e[0].data[0].message ;
         this._utilsService.showMessage(errorMessage, 5000, false);

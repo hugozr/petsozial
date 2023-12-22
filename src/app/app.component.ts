@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
 import { HttpClientModule } from '@angular/common/http';
+// import { KeycloakAngularModule } from 'keycloak-angular';
 
 
 @Component({
@@ -14,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule, 
     RouterOutlet, 
     NavigationComponent,
-    HttpClientModule
+    HttpClientModule,
+    // KeycloakAngularModule
   ],
 })
 export class AppComponent {
