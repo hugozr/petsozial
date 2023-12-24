@@ -59,6 +59,7 @@ export class PetsComponent implements OnInit {
   pageSize: number = 10;
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
+  timeoutId!: any;
 
   constructor(
     private petsService: PetsService,
@@ -67,11 +68,15 @@ export class PetsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadPets(this.pageSize, 0);
+    this.loadPets(this.pageSize, 0, "");
   }
 
-  async loadPets(pageSize: number, page: number ) {
-    const data: any = await this.petsService.getPets(pageSize, page);
+  async loadPets(pageSize: number, page: number, filter: string ) {
+    const data: any = await this.petsService.getPets(pageSize, page, filter);
+    this.fillPetTable(data);
+  }
+
+  fillPetTable(data: any){
     this.pets = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.petImage?.sizes?.thumbnail?.url
@@ -95,18 +100,26 @@ export class PetsComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.loadPets(event.pageSize, event.pageIndex + 1);
+    this.loadPets(event.pageSize, event.pageIndex + 1,"");
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
+    const miliSecondsToWait = 500; 
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+        this.filter(filterValue);
+    }, miliSecondsToWait);
+ }
+
+  async filter(filter: string) {
+    const data: any = await this.petsService.filterPets(this.pageSize, 0, filter);
+    this.fillPetTable(data);
   }
 
   async delete(element: any) {
-    // Lógica para la acción eliminar
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
-    this.loadPets(this.pageSize, 0); //TODO: No volver a cargar la tabla
+    this.loadPets(this.pageSize, 0,""); 
     if (deleted) {
       this._utilsService.showMessage("Pet record successfully deleted", 2000, true);
     }

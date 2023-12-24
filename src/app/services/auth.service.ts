@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { StorageService } from './storage.service';
+// import { StorageService } from './storage.service.ts.bak';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ export class AuthService {
   userName!: string;
 
   constructor(private _keycloakService: KeycloakService,
-    private storageService: StorageService){}
+    // private storageService: StorageService
+    ){}
 
   ngOnInit(): void {
     this.initLogged();
@@ -24,11 +25,15 @@ export class AuthService {
   }
 
   public login(){
-    this._keycloakService.login();
+     this._keycloakService.login();
   }
 
   getToken(){
     return this._keycloakService.getToken();
+  }
+
+  getInstance(){
+    return this._keycloakService.getKeycloakInstance();
   }
 
   isLoggedIn(): boolean {

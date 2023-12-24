@@ -11,10 +11,19 @@ export class PetsService {
   constructor(private http: HttpClient) {}
   backendURL = environment.backendPetZocialURL;
   
-  async getPets(limit: number, page: number): Promise<Pet[]> {
+  async getPets(limit: number, page: number, filter: string): Promise<Pet[]> {
     const url = `${this.backendURL}/api/pets?sort=-createdAt&limit=${limit}&page=${page}`;
     const pets: any = await lastValueFrom(this.http.get<Pet[]>(url));
     return pets;
+  }
+
+  async filterPets(limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me`, body));
   }
 
   async getPet(id: string): Promise<Pet> {

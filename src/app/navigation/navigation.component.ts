@@ -15,7 +15,6 @@ import { AppOption } from '../interfaces/appOption';
 import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthService } from '../services/auth.service';
-import { StorageService } from '../services/storage.service';
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
 //TODO: Investigar multiselect
@@ -45,14 +44,13 @@ export class NavigationComponent implements OnInit{
   appOptions: AppOption[] = [];
 
   userLoggedIn = false;
-  tokenParsed: any; 
+  tokenParsed: any;
   userName!: string;
-  IsLogin: boolean = false;
+  // isLogin: boolean = false;
 
   constructor(
     private portalService: PortalService,
     private _authService: AuthService,
-    private _storageService: StorageService
     ) { }
 
 
@@ -69,14 +67,12 @@ export class NavigationComponent implements OnInit{
   }
 
   initLogged(){
-    this.userLoggedIn = this._authService.isLoggedIn();
-    // this.tokenParsed = this._keycloakService.getTokenParsed() ?? this.storageService.getItem('lg_user');;
-    // if(this.tokenParsed){
-      this.userName = this._authService.userName;
-      // this._storageService.setItem('lg_user',this.tokenParsed);
-    // }
-    this.IsLogin = this._authService.isLoggedIn();
-    console.log(this.userName,"aaaaaaaaaaaaaaaaaaaaaaaa");
+
+    if (this._authService.isLoggedIn()) {
+      const keycloakInstance = this._authService.getInstance();
+      this.userName = keycloakInstance.tokenParsed!['preferred_username'];
+      console.log(keycloakInstance,this.userName);
+    }
   }
 
   public login(){
@@ -84,7 +80,7 @@ export class NavigationComponent implements OnInit{
   }
   public logout(){
     this._authService.logout();
-    this._storageService.removeItem('lg_user');
+    // this._storageService.removeItem('lg_user');
   }
 
   loadOptions(){
@@ -95,8 +91,8 @@ export class NavigationComponent implements OnInit{
     })
   }
 
-  openLogin() {
-    console.log('abriendo login');
-    this._authService.login();
+  logInOut() {
+    if(this.userName) this._authService.logout()
+    else this._authService.login();
   }
 }

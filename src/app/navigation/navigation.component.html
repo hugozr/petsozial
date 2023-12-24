@@ -26,9 +26,15 @@
         aria-label="Notifications for pet lovers ">
         <mat-icon>notifications</mat-icon>
       </button>
-      <button mat-raised-button color="accent" style="margin-left: auto" (click)="openLogin()">
-        Login
+      <button mat-raised-button color="accent" style="margin-left: auto" (click)="logInOut()">
+        @if(userName){
+          Logout
+        } @else {
+          Login
+        }
       </button>
+      <!-- <div class="usename" *ngIf="userName">{{userName}}</div> -->
+      <span class="username" *ngIf="userName">{{userName}}</span>
     </mat-toolbar>
 
     <!-- Add Content Here -->

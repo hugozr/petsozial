@@ -30,7 +30,6 @@
   flex: 1 1 auto;
 }
 
-/* .custom-toolbar {
-  height: 150px;
-  background-color: aqua;
-} */
+.username {
+  margin-left: 10px;
+}
