@@ -11,7 +11,7 @@
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>username</mat-label>
-                                    <input matInput placeholder="User's username" formControlName="username">
+                                    <input matInput placeholder="User's username" formControlName="username" (blur)="validateUniqueUser()">
                                     @if(form.get('username')!.hasError('containsWhitespace')){
                                         <mat-error>The username must not contain white spaces</mat-error>
                                     }

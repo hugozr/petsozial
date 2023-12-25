@@ -107,15 +107,15 @@ export class UserComponent {
         }
       }
     } catch (error: any) {
-      console.log(error);
-      // const e:any = error.error.errors;
-      // console.log(e)
-      // if (e[0].name === 'ValidationError') {
-      //   const errorMessage = e[0].data[0].message ;
-      //   this._utilsService.showMessage(errorMessage, 5000, false);
-      // } else {
-      //   console.error('Error:', error);
-      // }
+      // console.log(error.error);
+      const e:any = error.error.errors;
+      console.log(e)
+      if (e[0].name === 'ValidationError') {
+        const errorMessage = e[0].data[0].message ;
+        this._utilsService.showMessage(errorMessage, 5000, false);
+      } else {
+        console.error('Error:', error);
+      }
     }
   }
   async associateHuman(event: Event) {
@@ -130,6 +130,12 @@ export class UserComponent {
       this._utilsService.showMessage("NO se ha podido asociar", 2000, false);
     }
   }
+  async validateUniqueUser() {
+    const username = this.form.get('username')!.value;
+    const response: any = await this.usersService.getUsersByName(username);
+    console.log(response);
+  }
+
   loadImage() {
     this.fileInput.nativeElement.click();
   }

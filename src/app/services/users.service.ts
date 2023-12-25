@@ -46,6 +46,12 @@ export class UsersService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/users/filter-me`, body));
   }
 
+  async getUsersByName(username: string): Promise<User[]> {
+    const url = `${this.backendURL}/api/users/${username}/users-by-name`;
+    const users: any = await lastValueFrom(this.http.get<User[]>(url)); 
+    return users;
+  }
+
   async getUser(id: string): Promise<User> {
     const user: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`)); 
     return user;
