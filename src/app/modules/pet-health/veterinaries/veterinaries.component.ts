@@ -60,6 +60,7 @@ export class VeterinariesComponent implements OnInit {
   pageSize: number = 10;
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
+  timeoutId!: any;
 
   constructor(
     private vetsService: VetsService,
@@ -74,6 +75,10 @@ export class VeterinariesComponent implements OnInit {
 
   async loadVets(pageSize: number, page: number) {
     const data: any = await this.vetsService.getVets(pageSize, page);
+    this.fillVetTable(data);
+  }
+
+  fillVetTable(data: any){
     this.vets = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
@@ -99,8 +104,18 @@ export class VeterinariesComponent implements OnInit {
   }
   
   applyFilter(event: Event) {
+    //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
+    const miliSecondsToWait = 500; 
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+        this.filter(filterValue);
+    }, miliSecondsToWait);
+  }
+
+  async filter(filter: string) {
+    const data: any = await this.vetsService.filterVets(this.pageSize, 0, filter);
+    this.fillVetTable(data);
   }
 
   async delete(element: any) {

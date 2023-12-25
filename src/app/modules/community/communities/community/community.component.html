@@ -11,16 +11,16 @@
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>Community name</mat-label>
-                                    <input matInput placeholder="Comm's name" formControlName="name">
+                                    <input matInput placeholder="Comm's name" formControlName="name" >
                                     @if(myForm.get('name')!.hasError('required')){
                                         <mat-error>Please enter a valid name</mat-error>
                                     }
                                 </mat-form-field>
                             </div>
                             <div class="full-width">
-                                <mat-form-field class="full-width" appearance="outline">
+                                <mat-form-field class="full-width" appearance="outline" >
                                     <mat-label>Select a community type</mat-label>
-                                    <mat-select name="community-type" formControlName="type">
+                                    <mat-select name="community-type" formControlName="type" [(value)]="communityTypeForEdit">
                                         @for (type of types; track type) {
                                         <mat-option [value]="type.id">{{type.name}}</mat-option>
                                         }

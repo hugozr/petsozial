@@ -96,7 +96,7 @@ export class UserComponent {
         "username": this.form.value.username,
         "email": this.form.value.email,
         "roles": this.form.value.roles,
-        "human": null
+        "human": this.insert ? null : this.userToEdit.humanId
       }
       if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
       const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
@@ -107,14 +107,15 @@ export class UserComponent {
         }
       }
     } catch (error: any) {
-      const e:any = error.error.errors;
-      console.log(e)
-      if (e[0].name === 'ValidationError') {
-        const errorMessage = e[0].data[0].message ;
-        this._utilsService.showMessage(errorMessage, 5000, false);
-      } else {
-        console.error('Error:', error);
-      }
+      console.log(error);
+      // const e:any = error.error.errors;
+      // console.log(e)
+      // if (e[0].name === 'ValidationError') {
+      //   const errorMessage = e[0].data[0].message ;
+      //   this._utilsService.showMessage(errorMessage, 5000, false);
+      // } else {
+      //   console.error('Error:', error);
+      // }
     }
   }
   async associateHuman(event: Event) {

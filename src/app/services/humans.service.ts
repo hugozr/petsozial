@@ -16,7 +16,16 @@ export class HumansService {
   async getHumans(limit: number, page: number): Promise<Human[]> {
     const url = `${this.backendURL}/api/humans?sort=-createdAt&limit=${limit}&page=${page}`;
     const humans: any = await lastValueFrom(this.http.get<Human[]>(url)); 
-    return humans;    //xxx: quite docs
+    return humans;    
+  }
+  
+  async filterHumans(limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/humans/filter-me`, body));
   }
 
   async getHealthService(): Promise<HealthService[]> {

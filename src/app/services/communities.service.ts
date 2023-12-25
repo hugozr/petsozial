@@ -19,6 +19,15 @@ export class CommunitiesService {
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url)); 
     return comms;
   }
+  
+  async filterCommunities(limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
+  }
 
   async getCommunityTypes(): Promise<CommunityType[]> {
     const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0`)); 

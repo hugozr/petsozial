@@ -60,6 +60,7 @@ export class UsersComponent implements OnInit {
   pageSize: number = 10;
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
+  timeoutId!: any;
 
   constructor(
     private usersService: UsersService,
@@ -74,6 +75,10 @@ export class UsersComponent implements OnInit {
 
   async loadUsers(pageSize: number, page: number) {
     const data: any = await this.usersService.getUsers(pageSize, page);
+    this.fillUserTable(data);
+  }
+
+  fillUserTable(data: any){
     this.users = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.human?.humanImage?.sizes?.thumbnail?.url;
@@ -91,6 +96,7 @@ export class UsersComponent implements OnInit {
     
     this.totalRows = data.totalDocs;
     this.pageSize = data.limit;
+  
   }
 
   pageChanged(event: PageEvent) {
@@ -98,9 +104,20 @@ export class UsersComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
+    const miliSecondsToWait = 500; 
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+        this.filter(filterValue);
+    }, miliSecondsToWait);
+ }
+
+  async filter(filter: string) {
+    const data: any = await this.usersService.filterUsers(this.pageSize, 0, filter);
+    this.fillUserTable(data);
   }
+  
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));

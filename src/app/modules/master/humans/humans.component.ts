@@ -58,10 +58,10 @@ export class HumansComponent implements OnInit {
   dataSource = new MatTableDataSource(this.humans);
   backendURL = environment.backendPetZocialURL;
 
-  //xxx
   pageSize: number = 10;
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
+  timeoutId!: any;
 
   constructor(
     private humansService: HumansService,
@@ -76,9 +76,12 @@ export class HumansComponent implements OnInit {
 
   async loadHumans(pageSize: number, page: number ) {
     const data: any = await this.humansService.getHumans(pageSize, page);
+    this.fillHumanTable(data);
+  }
 
+  fillHumanTable(data: any){
     this.humans = [];
-    data.docs.map((elem: any) => {     //xxx: puse data.docs
+    data.docs.map((elem: any) => {     
       const imagePath = elem.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
         id: elem.id,
@@ -94,20 +97,28 @@ export class HumansComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.humans);
     this.dataSource.sort = this.sort;
-    //xxx
     this.totalRows = data.totalDocs;
     this.pageSize = data.limit;
   }
-
-  //xxx
+  
   pageChanged(event: PageEvent) {
     console.log({ event });
     this.loadHumans(event.pageSize, event.pageIndex + 1);
   }
   
   applyFilter(event: Event) {
+    //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
+    const miliSecondsToWait = 500; 
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+        this.filter(filterValue);
+    }, miliSecondsToWait);
+  }
+
+  async filter(filter: string) {
+    const data: any = await this.humansService.filterHumans(this.pageSize, 0, filter);
+    this.fillHumanTable(data);
   }
 
   async delete(element: any) {

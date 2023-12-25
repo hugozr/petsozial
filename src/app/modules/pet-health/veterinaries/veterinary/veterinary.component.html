@@ -21,7 +21,7 @@
                             <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Vet's type</mat-label>
-                                    <mat-select name="vet-type" formControlName="vetType">
+                                    <mat-select name="vet-type" formControlName="vetType" [(value)]="vetTypeForEdit">
                                         @for (type of vetTypes; track type) {
                                         <mat-option [value]="type.id">{{type.name}}</mat-option>
                                         }

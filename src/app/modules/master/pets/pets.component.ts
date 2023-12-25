@@ -104,6 +104,7 @@ export class PetsComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
     const miliSecondsToWait = 500; 
     clearTimeout(this.timeoutId);

@@ -59,6 +59,7 @@ export class CommunitiesComponent implements OnInit {
   pageSize: number = 10;
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
+  timeoutId!: any;
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -73,6 +74,10 @@ export class CommunitiesComponent implements OnInit {
 
   async loadCommunities(pageSize: number, page: number) {
     const data: any = await this.communitiesService.getCommunities(pageSize, page);
+    this.fillHumanTable(data);
+  }
+  
+  fillHumanTable(data: any){
     this.communities = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.communityImage?.sizes?.thumbnail?.url;
@@ -95,12 +100,22 @@ export class CommunitiesComponent implements OnInit {
   pageChanged(event: PageEvent) {
     this.loadCommunities(event.pageSize, event.pageIndex + 1);
   }
-
+  
   applyFilter(event: Event) {
+    //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
-  }
+    const miliSecondsToWait = 500; 
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+        this.filter(filterValue);
+    }, miliSecondsToWait);
+ }
 
+  async filter(filter: string) {
+    const data: any = await this.communitiesService.filterCommunities(this.pageSize, 0, filter);
+    this.fillHumanTable(data);
+  }
+  
   async delete(element: any) {
     const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
     this.loadCommunities(this.pageSize, 0); 

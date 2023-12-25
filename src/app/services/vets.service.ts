@@ -20,6 +20,15 @@ export class VetsService {
     return vets;
   }
 
+  async filterVets(limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/vets/filter-me`, body));
+  }
+
   async getVetTypes(): Promise<VetType[]> {
     const types: any = await lastValueFrom(this.http.get<VetType[]>(`${this.backendURL}/api/vet-types?sort=-name&limit=0`)); 
     return types.docs;

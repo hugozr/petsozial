@@ -4,6 +4,6 @@ export interface Community {
     comment?: string,
     address: string,
     url?: string,
-    type?: string,
+    type?: any,
     communityImage?: any,
 }

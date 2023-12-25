@@ -42,6 +42,7 @@ export class VeterinaryComponent {
   insert = true;
 
   vetTypes: any = [];
+  vetTypeForEdit!: string; 
 
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-vet-picture.png";
@@ -56,8 +57,7 @@ export class VeterinaryComponent {
   }
 
   async ngAfterViewInit() {
-    //HZUMAETA: Tiene que ir aca sino sale un error.
-    this.vetTypes = await this.vetsService.getVetTypes();
+    
   }
   async ngOnInit(): Promise<void> {
     this.myForm = this.formBuilder.group({
@@ -70,15 +70,18 @@ export class VeterinaryComponent {
       email: ["", [Validators.required, Validators.email]],
       image: [this.loadMyPicture]
     });
+
+    //HZUMAETA: Tiene que ir aca sino sale un error.
+    this.vetTypes = await this.vetsService.getVetTypes();
+    console.log("esto es primero",this.vetTypes);
+
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
         this.vetToEdit = await this.vetsService.getVet(params.id);
-
-        console.log(this.vetToEdit, "kkkk");
-
+        this.vetTypeForEdit = this.vetToEdit.vetType.id;
+        console.log(this.vetTypeForEdit, "aaaaaaaaaaaaaaaaaaaaaaa");
         const imagePath = this.vetToEdit?.vetImage?.url;
-
         this.myForm.setValue({
           name: this.vetToEdit.name,
           comment: this.vetToEdit.comment,
@@ -89,6 +92,7 @@ export class VeterinaryComponent {
           address: this.vetToEdit.address || "",
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
+        console.log("esto es segundo", this.vetToEdit);
       }
     });
   }
@@ -102,8 +106,8 @@ export class VeterinaryComponent {
       "url": this.myForm.value.url,
       "vetType": this.myForm.value.vetType,
     }
-    const petResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
-    if (petResult) {
+    const vetResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
+    if (vetResult) {
       this._utilsService.showMessage("Vet's data was successfully updated", 2000, true);
       if (this.insert) {
         this.router.navigate(["/pet-health"]);

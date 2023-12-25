@@ -38,6 +38,7 @@ export class CommunityComponent {
   rowspan = 8;
   myForm!: FormGroup;
   commToEdit!: Community;
+  communityTypeForEdit!: string;
   insert = true;
 
   types: any = [];
@@ -57,6 +58,7 @@ export class CommunityComponent {
   async ngAfterViewInit() {
     this.types = await this.communitiesService.getCommunityTypes();
   }
+  
   async ngOnInit(): Promise<void> {
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],
@@ -70,9 +72,7 @@ export class CommunityComponent {
       if (params.id) {
         this.insert = false;
         this.commToEdit = await this.communitiesService.getCommunity(params.id);
-
-        console.log(this.commToEdit, "kkkk");
-
+        this.communityTypeForEdit = this.commToEdit.type?.id;
         const imagePath = this.commToEdit?.communityImage?.url;
 
         this.myForm.setValue({
@@ -92,7 +92,7 @@ export class CommunityComponent {
       "comment": this.myForm.value.comment,
       "address": this.myForm.value.address,
       "url": this.myForm.value.url,
-      "type": this.myForm.value.type,
+      "type": this.myForm.value.type.id,
     }
     const communityResult = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
     if (communityResult) {
@@ -124,7 +124,6 @@ export class CommunityComponent {
       lector.readAsDataURL(archivo);
     }
   }
-
 }
 
 
