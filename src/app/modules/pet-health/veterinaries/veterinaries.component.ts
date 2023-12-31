@@ -120,7 +120,7 @@ export class VeterinariesComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    this.loadVets(this.pageSize, 0); //TODO: No volver a cargar la tabla
+    this.loadVets(this.pageSize, 0); 
     if (deleted) {
       this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }

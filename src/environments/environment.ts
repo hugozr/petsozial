@@ -4,4 +4,10 @@ export const environment = {
     genericPassword: "abc123",
     keyEncrypt: 'ASDAS23S22D2S1A3S2123^○4○4^^^!',
     
+    keycloakHost: 'http://localhost:8080',
+    // keycloakHost: "https://bbc8-38-25-30-208.ngrok-free.app",
+    keycloakRealm: 'petzocial',
+    keycloakClientId: 'petzocial',
+    adminUsername: "hzumaeta",
+    adminPassword: "1234",
 }

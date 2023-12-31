@@ -5,15 +5,16 @@ import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from '../environments/environment';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   // https://levelup.gitconnected.com/keycloak-in-angular-application-980260b4b196
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080',
-        realm: 'petzocial',
-        clientId: 'petzocial'
+        url: environment.keycloakHost,
+        realm:  environment.keycloakRealm,
+        clientId: environment.keycloakClientId
       },
       initOptions: {
         onLoad: 'check-sso',    //HZUMAETA: Si le pongo login-required lo primero que hace es pedir login desde Keycloak

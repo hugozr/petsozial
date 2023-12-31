@@ -16,6 +16,7 @@ import { UtilsService } from '../../../services/utils.service';
 import { UsersService } from '../../../services/users.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { SelectCommunitiesComponent } from './select-communities/select-communities.component';
 
 
 
@@ -88,6 +89,7 @@ export class UsersComponent implements OnInit {
         name: elem.human ? elem.human.name : null,    //HZUMAETA: Si existe humano registrado va, sino no va
         roles: this.usersService.getRoleLabels(elem.roles),
         email: elem.email,
+        communities: elem.communities,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     });
@@ -118,13 +120,30 @@ export class UsersComponent implements OnInit {
     this.fillUserTable(data);
   }
   
-
+  async selectCommunities(element: any) {
+      const dialogRef = this.dialog.open(SelectCommunitiesComponent, {
+        width: '600px', // Ajusta el ancho según tus necesidades
+        height: "500px",
+        data: element, // Puedes pasar cualquier dato que necesites al modal
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Modal cerrado:', result);
+        // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
+      });
+    }
+  
   async delete(element: any) {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
     this.loadUsers(this.pageSize, 0); 
     if (deleted) {
       this._utilsService.showMessage("User record successfully deleted",2000,true);
     }
+  }
+
+  async manageCredentials(element: any){
+    const tokens = await this.usersService.getAccessTokens();
+    console.log(tokens);
   }
 
   edit(element: any) {

@@ -15,4 +15,5 @@ export const routes: Routes = [
     { path: "pet-health", loadChildren: () => import("./modules/pet-health/pet-health.module").then(x => x.PetHealthModule)  },
     { path: "community", loadChildren: () => import("./modules/community/community.module").then(x => x.CommunityModule)  },
     { path: "security", loadChildren: () => import("./modules/security/security.module").then(x => x.SecurityModule)  },
+    { path: "locations", loadChildren: () => import("./modules/locations/locations.module").then(x => x.LocationsModule)  },
 ];

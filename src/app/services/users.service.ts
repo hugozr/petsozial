@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom } from 'rxjs';
 import { User } from '../interfaces/user';
@@ -28,12 +28,13 @@ const roles  = [
 })
 export class UsersService {
   backendURL = environment.backendPetZocialURL;
+  keycloakHost = environment.keycloakHost;
 
   constructor(private http: HttpClient) {}
 
   async getUsers(limit: number, page: number): Promise<User[]> {
     const url = `${this.backendURL}/api/users?sort=-createdAt&limit=${limit}&page=${page}`;
-    const users: any = await lastValueFrom(this.http.get<User[]>(url)); 
+    const users: any = await lastValueFrom(this.http.get<User[]>(url));
     return users;
   }
 
@@ -46,14 +47,18 @@ export class UsersService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/users/filter-me`, body));
   }
 
+  async updateCommunity(userId: string, body: any): Promise<any> {
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/users/${userId}/community-update`, body));
+  }
+
   async getUsersByName(username: string): Promise<User[]> {
     const url = `${this.backendURL}/api/users/${username}/users-by-name`;
-    const users: any = await lastValueFrom(this.http.get<User[]>(url)); 
+    const users: any = await lastValueFrom(this.http.get<User[]>(url));
     return users;
   }
 
   async getUser(id: string): Promise<User> {
-    const user: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`)); 
+    const user: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`));
     return user;
   }
 
@@ -64,7 +69,7 @@ export class UsersService {
   async updateUser(id: any, user: User): Promise<User> {
     return await lastValueFrom(this.http.put<User>(`${this.backendURL}/api/users/${id}`, user));
   }
-  
+
   async patchUser(id: any, userData: any): Promise<User> {
     const user = await lastValueFrom(this.http.patch<User>(`${this.backendURL}/api/users/${id}`, userData));
     return user;
@@ -87,5 +92,32 @@ export class UsersService {
         .filter(role => values.includes(role.value))
         .map(role => role.label);
     return selectedLabels;
+  }
+
+  async getAccessTokens(){
+    const tokenPath = `${this.keycloakHost}/realms/petzocial/protocol/openid-connect/token`;
+    // const tokenPath = `${this.keycloakHost}/realms/master/protocol/openid-connect/token`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data',
+      
+      })
+    };
+
+    //TODO: No puedo traer el access token para con eso despues crear usuarios
+    const formData = new FormData();
+    // formData.append('client_id', "petzocial");
+    formData.append('client_id', "petzocial");
+    // formData.append('username', "hzumaeta");
+    // formData.append('password', "1234");
+
+    formData.append('username', "claudio");
+    formData.append('password', "1234");
+    // formData.append('client_secret', "86KqtzfDfEuiqaDWh3hTTgJ8gW877XtL");
+    formData.append('grant_type', "password");
+
+
+    console.log(formData);
+    return await lastValueFrom(this.http.post<any>(tokenPath, formData));
   }
 }

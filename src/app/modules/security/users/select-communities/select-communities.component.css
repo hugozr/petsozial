@@ -1,0 +1,44 @@
+table {
+    width: 100%;
+}
+
+/* tu-componente.component.css */
+.dialog-content {
+    overflow: hidden;
+}
+
+.custom-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* O ajusta según sea necesario */
+
+    /* Asegúrate de que el encabezado sea fijo y no se vea afectado por el scroll */
+    mat-card-header {
+        flex-shrink: 0;
+    }
+
+    /* Estilos para el contenido que será scrollable */
+    .scrollable-content {
+        flex: 1;
+        overflow-y: auto;
+    }
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th {
+    position: sticky;
+    top: 0;
+    background-color: #949697;
+    color: #101010;
+    z-index: 2;
+    /* Asegúrate de que la cabecera tenga un z-index mayor que los checkboxes */
+}
+
+.mat-checkbox-layout {
+    z-index: 1;
+}

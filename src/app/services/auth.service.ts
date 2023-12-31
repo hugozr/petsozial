@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-// import { StorageService } from './storage.service.ts.bak';
 
 @Injectable({
   providedIn: 'root'
@@ -43,4 +42,6 @@ export class AuthService {
   logout() {
     this._keycloakService.logout();
   }
+
+
 }

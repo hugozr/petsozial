@@ -11,12 +11,16 @@
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>username</mat-label>
-                                    <input matInput placeholder="User's username" formControlName="username" (blur)="validateUniqueUser()">
+                                    <input matInput placeholder="User's username" formControlName="username" 
+                                    (blur)="form.get('username')!.updateValueAndValidity()">
                                     @if(form.get('username')!.hasError('containsWhitespace')){
                                         <mat-error>The username must not contain white spaces</mat-error>
                                     }
                                     @if(form.get('username')!.hasError('required')){
                                         <mat-error>Please enter a valid username</mat-error>
+                                    }
+                                    @if(form.get('username')!.hasError('usernameExists')){
+                                        <mat-error>El usuario ya existe. Por favor, elige otro.</mat-error>
                                     }
                                 </mat-form-field>
                             </div>

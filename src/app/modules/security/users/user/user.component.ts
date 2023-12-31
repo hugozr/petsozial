@@ -15,6 +15,7 @@ import { User } from '../../../../interfaces/user';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HumanCardComponent } from '../../../master/humans/human-card/human-card.component';
 import { environment } from '../../../../../environments/environment';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -46,6 +47,7 @@ export class UserComponent {
   backendURL = environment.backendPetZocialURL;
   roles!: any;
   insert = true;
+  private timeoutId: any;
   constructor(
     private usersService: UsersService,
     private formBuilder: FormBuilder,
@@ -55,17 +57,13 @@ export class UserComponent {
   ) {
   }
 
-  noWhitespaceValidator(control: any) {
-    const value = control.value || '';
-    const hasWhitespace = /\s/.test(value); // Verificar si hay espacios en blanco
-    const isValid = !hasWhitespace;
-    return isValid ? null : { 'containsWhitespace': true };
-  }
-
   ngOnInit(): void {
     this.roles = this.usersService.getRoles();
     this.form = this.formBuilder.group({
-      username: ["", [Validators.required, this.noWhitespaceValidator]],
+      username: ["", 
+      [Validators.required, this.noWhitespaceValidator],
+      [this.validarUsuarioExistente.bind(this)]
+    ],
       email: ["", [Validators.required, Validators.email]],
       roles: [[]],
       humanId: [""],
@@ -130,15 +128,36 @@ export class UserComponent {
       this._utilsService.showMessage("NO se ha podido asociar", 2000, false);
     }
   }
-  async validateUniqueUser() {
-    const username = this.form.get('username')!.value;
-    const response: any = await this.usersService.getUsersByName(username);
-    console.log(response);
+
+  noWhitespaceValidator(control: any) {
+    const value = control.value || '';
+    const hasWhitespace = /\s/.test(value); // Verificar si hay espacios en blanco
+    const isValid = !hasWhitespace;
+    return isValid ? null : { 'containsWhitespace': true };
+  }
+
+  async validarUsuarioExistente(control: any) {
+    const username = control.value;
+    if (!username) {
+      return null;
+    }
+
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+
+
+    return new Promise(resolve => {
+      // Configurar un nuevo timeout para ejecutar la validación después de 500 ms de inactividad
+      this.timeoutId = setTimeout(async () => {
+        const response: any = await this.usersService.getUsersByName(username);
+        console.log(response);
+        resolve(response.totalDocs === 0 ? null : { 'usernameExists': true });
+      }, 500);
+    });
   }
 
   loadImage() {
     this.fileInput.nativeElement.click();
   }
 }
-
-
