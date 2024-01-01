@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
@@ -46,6 +46,9 @@ export class CommunityComponent {
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-community-picture.png";
 
+  LATITUDE_PATTERN = /^([-+])?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
+  LONGITUDE_PATTERN = /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/;
+
   constructor(
     private communitiesService: CommunitiesService,
     private formBuilder: FormBuilder,
@@ -60,14 +63,34 @@ export class CommunityComponent {
   }
   
   async ngOnInit(): Promise<void> {
+
+    const latValidator: ValidatorFn = (control: AbstractControl) => {
+      if (control.value && !this.LATITUDE_PATTERN.test(control.value)) {
+        return { invalidLat: true, message: 'Enter a valid latitude.' };
+      }
+      return null;
+    };
+    
+    const lngValidator: ValidatorFn = (control: AbstractControl) => {
+      if (control.value && !this.LONGITUDE_PATTERN.test(control.value)) {
+        return { invalidLng: true, message: 'Enter a valid longitude.' };
+      }
+      return null;
+    };
+
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],
       comment: [""],
       address: ["", Validators.required],
       type: [""],
       url: [""],
+      lat: ["", [Validators.required, Validators.compose([Validators.pattern(this.LATITUDE_PATTERN), latValidator])]],
+      lng: ["", [Validators.required, Validators.compose([Validators.pattern(this.LONGITUDE_PATTERN), lngValidator])]],
       image: [this.loadMyPicture]
     });
+
+
+
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
@@ -81,6 +104,8 @@ export class CommunityComponent {
           url: this.commToEdit.url || "",
           type: this.commToEdit.type || "",
           address: this.commToEdit.address || "",
+          lat: this.commToEdit.coordinates.x || 0,
+          lng: this.commToEdit.coordinates.y || 0,
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
       }
@@ -92,8 +117,10 @@ export class CommunityComponent {
       "comment": this.myForm.value.comment,
       "address": this.myForm.value.address,
       "url": this.myForm.value.url,
-      "type": this.myForm.value.type.id,
+      "type": this.myForm.value.type,
+      "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
     }
+    console.log(community,"esto va a actualziar");
     const communityResult = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
     if (communityResult) {
       this._utilsService.showMessage("Community's data was successfully updated", 2000, true);

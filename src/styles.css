@@ -1,3 +1,6 @@
+/* HZUMAETA: Se ha incluido al seguir a https://leafletjs.com/examples/quick-start/ */
+@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+
 html,
 body {
     height: 100%;
@@ -12,16 +15,3 @@ body {
     margin: 5px;
 }
 
-.success-snackbar {
-    background-color: green;
-    /* Cambia el color de fondo para éxito */
-    color: white;
-    /* Cambia el color del texto si es necesario */
-}
-
-.error-snackbar {
-    background-color: red;
-    /* Cambia el color de fondo para error */
-    color: white;
-    /* Cambia el color del texto si es necesario */
-}

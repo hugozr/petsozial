@@ -6,4 +6,5 @@ export interface Community {
     url?: string,
     type?: any,
     communityImage?: any,
+    coordinates: any,
 }

@@ -128,7 +128,8 @@ export class CommunitiesComponent implements OnInit {
     this.router.navigate(['/community/community/', element.id]);
   }
 
-  otraAccion() {
-    console.log('Otra Acción');
+  goToLoation(element: any){
+    this.router.navigate(['/locations'], { queryParams: { community: element.id } });
+
   }
 }

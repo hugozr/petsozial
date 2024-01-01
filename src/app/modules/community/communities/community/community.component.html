@@ -36,6 +36,32 @@
                                     }
                                 </mat-form-field>
                             </div>
+                            <div class="full-width" style="display: flex;">
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Latitude</mat-label>
+                                        <input matInput placeholder="Latitude" formControlName="lat">
+                                        @if(myForm.get('lat')!.hasError('required')){
+                                            <mat-error>Please enter a latitude coordinate</mat-error>
+                                        }
+                                        @if(myForm.get('lat')!.hasError('invalidLat')){
+                                            <mat-error>{{ myForm.get('lat')!.getError('message') }}</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Longitude</mat-label>
+                                        <input matInput placeholder="Longitude" formControlName="lng">
+                                        @if(myForm.get('lng')!.hasError('required')){
+                                            <mat-error>Please enter a longitude coordinate</mat-error>
+                                        }
+                                        @if(myForm.get('lng')!.hasError('invalidLng')){
+                                            <mat-error>{{ myForm.get('lng')!.getError('message') }}</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                            </div>
                             <div>
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Comment</mat-label>
