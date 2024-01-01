@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Map, marker, tileLayer } from 'leaflet';
 import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from '../../../services/communities.service';
+import { GeoserverService } from '../../../services/geoserver.service';
 
 // https://www.youtube.com/watch?v=LBbGFnZwRXs
 
@@ -15,12 +16,12 @@ import { CommunitiesService } from '../../../services/communities.service';
 })
 export class StreetsComponent {
 
-
   // https://leaflet-extras.github.io/leaflet-providers/preview/
   coordinates: any = [-12.12178065, -77.0304221110424];
   constructor(
     private route: ActivatedRoute,
     private communitiesService: CommunitiesService,
+    private geoserverService: GeoserverService
   ) { }
 
   ngOnInit() {
@@ -30,6 +31,7 @@ export class StreetsComponent {
       if (community) {
         this.coordinates = [community.coordinates.x, community.coordinates.y];
         this.viewMap(community);
+        this.getData(community);
       }
     });
   }
@@ -45,5 +47,13 @@ export class StreetsComponent {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     marker(this.coordinates).addTo(map).bindPopup(community.name);
+  }
+
+  getData(community: any){
+    console.log(community)
+    const data = this.geoserverService.getGeoData(this.coordinates[0], this.coordinates[1]).subscribe((data) => {
+      // Manejar la respuesta de GeoServer aquí
+      console.log('GeoServer Response:', data);
+    });;
   }
 }

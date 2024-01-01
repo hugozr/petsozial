@@ -20,7 +20,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./health-services.component.css']
 })
 export class HealthServicesComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'name'];
+  displayedColumns: string[] = ['select', 'name', 'comment'];
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   healtServices: any[] = [];
@@ -43,6 +43,7 @@ export class HealthServicesComponent implements OnInit {
       this.healtServices.push({
         id: elem.id,
         name: elem.name,
+        comment: elem.comment
       });
     });
     this.dataSource = new MatTableDataSource(this.healtServices);

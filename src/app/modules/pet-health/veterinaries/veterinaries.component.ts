@@ -132,7 +132,7 @@ export class VeterinariesComponent implements OnInit {
 
   healthServices(element: any) {
     const dialogRef = this.dialog.open(HealthServicesComponent, {
-      width: '500px', // Ajusta el ancho según tus necesidades
+      width: '800px', // Ajusta el ancho según tus necesidades
       height: "500px",
       data: element, // Puedes pasar cualquier dato que necesites al modal
     });
