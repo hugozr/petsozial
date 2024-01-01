@@ -1,5 +1,3 @@
-
-
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,11 +11,11 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
-import { Vet } from '../../../../interfaces/vet';
-import { VetsService } from '../../../../services/vets.service';
+import { Petshop } from '../../../../interfaces/petshop';
+import { PetshopsService } from '../../../../services/petshops.service';
 
 @Component({
-  selector: 'app-veterinary',
+  selector: 'app-pet-shop',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,24 +29,24 @@ import { VetsService } from '../../../../services/vets.service';
     FormsModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './veterinary.component.html',
-  styleUrl: './veterinary.component.css'
+  templateUrl: './pet-shop.component.html',
+  styleUrl: './pet-shop.component.css'
 })
-export class VeterinaryComponent {
+export class PetShopComponent {
   @ViewChild('fileInput') fileInput: any;
   rowspan = 11;
   myForm!: FormGroup;
-  vetToEdit!: Vet;
+  petshopToEdit!: Petshop;
   insert = true;
 
-  vetTypes: any = [];
-  vetTypeForEdit!: string; 
+  petshopTypes: any = [];
+  petshopTypeForEdit!: string; 
 
   backendURL = environment.backendPetZocialURL;
-  loadMyPicture = "/assets/load-my-vet-picture.png";
+  loadMyPicture = "/assets/load-my-care-picture.png";
 
   constructor(
-    private vetsService: VetsService,
+    private petshopsService: PetshopsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -64,7 +62,7 @@ export class VeterinaryComponent {
       name: ["", Validators.required],
       comment: [""],
       address: ["", Validators.required],
-      vetType: [""],
+      petshopType: [""],
       url: [""],
       phone: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
@@ -72,41 +70,41 @@ export class VeterinaryComponent {
     });
 
     //HZUMAETA: Tiene que ir aca sino sale un error.
-    this.vetTypes = await this.vetsService.getVetTypes();
+    this.petshopTypes = await this.petshopsService.getPetshopTypes();
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
-        this.vetToEdit = await this.vetsService.getVet(params.id);
-        this.vetTypeForEdit = this.vetToEdit.vetType.id;
-        const imagePath = this.vetToEdit?.vetImage?.url;
+        this.petshopToEdit = await this.petshopsService.getPetshop(params.id);
+        this.petshopTypeForEdit = this.petshopToEdit.petshopType.id;
+        const imagePath = this.petshopToEdit?.petshopImage?.url;
         this.myForm.setValue({
-          name: this.vetToEdit.name,
-          comment: this.vetToEdit.comment,
-          phone: this.vetToEdit.phone,
-          email: this.vetToEdit.email,
-          url: this.vetToEdit.url || "",
-          vetType: this.vetToEdit.vetType,
-          address: this.vetToEdit.address || "",
+          name: this.petshopToEdit.name,
+          comment: this.petshopToEdit.comment,
+          phone: this.petshopToEdit.phone,
+          email: this.petshopToEdit.email,
+          url: this.petshopToEdit.url || "",
+          petshopType: this.petshopToEdit.petshopType,
+          address: this.petshopToEdit.address || "",
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
       }
     });
   }
-  async saveVet() {
-    const vet: Vet = {
+  async savePetshop() {
+    const petshop: Petshop = {
       "name": this.myForm.value.name,
       "comment": this.myForm.value.comment,
       "address": this.myForm.value.address,
       "phone": this.myForm.value.phone,
       "email": this.myForm.value.email,
       "url": this.myForm.value.url,
-      "vetType": this.myForm.value.vetType,
+      "petshopType": this.myForm.value.petshopType,
     }
-    const vetResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
-    if (vetResult) {
-      this._utilsService.showMessage("Vet's data was successfully updated", 2000, true);
+    const petshopResult = this.insert ? await this.petshopsService.insertPetshop(petshop) : await this.petshopsService.updatePetshop(this.petshopToEdit.id, petshop);
+    if (petshopResult) {
+      this._utilsService.showMessage("Petshop's data was successfully updated", 2000, true);
       if (this.insert) {
-        this.router.navigate(["/pet-health"]);
+        this.router.navigate(["/pet-care"]);
       }
     }
   }
@@ -120,10 +118,10 @@ export class VeterinaryComponent {
       const lector = new FileReader();
       lector.onload = async () => {
         if (!this.insert) {
-          const media: any = { file: archivo, alt: this.vetToEdit.name, objId: this.vetToEdit.id }
+          const media: any = { file: archivo, alt: this.petshopToEdit.name, objId: this.petshopToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
-          const updatedPet = await this.vetsService.patchVet(this.vetToEdit.id, { "vetImage": uploadedFile.doc.id });
-          if (updatedPet) this._utilsService.showMessage("The vet's image has been successfully updated", 2000, true);
+          const updatedPet = await this.petshopsService.patchPetshop(this.petshopToEdit.id, { "petshopImage": uploadedFile.doc.id });
+          if (updatedPet) this._utilsService.showMessage("The petshop's image has been successfully updated", 2000, true);
         }
         this.myForm.patchValue({
           image: lector.result
@@ -132,7 +130,4 @@ export class VeterinaryComponent {
       lector.readAsDataURL(archivo);
     }
   }
-
 }
-
-

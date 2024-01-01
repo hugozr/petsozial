@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PetCareServicesComponent } from './pet-care-services/pet-care-services.component';
+import { PetShopsComponent } from './pet-shops/pet-shops.component';
+import { PetShopComponent } from './pet-shops/pet-shop/pet-shop.component';
 
 const routes: Routes = [
-  {path: "", component: PetCareServicesComponent}
-
+  {path: "", component: PetShopsComponent},
+  {path: "pet-shop", component: PetShopComponent},
+  {path: "pet-shop/:id", component: PetShopComponent},
 ];
 
 @NgModule({
