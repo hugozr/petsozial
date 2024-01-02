@@ -79,7 +79,6 @@ export class VeterinaryComponent {
     this.vetTypes = await this.vetsService.getVetTypes();
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
-        // this.linkToComplete = "/pet-health/veterinary-01/" + params.id
         this.vetId = params.id;
         this.insert = false;
         this.vetToEdit = await this.vetsService.getVet(params.id);

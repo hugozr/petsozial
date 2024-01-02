@@ -1,0 +1,86 @@
+<div class="container">
+    <mat-toolbar>
+        <span>Petshop</span>
+    </mat-toolbar>
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="myForm" (ngSubmit)="savePetshop()">
+                <mat-grid-list cols="2" rowHeight="54px">
+                    <mat-grid-tile [rowspan]="rowspan">
+                        <div class="container" class="full-width">
+                            <div class="full-width">
+                                <h2>{{petshopToEdit?.name}}</h2>
+                                <h3>{{petshopToEdit?.email}} {{petshopToEdit?.phone}}</h3>
+                            </div>
+                            <div class="full-width" style="display: flex;">
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Latitude</mat-label>
+                                        <input matInput placeholder="Latitude" formControlName="lat">
+                                        @if(myForm.get('lat')!.hasError('required')){
+                                            <mat-error>Please enter a latitude coordinate</mat-error>
+                                        }
+                                        @if(myForm.get('lat')!.hasError('invalidLat')){
+                                            <mat-error>{{ myForm.get('lat')!.getError('message') }}</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                                <div class="full-width">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Longitude</mat-label>
+                                        <input matInput placeholder="Longitude" formControlName="lng">
+                                        @if(myForm.get('lng')!.hasError('required')){
+                                            <mat-error>Please enter a longitude coordinate</mat-error>
+                                        }
+                                        @if(myForm.get('lng')!.hasError('invalidLng')){
+                                            <mat-error>{{ myForm.get('lng')!.getError('message') }}</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Field 1</mat-label>
+                                    <input matInput placeholder="Field 1" formControlName="field1">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Field 2</mat-label>
+                                    <input matInput placeholder="Field 2" formControlName="field2">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Field 3</mat-label>
+                                    <input matInput placeholder="Field 3" formControlName="field2">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Field 4</mat-label>
+                                    <input matInput placeholder="Field 4" formControlName="field2">
+                                </mat-form-field>
+                            </div>
+                            @if(petshopId.length > 0){
+                                <a [routerLink]="['/pet-care/petshop', petshopId]">Main information</a>
+                            }
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
+                        Historial de acciones
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <button 
+                        type="submit"
+                        mat-raised-button color="primary"
+                        [disabled]="myForm.invalid"
+                        >
+                        Update petshop's data
+                        </button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

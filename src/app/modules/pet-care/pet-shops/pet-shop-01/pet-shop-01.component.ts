@@ -11,12 +11,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
-import { Vet } from '../../../../interfaces/vet';
-import { VetsService } from '../../../../services/vets.service';
+import { Petshop } from '../../../../interfaces/petshop';
+import { PetshopsService } from '../../../../services/petshops.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-veterinary-01',
+  selector: 'app-pet-shop-01',
   standalone: true,
   imports: [
     CommonModule,
@@ -32,23 +32,23 @@ import { MatIconModule } from '@angular/material/icon';
     RouterLink,
     MatIconModule
   ],
-  templateUrl: './veterinary-01.component.html',
-  styleUrl: './veterinary-01.component.css'
+  templateUrl: './pet-shop-01.component.html',
+  styleUrl: './pet-shop-01.component.css'
 })
-export class Veterinary01Component {
+export class PetShop01Component {
   @ViewChild('fileInput') fileInput: any;
   
   rowspan = 10;
   myForm!: FormGroup;
-  vetToEdit!: Vet;
+  petshopToEdit!: Petshop;
 
-  vetId: string = "";
+  petshopId: string = "";
 
   LATITUDE_PATTERN = environment.LATITUDE_PATTERN;
   LONGITUDE_PATTERN = environment.LONGITUDE_PATTERN;
 
   constructor(
-    private vetsService: VetsService,
+    private petshopsService: PetshopsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -79,26 +79,25 @@ export class Veterinary01Component {
     });
 
     this.route.params.subscribe(async (params: any) => {
-        this.vetId = params.id;
-        this.vetToEdit = await this.vetsService.getVet(params.id);
+        this.petshopId = params.id;
+        this.petshopToEdit = await this.petshopsService.getPetshop(params.id);
         this.myForm.setValue({
-          lat: this.vetToEdit.coordinates.x || 0,
-          lng: this.vetToEdit.coordinates.y || 0,
+          lat: this.petshopToEdit.coordinates.x || 0,
+          lng: this.petshopToEdit.coordinates.y || 0,
           field1:"",
           field2:"",
         });
     });
   }
-  async saveVet() {
-    const vetData: any = {
+  async savePetshop() {
+    const petshopData: any = {
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
     }
-    const vetResult =  await this.vetsService.updateVet(this.vetToEdit.id, vetData);
-    if (vetResult) {
-      this._utilsService.showMessage("Vet's data was successfully updated", 2000, true);
+    const petshopResult =  await this.petshopsService.updatePetshop(this.petshopToEdit.id, petshopData);
+    if (petshopResult) {
+      this._utilsService.showMessage("Petshop's data was successfully updated", 2000, true);
     }
   }
-  
 }
 
 

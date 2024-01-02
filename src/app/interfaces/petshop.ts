@@ -8,4 +8,5 @@ export interface Petshop {
     phone: string,
     url?: string,
     petshopImage?: any,
+    coordinates?: any,
 }

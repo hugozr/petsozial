@@ -143,7 +143,7 @@ export class PetShopsComponent implements OnInit {
   //   });
   // }
 
-  otraAccion() {
-    console.log('Otra Acción');
+  goToLoation(element: any){
+    this.router.navigate(['/locations'], { queryParams: { petshop: element.id } });
   }
 }

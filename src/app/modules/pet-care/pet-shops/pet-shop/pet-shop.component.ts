@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
 import { Petshop } from '../../../../interfaces/petshop';
@@ -28,6 +28,7 @@ import { PetshopsService } from '../../../../services/petshops.service';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './pet-shop.component.html',
   styleUrl: './pet-shop.component.css'
@@ -38,6 +39,7 @@ export class PetShopComponent {
   myForm!: FormGroup;
   petshopToEdit!: Petshop;
   insert = true;
+  petshopId: string = "";
 
   petshopTypes: any = [];
   petshopTypeForEdit!: string; 
@@ -73,6 +75,7 @@ export class PetShopComponent {
     this.petshopTypes = await this.petshopsService.getPetshopTypes();
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
+        this.petshopId = params.id;
         this.insert = false;
         this.petshopToEdit = await this.petshopsService.getPetshop(params.id);
         this.petshopTypeForEdit = this.petshopToEdit.petshopType.id;

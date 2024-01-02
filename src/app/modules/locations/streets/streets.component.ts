@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from '../../../services/communities.service';
 import { GeoserverService } from '../../../services/geoserver.service';
 import { VetsService } from '../../../services/vets.service';
+import { PetshopsService } from '../../../services/petshops.service';
 
 // https://www.youtube.com/watch?v=LBbGFnZwRXs
 
@@ -22,6 +23,7 @@ export class StreetsComponent {
     private route: ActivatedRoute,
     private communitiesService: CommunitiesService,
     private vetsService: VetsService,
+    private petshopsService: PetshopsService,
     private geoserverService: GeoserverService
   ) { }
 
@@ -29,10 +31,12 @@ export class StreetsComponent {
     this.route.queryParams.subscribe(async params => {
       const communityId = params['community'];
       const vetId = params['vet'];
+      const petshopId = params['petshop'];
       let location: any;
-      this.locationToShow = communityId ? "Communities" : (vetId ? "Vets" : "") 
+      this.locationToShow = communityId ? "Communities" : (vetId ? "Vets" : ( petshopId ? "Petshops" : "")) 
       if(communityId) location = await this.communitiesService.getCommunity(communityId);
       if(vetId) location = await this.vetsService.getVet(vetId);
+      if(petshopId) location = await this.petshopsService.getPetshop(petshopId);
       if (location) {
         this.coordinates = [location.coordinates.x, location.coordinates.y];
         this.viewMap(location);
