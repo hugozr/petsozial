@@ -8,4 +8,5 @@ export interface Human {
     phone: string,
     socialUrl?: string,
     humanImage?: any,
+    coordinates?: any,
 }

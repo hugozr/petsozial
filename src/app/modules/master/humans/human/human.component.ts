@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators  } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
 import { HumansService } from '../../../../services/humans.service';
@@ -27,6 +27,7 @@ import { Human } from '../../../../interfaces/human';
     MatButtonModule,
     MatSelectModule,
     FormsModule,
+    RouterLink,
     ReactiveFormsModule,
   ],
   templateUrl: './human.component.html',
@@ -34,10 +35,11 @@ import { Human } from '../../../../interfaces/human';
 })
 export class HumanComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 9;
+  rowspan = 11;
   form!: FormGroup;
   humanToEdit!: Human;
   insert = true;
+  humanId = "";
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-human-picture.png";
 
@@ -63,6 +65,7 @@ export class HumanComponent {
     });
     this.route.params.subscribe(async (params: any) => {
       if(params.id){
+        this.humanId = params.id;
         this.insert = false;
         this.humanToEdit = await this.humansService.getHuman(params.id);
         const imagePath = this.humanToEdit?.humanImage?.url;

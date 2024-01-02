@@ -133,7 +133,7 @@ export class HumansComponent implements OnInit {
     this.router.navigate(['/master/human/', element.id]);
   }
 
-  otraAccion() {
-    console.log('Otra Acción');
+  goToLoation(element: any){
+    this.router.navigate(['/locations'], { queryParams: { human: element.id } });
   }
 }

@@ -1,3 +1,4 @@
+
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -11,12 +12,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
-import { Petshop } from '../../../../interfaces/petshop';
-import { PetshopsService } from '../../../../services/petshops.service';
+import { Human } from '../../../../interfaces/human';
+import { HumansService } from '../../../../services/humans.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-pet-shop-01',
+  selector: 'app-human-01',
   standalone: true,
   imports: [
     CommonModule,
@@ -32,23 +33,23 @@ import { MatIconModule } from '@angular/material/icon';
     RouterLink,
     MatIconModule
   ],
-  templateUrl: './pet-shop-01.component.html',
-  styleUrl: './pet-shop-01.component.css'
+  templateUrl: './human-01.component.html',
+  styleUrl: './human-01.component.css'
 })
-export class PetShop01Component {
+export class Human01Component {
   @ViewChild('fileInput') fileInput: any;
   
   rowspan = 10;
   myForm!: FormGroup;
-  petshopToEdit!: Petshop;
+  humanToEdit!: Human;
 
-  petshopId: string = "";
+  humanId: string = "";
 
   LATITUDE_PATTERN = environment.LATITUDE_PATTERN;
   LONGITUDE_PATTERN = environment.LONGITUDE_PATTERN;
 
   constructor(
-    private petshopsService: PetshopsService,
+    private humansService: HumansService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -79,24 +80,24 @@ export class PetShop01Component {
     });
 
     this.route.params.subscribe(async (params: any) => {
-        this.petshopId = params.id;
-        this.petshopToEdit = await this.petshopsService.getPetshop(params.id);
-        console.log(this.petshopToEdit);
+        this.humanId = params.id;
+        this.humanToEdit = await this.humansService.getHuman(params.id);
+        console.log(this.humanToEdit);
         this.myForm.setValue({
-          lat: this.petshopToEdit.coordinates.x || 0,
-          lng: this.petshopToEdit.coordinates.y || 0,
+          lat: this.humanToEdit.coordinates.x || 0,
+          lng: this.humanToEdit.coordinates.y || 0,
           field1:"",
           field2:"",
         });
     });
   }
-  async savePetshop() {
-    const petshopData: any = {
+  async saveHuman() {
+    const humanData: any = {
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
     }
-    const petshopResult =  await this.petshopsService.updatePetshop(this.petshopToEdit.id, petshopData);
-    if (petshopResult) {
-      this._utilsService.showMessage("Petshop's data was successfully updated", 2000, true);
+    const humanResult =  await this.humansService.updateHuman(this.humanToEdit.id, humanData);
+    if (humanResult) {
+      this._utilsService.showMessage("Human's data was successfully updated", 2000, true);
     }
   }
 }

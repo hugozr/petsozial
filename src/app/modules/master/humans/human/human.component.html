@@ -66,6 +66,9 @@
                                     <textarea matInput style="margin-top: 0px" formControlName="comment"></textarea>
                                 </mat-form-field>
                             </div>
+                            @if(humanId.length > 0){
+                                <a [routerLink]="['/master/human-01', humanId]">Complete information</a>
+                            }
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">

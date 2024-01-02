@@ -6,6 +6,7 @@ import { CommunitiesService } from '../../../services/communities.service';
 import { GeoserverService } from '../../../services/geoserver.service';
 import { VetsService } from '../../../services/vets.service';
 import { PetshopsService } from '../../../services/petshops.service';
+import { HumansService } from '../../../services/humans.service';
 
 // https://www.youtube.com/watch?v=LBbGFnZwRXs
 
@@ -24,6 +25,7 @@ export class StreetsComponent {
     private communitiesService: CommunitiesService,
     private vetsService: VetsService,
     private petshopsService: PetshopsService,
+    private humansService: HumansService,
     private geoserverService: GeoserverService
   ) { }
 
@@ -32,11 +34,13 @@ export class StreetsComponent {
       const communityId = params['community'];
       const vetId = params['vet'];
       const petshopId = params['petshop'];
+      const humanId = params['human'];
       let location: any;
-      this.locationToShow = communityId ? "Communities" : (vetId ? "Vets" : ( petshopId ? "Petshops" : "")) 
+      this.locationToShow = communityId ? "Communities" : (vetId ? "Vets" : ( petshopId ? "Petshops" : humanId ? "Humans" : "")) 
       if(communityId) location = await this.communitiesService.getCommunity(communityId);
       if(vetId) location = await this.vetsService.getVet(vetId);
       if(petshopId) location = await this.petshopsService.getPetshop(petshopId);
+      if(humanId) location = await this.humansService.getHuman(humanId);
       if (location) {
         this.coordinates = [location.coordinates.x, location.coordinates.y];
         this.viewMap(location);
