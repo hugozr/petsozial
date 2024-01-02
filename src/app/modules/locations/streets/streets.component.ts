@@ -4,6 +4,7 @@ import { Map, marker, tileLayer } from 'leaflet';
 import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from '../../../services/communities.service';
 import { GeoserverService } from '../../../services/geoserver.service';
+import { VetsService } from '../../../services/vets.service';
 
 // https://www.youtube.com/watch?v=LBbGFnZwRXs
 
@@ -15,29 +16,32 @@ import { GeoserverService } from '../../../services/geoserver.service';
   styleUrl: './streets.component.css'
 })
 export class StreetsComponent {
-
-  // https://leaflet-extras.github.io/leaflet-providers/preview/
   coordinates: any = [-12.12178065, -77.0304221110424];
+  locationToShow = "";
   constructor(
     private route: ActivatedRoute,
     private communitiesService: CommunitiesService,
+    private vetsService: VetsService,
     private geoserverService: GeoserverService
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(async params => {
       const communityId = params['community'];
-      const community = await this.communitiesService.getCommunity(communityId);
-      if (community) {
-        this.coordinates = [community.coordinates.x, community.coordinates.y];
-        this.viewMap(community);
-        this.getData(community);
+      const vetId = params['vet'];
+      let location: any;
+      this.locationToShow = communityId ? "Communities" : (vetId ? "Vets" : "") 
+      if(communityId) location = await this.communitiesService.getCommunity(communityId);
+      if(vetId) location = await this.vetsService.getVet(vetId);
+      if (location) {
+        this.coordinates = [location.coordinates.x, location.coordinates.y];
+        this.viewMap(location);
+        // this.getData(community);
       }
     });
   }
 
   ngAfterViewInit(): void {
-    
   }
 
   viewMap(community: any) {
@@ -52,7 +56,6 @@ export class StreetsComponent {
   getData(community: any){
     console.log(community)
     const data = this.geoserverService.getGeoData(this.coordinates[0], this.coordinates[1]).subscribe((data) => {
-      // Manejar la respuesta de GeoServer aquí
       console.log('GeoServer Response:', data);
     });;
   }

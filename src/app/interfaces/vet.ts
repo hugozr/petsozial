@@ -8,4 +8,5 @@ export interface Vet {
     phone: string,
     url?: string,
     vetImage?: any,
+    coordinates?: any,
 }

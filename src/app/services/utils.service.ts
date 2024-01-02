@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +42,17 @@ export class UtilsService {
     const result = array.find((item: any) => item[searchKey] === identifier);
     return result ? result[returnKey] || '' : '';
   }
+
+  createPatternValidator = (pattern: RegExp, errorMessage: string, errorKey: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value && !pattern.test(control.value)) {
+        const errors: ValidationErrors = {};
+        errors[errorKey] = true;
+        errors['message'] = errorMessage;
+        return errors;
+      }
+      return null;
+    };
+  };
 
 }

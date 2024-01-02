@@ -10,11 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
 import { Vet } from '../../../../interfaces/vet';
 import { VetsService } from '../../../../services/vets.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-veterinary',
@@ -30,6 +31,8 @@ import { VetsService } from '../../../../services/vets.service';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterLink,
+    MatIconModule
   ],
   templateUrl: './veterinary.component.html',
   styleUrl: './veterinary.component.css'
@@ -41,6 +44,7 @@ export class VeterinaryComponent {
   vetToEdit!: Vet;
   insert = true;
 
+  vetId: string = "";
   vetTypes: any = [];
   vetTypeForEdit!: string; 
 
@@ -75,6 +79,8 @@ export class VeterinaryComponent {
     this.vetTypes = await this.vetsService.getVetTypes();
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
+        // this.linkToComplete = "/pet-health/veterinary-01/" + params.id
+        this.vetId = params.id;
         this.insert = false;
         this.vetToEdit = await this.vetsService.getVet(params.id);
         this.vetTypeForEdit = this.vetToEdit.vetType.id;
@@ -132,7 +138,6 @@ export class VeterinaryComponent {
       lector.readAsDataURL(archivo);
     }
   }
-
 }
 
 

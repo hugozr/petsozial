@@ -46,8 +46,8 @@ export class CommunityComponent {
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-community-picture.png";
 
-  LATITUDE_PATTERN = /^([-+])?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
-  LONGITUDE_PATTERN = /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/;
+  LATITUDE_PATTERN = environment.LATITUDE_PATTERN;
+  LONGITUDE_PATTERN = environment.LONGITUDE_PATTERN;
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -64,19 +64,17 @@ export class CommunityComponent {
   
   async ngOnInit(): Promise<void> {
 
-    const latValidator: ValidatorFn = (control: AbstractControl) => {
-      if (control.value && !this.LATITUDE_PATTERN.test(control.value)) {
-        return { invalidLat: true, message: 'Enter a valid latitude.' };
-      }
-      return null;
-    };
+    const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
+      this.LATITUDE_PATTERN,
+      'Enter a valid latitude.',
+      'invalidLat'
+    );
     
-    const lngValidator: ValidatorFn = (control: AbstractControl) => {
-      if (control.value && !this.LONGITUDE_PATTERN.test(control.value)) {
-        return { invalidLng: true, message: 'Enter a valid longitude.' };
-      }
-      return null;
-    };
+    const lngValidator: ValidatorFn = this._utilsService.createPatternValidator(
+      this.LONGITUDE_PATTERN,
+      'Enter a valid longitude.',
+      'invalidLng'
+    );
 
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],

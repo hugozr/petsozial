@@ -73,6 +73,9 @@
                                     <textarea matInput style="margin-top: 0px" formControlName="comment"></textarea>
                                 </mat-form-field>
                             </div>
+                            @if(vetId.length > 0){
+                                <a [routerLink]="['/pet-health/veterinary-01', vetId]">Complete information</a>
+                            }
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">

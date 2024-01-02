@@ -130,6 +130,5 @@ export class CommunitiesComponent implements OnInit {
 
   goToLoation(element: any){
     this.router.navigate(['/locations'], { queryParams: { community: element.id } });
-
   }
 }
