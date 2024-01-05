@@ -83,7 +83,7 @@ export class PetsComponent implements OnInit {
       this.pets.push({
         id: elem.id,
         name: elem.name,
-        human: elem.human,
+        human: elem.human.name,
         sex: elem.sex,
         specie: elem.specie.name,
         breed: elem.breed.name,
@@ -129,7 +129,7 @@ export class PetsComponent implements OnInit {
   edit(element: any) {
     this.router.navigate(['/master/pet/', element.id]);
   }
-
+  
   otraAccion() {
     // Lógica para otra acción
     console.log('Otra Acción');

@@ -18,6 +18,10 @@ import { UtilsService } from '../../../../services/utils.service';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { environment } from '../../../../../environments/environment';
+import { MatIconModule } from '@angular/material/icon';
+import { PetToHumanComponent } from './pet-to-human/pet-to-human.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HumansService } from '../../../../services/humans.service';
 
 @Component({
   selector: 'app-pet',
@@ -31,6 +35,7 @@ import { environment } from '../../../../../environments/environment';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
@@ -41,7 +46,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class PetComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 9;
+  rowspan = 10;
   species: Specie[] = [];
   breeds: Breed[] = [];
   form!: FormGroup;
@@ -54,10 +59,12 @@ export class PetComponent {
   constructor(
     private speciesService: SpeciesService,
     private petsService: PetsService,
+    private humansService: HumansService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
+    public dialog: MatDialog
     
   ) { 
   }
@@ -66,7 +73,8 @@ export class PetComponent {
     this.loadSpecies();
     this.form = this.formBuilder.group({
       name: ["", Validators.required],
-      human: ["", Validators.required],
+      humanName: ["", Validators.required],
+      hiddenHumanId: [""],
       specie: ["", Validators.required],
       breed: [""],
       sex: [""],
@@ -80,14 +88,11 @@ export class PetComponent {
         this.insert = false;
         this.petToEdit = await this.petsService.getPet(params.id);
         this.selectedSpecieChanged(this.petToEdit.specie.specieId);   //HZUMAETA es importante para cargar un combo dependiente
-        console.log(this.petToEdit, "edicion", this.form, this.breeds,"bredddds");
-
-        // const imagePath = this.petToEdit.petImage?.url ?  this.backendURL + this.petToEdit.petImage.url : this.petToEdit.petImage.url;
         const imagePath = this.petToEdit?.petImage?.url;
-
         this.form.setValue({
           name: this.petToEdit.name,
-          human: this.petToEdit.human || "",
+          humanName: this.petToEdit.human.name || "",
+          hiddenHumanId: this.petToEdit.human.humanId || "",
           comment: this.petToEdit.comment,
           address: this.petToEdit.address || "",
           specie: this.petToEdit.specie.specieId || "",
@@ -118,7 +123,7 @@ export class PetComponent {
     const breedName = this._utilsService.search(this.breeds, "id", "name", this.form.value.breed);
     const pet: Pet = {
       "name": this.form.value.name,
-      "human": this.form.value.human,
+      "human": {"name": this.form.value.humanName, "humanId": this.form.value.hiddenHumanId },
       "comment": this.form.value.comment,
       "address": this.form.value.address,
       "sex": this.form.value.sex,
@@ -126,9 +131,14 @@ export class PetComponent {
       "specie": {specieId: this.form.value.specie, name: specieName},
       "breed":  {breedId: this.form.value.breed, name: breedName},
     }
-    const petResult = this.insert ? await this.petsService.insertPet(pet) : await this.petsService.updatePet(this.petToEdit.id, pet);
+    const petResult: any = this.insert ? await this.petsService.insertPet(pet) : await this.petsService.updatePet(this.petToEdit.id, pet);
+    console.log(petResult,"aaaaaaaaaaaaaaaaaaaaaa")
     if (petResult){
-      this._utilsService.showMessage("Pet's data was successfully updated",2000,true);
+      let assigned = null;
+      if(this.form.value.hiddenHumanId.length>0){   //Si se ha asignado un humano a la mascota
+        assigned = this.humansService.assignHumanToPet(this.form.value.hiddenHumanId, petResult.doc.id);
+      } 
+      this._utilsService.showMessage("Pet's data was successfully updated" + (assigned ? ", with its human.":""),2000,true);
       if(this.insert){
         this.router.navigate(["/master"]);
       }
@@ -157,6 +167,19 @@ export class PetComponent {
       lector.readAsDataURL(archivo);
     }
   }
-  
+  asignHuman(){
+    const dialogRef = this.dialog.open(PetToHumanComponent, {
+      width: '400px',
+      height: "400px",
+      data: this.petToEdit,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if(result) {
+        this.form.get('humanName')?.setValue(result.name);
+        this.form.get('hiddenHumanId')?.setValue(result.id);
+      }
+    });
+  }
 }
 

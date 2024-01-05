@@ -79,7 +79,7 @@ export class UsersComponent implements OnInit {
     this.fillUserTable(data);
   }
 
-  fillUserTable(data: any){
+  fillUserTable(data: any) {
     this.users = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.human?.humanImage?.sizes?.thumbnail?.url;
@@ -95,10 +95,10 @@ export class UsersComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.sort = this.sort;
-    
+
     this.totalRows = data.totalDocs;
     this.pageSize = data.limit;
-  
+
   }
 
   pageChanged(event: PageEvent) {
@@ -108,40 +108,39 @@ export class UsersComponent implements OnInit {
   applyFilter(event: Event) {
     //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    const miliSecondsToWait = 500; 
+    const miliSecondsToWait = 500;
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
-        this.filter(filterValue);
+      this.filter(filterValue);
     }, miliSecondsToWait);
- }
+  }
 
   async filter(filter: string) {
     const data: any = await this.usersService.filterUsers(this.pageSize, 0, filter);
     this.fillUserTable(data);
   }
-  
+
   async selectCommunities(element: any) {
-      const dialogRef = this.dialog.open(SelectCommunitiesComponent, {
-        width: '600px', // Ajusta el ancho según tus necesidades
-        height: "500px",
-        data: element, // Puedes pasar cualquier dato que necesites al modal
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('Modal cerrado:', result);
-        // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
-      });
-    }
-  
+    const dialogRef = this.dialog.open(SelectCommunitiesComponent, {
+      width: '600px',
+      height: "500px",
+      data: element,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
+    });
+  }
+
   async delete(element: any) {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
-    this.loadUsers(this.pageSize, 0); 
+    this.loadUsers(this.pageSize, 0);
     if (deleted) {
-      this._utilsService.showMessage("User record successfully deleted",2000,true);
+      this._utilsService.showMessage("User record successfully deleted", 2000, true);
     }
   }
 
-  async manageCredentials(element: any){
+  async manageCredentials(element: any) {
     const tokens = await this.usersService.getAccessTokens();
     console.log(tokens);
   }

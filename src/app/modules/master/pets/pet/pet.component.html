@@ -60,8 +60,10 @@
                             <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Human</mat-label>
-                                    <input matInput placeholder="Pet's human" formControlName="human">
+                                    <input matInput placeholder="Pet's human" formControlName="humanName">
+                                    <mat-icon matSuffix (click)="asignHuman()">person_add</mat-icon>
                                 </mat-form-field>
+                                <input type="hidden" formControlName="hiddenHumanId">
                             </div>
                             <div>
                                 <mat-form-field class="full-width" appearance="outline">

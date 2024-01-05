@@ -102,18 +102,18 @@ export class HumanComponent {
   loadImage() {
     this.fileInput.nativeElement.click();
   }
+ 
   changeImage(event: Event) {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];
-    console.log(archivo);
     if (archivo) {
       const lector = new FileReader();
       lector.onload = async () => {
         if(!this.insert){
           const media: any  = {file: archivo, alt: this.humanToEdit.name, objId:this.humanToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
-          const updatedPet = await this.humansService.patchHuman(this.humanToEdit.id,{"humanImage": uploadedFile.doc.id});
-          if(updatedPet) this._utilsService.showMessage("The human's image has been successfully updated");
+          const updatedHuman = await this.humansService.patchHuman(this.humanToEdit.id,{"humanImage": uploadedFile.doc.id});
+          if(updatedHuman) this._utilsService.showMessage("The human's image has been successfully updated");
         } 
         this.form.patchValue({
           image: lector.result

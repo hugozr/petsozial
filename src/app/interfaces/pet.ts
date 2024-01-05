@@ -2,7 +2,7 @@ export interface Pet {
     id?: string,
     name: string,
     comment: string,
-    human?: string,
+    human?: any,
     address?: string,
     specie: Specie,
     breed: Breed,

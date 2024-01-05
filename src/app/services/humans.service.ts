@@ -34,24 +34,34 @@ export class HumansService {
   }
 
   async getHuman(id: string): Promise<Human> {
-    const pet: any = await lastValueFrom(this.http.get<Human[]>(`${this.backendURL}/api/Humans/${id}`)); 
-    return pet;
+    const human: any = await lastValueFrom(this.http.get<Human[]>(`${this.backendURL}/api/humans/${id}`)); 
+    return human;
+  }
+
+  async getHumansByEmail(email: string): Promise<any> {
+    const humans: any = await lastValueFrom(this.http.get<any>(`${this.backendURL}/api/humans/${email}/by-email`)); 
+    return humans;
   }
 
   async insertHuman(human: Human): Promise<Human> {
-    return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/Humans/`, human));
+    return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/humans/`, human));
   }
 
   async updateHuman(id: any, human: Human): Promise<Human> {
-    return await lastValueFrom(this.http.put<Human>(`${this.backendURL}/api/Humans/${id}`, human));
+    return await lastValueFrom(this.http.put<Human>(`${this.backendURL}/api/humans/${id}`, human));
   }
   
   async patchHuman(id: any, humanData: any): Promise<Human> {
-    const pet = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/Humans/${id}`, humanData));
+    const pet = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/humans/${id}`, humanData));
     return pet;
   }
 
   deleteHuman(id: string): Observable<Human> {
-    return this.http.delete<Human>(`${this.backendURL}/api/Humans/${id}`);
+    return this.http.delete<Human>(`${this.backendURL}/api/humans/${id}`);
+  }
+
+  //En este sector vamos a incluir las operaciones de los humanos con las mascotas
+  async assignHumanToPet(humanId: string, petId: string): Promise<Human> {
+    return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/humans/${humanId}/assigned-to/${petId}`, null));
   }
 }

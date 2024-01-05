@@ -1,0 +1,36 @@
+<mat-card class="my-card">
+    <mat-card-header style="height: 70px;">
+        <mat-card-title>Assign me my human</mat-card-title>
+        <mat-card-subtitle>Enter my human's email</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content style="height: 250px;">
+        <form [formGroup]="form" (ngSubmit)="buscarDatos()">
+            <div style="display: flex; flex-direction: column; align-items: stretch;">
+                <mat-form-field appearance="outline" style="flex: 1;">
+                    <mat-label>Email</mat-label>
+                    <!-- <input matInput [(ngModel)]="email" placeholder="Ingresa el email" /> -->
+
+                    <input matInput placeholder="Human's email" formControlName="email">
+                    @if(form.get('email')!.hasError('required')){
+                    <mat-error>Please enter an email address</mat-error>
+                    }
+                    @if (form.get('email')!.hasError('email'))
+                    {
+                    <mat-error>Please enter a valid email address</mat-error>
+                    }
+                </mat-form-field>
+                <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid" mat-button>Buscar
+                </button>
+            </div>
+            <div>
+                @if(founded){
+                <h3>{{ founded.name }}</h3>
+                }
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions class="actions">
+        <button mat-raised-button color="primary" [disabled]="!founded" (click)="close(founded)">Confirmar</button>
+        <button mat-raised-button color="accent" (click)="close()" style="margin-left: 20px;">Cancelar</button>
+    </mat-card-actions>
+</mat-card>
