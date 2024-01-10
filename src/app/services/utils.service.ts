@@ -55,4 +55,14 @@ export class UtilsService {
     };
   };
 
+  getSocialMediaFromUrl(url: string): string {
+    // klarsys.github.io/angular-material-icons/
+    if (url.includes('instagram.com')) {
+      return 'info';
+    } else if (url.includes('facebook.com')) {
+      return 'facebook';
+    } else {
+      return 'home';
+    }
+  }
 }

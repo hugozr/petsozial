@@ -42,7 +42,9 @@
 
               @if (element.url) {
                 <a href="{{element.url}}" target="_blank">
-                  <mat-icon>facebook</mat-icon>
+                  <!-- <mat-icon>getIconSocialNetwork()</mat-icon> -->
+                  <mat-icon [innerHTML]="getIconSocialNetwork(element.url)"></mat-icon>
+                  <!-- <mat-icon>{{getIconSocialNetwork(element.url)}}</mat-icon> -->
                 </a> 
               } 
             </td>

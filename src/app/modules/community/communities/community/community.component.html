@@ -18,6 +18,16 @@
                                 </mat-form-field>
                             </div>
                             <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Modality</mat-label>
+                                    <mat-select name="modality" formControlName="modality">
+                                        @for (modality of modalities; track modality) {
+                                        <mat-option [value]="modality.value">{{modality.label}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline" >
                                     <mat-label>Select a community type</mat-label>
                                     <mat-select name="community-type" formControlName="type" [(value)]="communityTypeForEdit">

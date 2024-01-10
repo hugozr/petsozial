@@ -9,8 +9,8 @@
                     <mat-grid-tile [rowspan]="rowspan">
                         <div class="container" class="full-width">
                             <div class="full-width">
-                                <h2>{{humanToEdit?.name}}</h2>
-                                <h3>{{humanToEdit?.email}} {{humanToEdit?.phone}}</h3>
+                                <h2> {{humanToEdit?.name}}</h2>
+                                <h3> <mat-icon>mail</mat-icon> {{humanToEdit?.email}} <mat-icon>phone</mat-icon> {{humanToEdit?.phone}}</h3>
                             </div>
                             <div class="full-width" style="display: flex;">
                                 <div class="full-width">
@@ -38,10 +38,14 @@
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <div>
+                            <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline">
-                                    <mat-label>Field 1</mat-label>
-                                    <input matInput placeholder="Field 1" formControlName="field1">
+                                    <mat-label>Sex</mat-label>
+                                    <mat-select name="sex" formControlName="sex">
+                                        @for (sex of sexes; track sex) {
+                                        <mat-option [value]="sex.value">{{sex.label}}</mat-option>
+                                        }
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                             <div>

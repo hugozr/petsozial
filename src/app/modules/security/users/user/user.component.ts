@@ -40,7 +40,7 @@ import { debounceTime } from 'rxjs';
 })
 export class UserComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 6;
+  rowspan = 8;
   form!: FormGroup;
   userToEdit!: User;
   humanImage: string = "";

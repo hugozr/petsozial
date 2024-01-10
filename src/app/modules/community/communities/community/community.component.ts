@@ -35,12 +35,20 @@ import { CommunitiesService } from '../../../../services/communities.service';
 })
 export class CommunityComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 8;
+  rowspan = 11;
   myForm!: FormGroup;
   commToEdit!: Community;
   communityTypeForEdit!: string;
   insert = true;
 
+  modalities: any = [{
+    label: 'Public',
+    value: 'public',
+  },
+  {
+    label: 'Private',
+    value: 'private',
+  }]; 
   types: any = [];
 
   backendURL = environment.backendPetZocialURL;
@@ -81,6 +89,7 @@ export class CommunityComponent {
       comment: [""],
       address: ["", Validators.required],
       type: [""],
+      modality: [""],
       url: [""],
       lat: ["", [Validators.required, Validators.compose([Validators.pattern(this.LATITUDE_PATTERN), latValidator])]],
       lng: ["", [Validators.required, Validators.compose([Validators.pattern(this.LONGITUDE_PATTERN), lngValidator])]],
@@ -99,6 +108,7 @@ export class CommunityComponent {
         this.myForm.setValue({
           name: this.commToEdit.name,
           comment: this.commToEdit.comment,
+          modality: this.commToEdit.modality || 'public',
           url: this.commToEdit.url || "",
           type: this.commToEdit.type || "",
           address: this.commToEdit.address || "",
@@ -112,6 +122,7 @@ export class CommunityComponent {
   async saveCommunity() {
     const community: Community = {
       "name": this.myForm.value.name,
+      "modality": this.myForm.value.modality,
       "comment": this.myForm.value.comment,
       "address": this.myForm.value.address,
       "url": this.myForm.value.url,

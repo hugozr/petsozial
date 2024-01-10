@@ -126,22 +126,13 @@ export class PetShopsComponent implements OnInit {
     }
   }
 
+  getIconSocialNetwork(url: string){
+    return this._utilsService.getSocialMediaFromUrl(url);
+  }
+
   edit(element: any) {
     this.router.navigate(['/pet-care/pet-shop/', element.id]);
   }
-
-  // healthServices(element: any) {
-  //   const dialogRef = this.dialog.open(HealthServicesComponent, {
-  //     width: '800px', // Ajusta el ancho según tus necesidades
-  //     height: "500px",
-  //     data: element, // Puedes pasar cualquier dato que necesites al modal
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('Modal cerrado:', result);
-  //     // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
-  //   });
-  // }
 
   goToLoation(element: any){
     this.router.navigate(['/locations'], { queryParams: { petshop: element.id } });
