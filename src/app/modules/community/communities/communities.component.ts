@@ -43,6 +43,7 @@ export class CommunitiesComponent implements OnInit {
     'name',
     'social',
     'type',
+    'modality',
     'comment',
     'address',
     'thumbnail',
@@ -74,10 +75,10 @@ export class CommunitiesComponent implements OnInit {
 
   async loadCommunities(pageSize: number, page: number) {
     const data: any = await this.communitiesService.getCommunities(pageSize, page);
-    this.fillHumanTable(data);
+    this.fillCommunityTable(data);
   }
   
-  fillHumanTable(data: any){
+  fillCommunityTable(data: any){
     this.communities = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.communityImage?.sizes?.thumbnail?.url;
@@ -87,6 +88,7 @@ export class CommunitiesComponent implements OnInit {
         comment: elem.comment,
         type: elem.type?.name,
         address: elem.address,
+        modality: elem.modality,
         url: elem.url,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
@@ -113,7 +115,7 @@ export class CommunitiesComponent implements OnInit {
 
   async filter(filter: string) {
     const data: any = await this.communitiesService.filterCommunities(this.pageSize, 0, filter);
-    this.fillHumanTable(data);
+    this.fillCommunityTable(data);
   }
   
   async delete(element: any) {

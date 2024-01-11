@@ -11,7 +11,6 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
-import { Vet } from '../../../../interfaces/vet';
 import { Community } from '../../../../interfaces/community';
 import { CommunitiesService } from '../../../../services/communities.service';
 

@@ -5,7 +5,7 @@ export interface Human {
     comment?: string,
     address: string,
     email: string,
-    sex?: string,
+    gender?: string,
     phone: string,
     socialUrl?: string,
     humanImage?: any,

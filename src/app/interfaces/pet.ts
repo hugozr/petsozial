@@ -6,7 +6,7 @@ export interface Pet {
     address?: string,
     specie: Specie,
     breed: Breed,
-    sex?: string,
+    gender?: string,
     birthday?: Date,
     petImage?: any,
 }

@@ -25,11 +25,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       const token = await keycloak.getToken();
       localStorage.setItem('token-keycloak',token);
       console.log("dejo el localstorage")
-      // const a = keycloak.getToken;
-      // console.log(a);
-      // // this.getToken() && localStorage.setItem('token-keycloak', this.getToken());
-      //     localStorage.removeItem('token-strapi'); //HZUMAETA: Borro los tokens en caso de que se haya quedado pegado alguno
-      //     resolve(true);
     });
 }
 

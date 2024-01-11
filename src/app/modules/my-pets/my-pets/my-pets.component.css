@@ -1,0 +1,50 @@
+/* 
+:host {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px; 
+}
+  
+  app-pet-card {
+    width: 100%; 
+  }
+   */
+/* pet-list.component.css */
+
+:host {
+    display: grid;
+    gap: 10px; 
+  }
+  
+  @media (min-width: 1200px) {
+    /* Si hay suficiente espacio, muestra 6 columnas */
+    :host {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  
+  @media (max-width: 1199px) and (min-width: 900px) {
+    /* Si el espacio es moderado, muestra 4 columnas */
+    :host {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 899px) and (min-width: 600px) {
+    /* Si el espacio es más limitado, muestra 2 columnas */
+    :host {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 599px) {
+    /* Si el espacio es muy limitado, muestra 1 columna */
+    :host {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  app-pet-card {
+    width: 100%; /* Ancho del card en relación con la columna */
+  }
+    

@@ -54,7 +54,7 @@ export class PetComponent {
   insert = true;
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-pet-picture.png";
-  selectedSex = "";
+  selectedGender = "";
 
   constructor(
     private speciesService: SpeciesService,
@@ -77,7 +77,7 @@ export class PetComponent {
       hiddenHumanId: [""],
       specie: ["", Validators.required],
       breed: [""],
-      sex: [""],
+      gender: [""],
       comment: [""],
       address: [""],
       birthday: [""],
@@ -97,7 +97,7 @@ export class PetComponent {
           address: this.petToEdit.address || "",
           specie: this.petToEdit.specie.specieId || "",
           breed: this.petToEdit.breed.breedId || "",
-          sex: this.petToEdit.sex || "",
+          gender: this.petToEdit.gender || "",
           birthday: this.petToEdit.birthday || "",
           image: imagePath ?  (this.backendURL + imagePath) : this.loadMyPicture
         });
@@ -126,7 +126,7 @@ export class PetComponent {
       "human": {"name": this.form.value.humanName, "humanId": this.form.value.hiddenHumanId },
       "comment": this.form.value.comment,
       "address": this.form.value.address,
-      "sex": this.form.value.sex,
+      "gender": this.form.value.gender,
       "birthday": this.form.value.birthday,
       "specie": {specieId: this.form.value.specie, name: specieName},
       "breed":  {breedId: this.form.value.breed, name: breedName},

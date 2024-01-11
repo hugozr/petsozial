@@ -16,7 +16,8 @@ export class CommunitiesService {
 
   async getCommunities(limit: number, page: number): Promise<Community[]> {
     const url = `${this.backendURL}/api/communities?sort=-createdAt&limit=${limit}&page=${page}`
-    const comms: any = await lastValueFrom(this.http.get<Community[]>(url)); 
+    const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
+    console.log(comms,"aaaaaaaaaaaaaaaafffff")
     return comms;
   }
   

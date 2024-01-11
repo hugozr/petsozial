@@ -40,10 +40,10 @@
                             </div>
                             <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline">
-                                    <mat-label>Sex</mat-label>
-                                    <mat-select name="sex" formControlName="sex">
-                                        @for (sex of sexes; track sex) {
-                                        <mat-option [value]="sex.value">{{sex.label}}</mat-option>
+                                    <mat-label>Gender</mat-label>
+                                    <mat-select name="gender" formControlName="gender">
+                                        @for (gender of genders; track gender) {
+                                        <mat-option [value]="gender.value">{{gender.label}}</mat-option>
                                         }
                                     </mat-select>
                                 </mat-form-field>

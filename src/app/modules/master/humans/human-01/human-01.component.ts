@@ -42,7 +42,7 @@ export class Human01Component {
   rowspan = 10;
   myForm!: FormGroup;
   humanToEdit!: Human;
-  sexes: any = [
+  genders: any = [
     {
       label: 'Male',
       value: 'male',
@@ -89,7 +89,7 @@ export class Human01Component {
     this.myForm = this.formBuilder.group({
       lat: ["", [Validators.required, Validators.compose([Validators.pattern(this.LATITUDE_PATTERN), latValidator])]],
       lng: ["", [Validators.required, Validators.compose([Validators.pattern(this.LONGITUDE_PATTERN), lngValidator])]],
-      sex: [""],
+      gender: [""],
       field2: [""],
     });
 
@@ -100,14 +100,14 @@ export class Human01Component {
       this.myForm.setValue({
         lat: this.humanToEdit.coordinates.x || 0,
         lng: this.humanToEdit.coordinates.y || 0,
-        sex: this.humanToEdit.sex || 'male',
+        gender: this.humanToEdit.gender || 'male',
         field2: "",
       });
     });
   }
   async saveHuman() {
     const humanData: any = {
-      "sex": this.myForm.value.sex,
+      "gender": this.myForm.value.gender,
       "coordinates": { "x": this.myForm.value.lat, "y": this.myForm.value.lng },
     }
     const humanResult = await this.humansService.updateHuman(this.humanToEdit.id, humanData);

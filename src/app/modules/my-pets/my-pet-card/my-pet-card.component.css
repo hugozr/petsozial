@@ -1,0 +1,23 @@
+mat-card {
+    width: 250px; /* Ajusta según tus necesidades */
+    height: 450px; /* Ajusta según tus necesidades */
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px; /* Bordes redondeados según tus necesidades */
+    
+  }
+  
+  mat-card-title,
+  mat-card-content,
+  mat-card-image {
+    flex: 1;
+  }
+  
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 5px;
+  }
+  

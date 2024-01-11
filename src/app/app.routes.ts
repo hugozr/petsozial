@@ -16,4 +16,5 @@ export const routes: Routes = [
     { path: "community", loadChildren: () => import("./modules/community/community.module").then(x => x.CommunityModule)  },
     { path: "security", loadChildren: () => import("./modules/security/security.module").then(x => x.SecurityModule)  },
     { path: "locations", loadChildren: () => import("./modules/locations/locations.module").then(x => x.LocationsModule)  },
+    { path: "my-pets", loadChildren: () => import("./modules/my-pets/my-pets.module").then(x => x.MyPetsModule)  },
 ];
