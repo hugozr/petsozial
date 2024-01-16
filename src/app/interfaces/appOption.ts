@@ -1,4 +1,5 @@
 export interface AppOption {
     name: string,
-    redirect: string
+    redirect: string,
+    rqUserLoggedIn: true
 }

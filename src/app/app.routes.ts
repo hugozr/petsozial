@@ -3,10 +3,12 @@ import { LoginComponent } from './modules/security/login/login.component';
 import { WelcomeComponent } from './panels/welcome/welcome.component';
 import { FavoritesComponent } from './panels/favorites/favorites.component';
 import { NotificationsComponent } from './panels/notifications/notifications.component';
+import { AlertToUserComponent } from './navigation/alert-to-user/alert-to-user.component';
 
 export const routes: Routes = [
     { path: "", component: WelcomeComponent},
     { path: "login", component: LoginComponent  },
+    { path: "alerts", component: AlertToUserComponent  },
     { path: "favorites", component: FavoritesComponent  },
     { path: "notifications", component: NotificationsComponent  },
     { path: "users", loadChildren: () => import("./modules/security/security.module").then(x => x.SecurityModule)  },

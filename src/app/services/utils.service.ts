@@ -65,4 +65,13 @@ export class UtilsService {
       return 'home';
     }
   }
+
+  canAccessThisPage(rule: string, username?: string): boolean{
+    console.log(rule, username);
+    if(rule == "only-with-username" && username != null) {
+      console.log("retorno true")      
+      return true;
+    }
+    return false
+  }
 }

@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { PetsService } from '../../../services/pets.service';
 import { MyPetCardComponent } from '../my-pet-card/my-pet-card.component';
 import { MatCardModule } from '@angular/material/card';
-
+import { Router } from '@angular/router';
+import { UtilsService } from '../../../services/utils.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-my-pets',
@@ -19,14 +21,23 @@ import { MatCardModule } from '@angular/material/card';
     '(window:scroll)': 'onScroll()'
   }
 })
+
 export class MyPetsComponent {
   @ViewChild('invisibleCard') card: any | undefined;
   pets: any[] = [];
   page = 1;
 
-  constructor(private petsService: PetsService) {}
+  constructor(
+    private petsService: PetsService,
+    private router: Router,
+    private utilsService: UtilsService,
+    private _authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
+    const username = this._authService.getUserName();
+    console.log(this._authService.userName,username,this._authService.getToken(), "useeeeeeeeer");
+    if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
     this.loadPets(10,this.page,"");
   }
   
@@ -35,7 +46,6 @@ export class MyPetsComponent {
     this.pets = this.pets.concat(data.docs);
     this.page++;
   }
-
 
   onScroll(): void {
     if (this.card && this.isScrolledIntoView(this.card._elementRef.nativeElement)) {
@@ -47,8 +57,6 @@ export class MyPetsComponent {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
     const elemBottom = rect.bottom;
-
-    // Only completely visible elements return true:
     return elemTop >= 0 && elemBottom <= window.innerHeight;
   }
 }

@@ -1,16 +1,3 @@
-/* 
-:host {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 10px; 
-}
-  
-  app-pet-card {
-    width: 100%; 
-  }
-   */
-/* pet-list.component.css */
-
 :host {
     display: grid;
     gap: 10px; 

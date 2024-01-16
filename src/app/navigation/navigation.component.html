@@ -6,7 +6,9 @@
     </mat-toolbar>
     <mat-nav-list style="margin-top: 20px;">
       <div *ngFor="let op of appOptions">
-        <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
+        @if (!op.rqUserLoggedIn || (userName && op.rqUserLoggedIn)) {
+          <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
+        }
       </div>
     </mat-nav-list>
   </mat-sidenav>

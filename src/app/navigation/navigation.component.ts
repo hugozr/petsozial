@@ -39,20 +39,18 @@ import { AuthService } from '../services/auth.service';
     MyCommunitiesComponent
   ],
 })
-export class NavigationComponent implements OnInit{
+export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
   appOptions: AppOption[] = [];
 
   userLoggedIn = false;
   tokenParsed: any;
   userName!: string;
-  // isLogin: boolean = false;
 
   constructor(
     private portalService: PortalService,
     private _authService: AuthService,
     ) { }
-
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -64,14 +62,15 @@ export class NavigationComponent implements OnInit{
   ngOnInit(): void {
     this.initLogged();
     this.loadOptions();
+    console.log(this.appOptions, this.userName)
   }
 
   initLogged(){
-
     if (this._authService.isLoggedIn()) {
-      const keycloakInstance = this._authService.getInstance();
-      this.userName = keycloakInstance.tokenParsed!['preferred_username'];
-      console.log(keycloakInstance,this.userName);
+      // const keycloakInstance = this._authService.getInstance();
+      this.userName = this._authService.getUserName();
+      //  keycloakInstance.tokenParsed!['preferred_username'];
+      // console.log(keycloakInstance,this.userName);
     }
   }
 
@@ -80,13 +79,15 @@ export class NavigationComponent implements OnInit{
   }
   public logout(){
     this._authService.logout();
-    // this._storageService.removeItem('lg_user');
   }
 
   loadOptions(){
     this.portalService.getOptions().subscribe( (data: any) => {
       data.docs.map( (elem: any) => {
-        this.appOptions.push({name: elem.name, redirect: elem.redirect});
+        this.appOptions.push({
+          name: elem.name, 
+          redirect: elem.redirect,
+          rqUserLoggedIn: elem.rqUserLoggedIn });
       });
     })
   }

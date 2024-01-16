@@ -1,9 +1,4 @@
-<!-- pet-list.component.html -->
-
 <div *ngFor="let pet of pets">
-    <app-my-pet-card [pet]="pet"></app-my-pet-card>
-  </div>
-  
-  <!-- Add an invisible card for checking scroll -->
-  <mat-card #invisibleCard style="opacity: 0; height: 1px;"></mat-card>
-  
+  <app-my-pet-card [pet]="pet"></app-my-pet-card>
+</div>
+<mat-card #invisibleCard style="opacity: 0; height: 1px;"></mat-card>

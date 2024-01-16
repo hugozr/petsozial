@@ -15,13 +15,14 @@ export class AuthService {
     ){}
 
   ngOnInit(): void {
-    this.initLogged();
+    //this.initLogged();
   }
 
-  initLogged(){
-    this.userLoggedIn = this._keycloakService.isLoggedIn();
-    this.userName = this._keycloakService.getUsername();
-  }
+  // initLogged(){
+  //   this.userLoggedIn = this._keycloakService.isLoggedIn();
+  //   this.userName = this._keycloakService.getUsername();
+  //   console.log(this.userName,"555555555555555555555555555555555555555")
+  // }
 
   public login(){
      this._keycloakService.login();
@@ -29,6 +30,13 @@ export class AuthService {
 
   getToken(){
     return this._keycloakService.getToken();
+  }
+
+  getUserName (){
+    const keycloakInstance = this.getInstance();
+    if (keycloakInstance.tokenParsed) return keycloakInstance.tokenParsed!['preferred_username']; 
+    // const userName = keycloakInstance.tokenParsed!['preferred_username'];
+    return undefined;
   }
 
   getInstance(){
