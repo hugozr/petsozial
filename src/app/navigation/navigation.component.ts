@@ -67,10 +67,7 @@ export class NavigationComponent {
 
   initLogged(){
     if (this._authService.isLoggedIn()) {
-      // const keycloakInstance = this._authService.getInstance();
       this.userName = this._authService.getUserName();
-      //  keycloakInstance.tokenParsed!['preferred_username'];
-      // console.log(keycloakInstance,this.userName);
     }
   }
 
