@@ -2,7 +2,7 @@
   <div style="margin-top: 22px" style="display: flex; align-items: center; height: 100vh;">
     <mat-select class="custom-select" style="background-color: aliceblue; width: 300px; height: 30px;"  placeholder="Selecciona una opción">
       @for (group of zociedadGroups; track group) {
-        <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+        <mat-optgroup [label]="group.name" [disabled]="group.disabled"> 
           @for (zociedad of group.zociedad; track zociedad) {
           <mat-option [value]="zociedad.value">{{ zociedad.viewValue }}</mat-option>
           }

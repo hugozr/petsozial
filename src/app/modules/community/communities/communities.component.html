@@ -2,7 +2,7 @@
   <mat-toolbar>
     <span>Communities</span>
     <span class="spacer"></span>
-    <button mat-raised-button color="primary" routerLink="/community/community">Add</button>
+    <button mat-raised-button color="primary" routerLink="/community/community" [disabled]="!userName">Add</button>
   </mat-toolbar>
 
     <mat-form-field appearance="outline">

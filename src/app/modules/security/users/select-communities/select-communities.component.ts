@@ -42,10 +42,10 @@ export class SelectCommunitiesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.userData = await this.usersService.getUser(this.data.id);
-    await this.loadCommunities(this.pageSize, 0);
+    await this.loadPublicCommunities(this.pageSize, 0);
   }
-  async loadCommunities(pageSize: number, page: number) {
-    const data: any = await this.communitiesService.getCommunities(pageSize, page);
+  async loadPublicCommunities(pageSize: number, page: number) {
+    const data: any = await this.communitiesService.getPublicCommunities(pageSize, page);
     this.communities = [];
     data.docs.map((elem: any) => {
       this.communities.push({
@@ -60,7 +60,7 @@ export class SelectCommunitiesComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.loadCommunities(event.pageSize, event.pageIndex + 1);
+    this.loadPublicCommunities(event.pageSize, event.pageIndex + 1);
   }
   
   async onCheckboxChange(event: MatCheckboxChange, row: any): Promise<void> {

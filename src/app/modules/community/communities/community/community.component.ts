@@ -13,6 +13,7 @@ import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
 import { Community } from '../../../../interfaces/community';
 import { CommunitiesService } from '../../../../services/communities.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-community',
@@ -43,11 +44,14 @@ export class CommunityComponent {
   modalities: any = [{
     label: 'Public',
     value: 'public',
+    disabled: false
   },
   {
     label: 'Private',
     value: 'private',
+    disabled: !this._authService.hasRole("realm-pet-shop")  //HZUMAETA: Solo puede crear comunidades de modalidad privada si tiene rol de pet-shop
   }]; 
+
   types: any = [];
 
   backendURL = environment.backendPetZocialURL;
@@ -62,13 +66,10 @@ export class CommunityComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
+    private _authService: AuthService,
   ) {
   }
 
-  async ngAfterViewInit() {
-    this.types = await this.communitiesService.getCommunityTypes();
-  }
-  
   async ngOnInit(): Promise<void> {
 
     const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
@@ -95,8 +96,6 @@ export class CommunityComponent {
       image: [this.loadMyPicture]
     });
 
-
-
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
@@ -115,9 +114,14 @@ export class CommunityComponent {
           lng: this.commToEdit.coordinates.y || 0,
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
+
+        //HZUMAETA: Si la comunidad ya se ha creado no puede cambiar de modalidad 
+        this.myForm.get('modality')?.disable();
       }
     });
+
   }
+
   async saveCommunity() {
     const community: Community = {
       "name": this.myForm.value.name,
@@ -140,6 +144,11 @@ export class CommunityComponent {
   loadImage() {
     this.fileInput.nativeElement.click();
   }
+  
+  async loadTypes(data: any){
+    this.types = await this.communitiesService.getCommunityTypes(data);
+  }
+
   changeImage(event: Event) {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];

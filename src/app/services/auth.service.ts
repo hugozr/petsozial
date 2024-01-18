@@ -11,18 +11,11 @@ export class AuthService {
   userName!: string;
 
   constructor(private _keycloakService: KeycloakService,
-    // private storageService: StorageService
     ){}
 
   ngOnInit(): void {
     //this.initLogged();
   }
-
-  // initLogged(){
-  //   this.userLoggedIn = this._keycloakService.isLoggedIn();
-  //   this.userName = this._keycloakService.getUsername();
-  //   console.log(this.userName,"555555555555555555555555555555555555555")
-  // }
 
   public login(){
      this._keycloakService.login();
@@ -35,10 +28,20 @@ export class AuthService {
   getUserName (){
     const keycloakInstance = this.getInstance();
     if (keycloakInstance.tokenParsed) return keycloakInstance.tokenParsed!['preferred_username']; 
-    // const userName = keycloakInstance.tokenParsed!['preferred_username'];
     return undefined;
   }
 
+  getRoles(): any {
+    const roles: any = this._keycloakService.getUserRoles(true);
+    console.log('Roles del usuario:', roles);
+    return roles;
+  }
+
+  hasRole(role: string){
+    const roles = this.getRoles();
+    return roles.includes(role);
+  }
+  
   getInstance(){
     return this._keycloakService.getKeycloakInstance();
   }

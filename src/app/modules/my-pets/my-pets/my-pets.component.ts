@@ -36,7 +36,6 @@ export class MyPetsComponent {
 
   ngOnInit(): void {
     const username = this._authService.getUserName();
-    console.log(this._authService.userName,username,this._authService.getToken(), "useeeeeeeeer");
     if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
     this.loadPets(10,this.page,"");
   }

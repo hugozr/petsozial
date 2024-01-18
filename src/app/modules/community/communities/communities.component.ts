@@ -16,6 +16,7 @@ import { UtilsService } from '../../../services/utils.service';
 import { CommunitiesService } from '../../../services/communities.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-communities',
@@ -61,15 +62,18 @@ export class CommunitiesComponent implements OnInit {
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
+  userName = null;
 
   constructor(
     private communitiesService: CommunitiesService,
     private _utilsService: UtilsService,
+    private _authService: AuthService,
     private router: Router,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
     this.loadCommunities(this.pageSize, 0);
   }
 

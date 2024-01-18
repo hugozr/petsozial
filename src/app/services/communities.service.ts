@@ -13,11 +13,16 @@ export class CommunitiesService {
   backendURL = environment.backendPetZocialURL;
 
   constructor(private http: HttpClient) {}
-
+  
   async getCommunities(limit: number, page: number): Promise<Community[]> {
     const url = `${this.backendURL}/api/communities?sort=-createdAt&limit=${limit}&page=${page}`
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
-    console.log(comms,"aaaaaaaaaaaaaaaafffff")
+    return comms;
+  }
+  
+  async getPublicCommunities(limit: number, page: number): Promise<Community[]> {
+    const url = `${this.backendURL}/api/communities?sort=-createdAt&where[modality][equals]=public&limit=${limit}&page=${page}`
+    const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
     return comms;
   }
   
@@ -30,8 +35,9 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
   }
 
-  async getCommunityTypes(): Promise<CommunityType[]> {
-    const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0`)); 
+  async getCommunityTypes(modality: string): Promise<CommunityType[]> {
+    const filter = "&where[modality][equals]=" +  modality;
+    const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0${filter}`)); 
     return healthService.docs;
   }
 
@@ -41,8 +47,8 @@ export class CommunitiesService {
   }
 
   async getCommunity(id: string): Promise<Community> {
-    const pet: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${id}`)); 
-    return pet;
+    const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${id}`)); 
+    return community;
   }
 
   async insertCommunity(community: Community): Promise<Community> {
