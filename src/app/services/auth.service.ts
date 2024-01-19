@@ -31,6 +31,12 @@ export class AuthService {
     return undefined;
   }
 
+  getUserEmail (){
+    const keycloakInstance = this.getInstance();
+    if (keycloakInstance.tokenParsed) return keycloakInstance.tokenParsed!['email']; 
+    return undefined;
+  }
+
   getRoles(): any {
     const roles: any = this._keycloakService.getUserRoles(true);
     console.log('Roles del usuario:', roles);

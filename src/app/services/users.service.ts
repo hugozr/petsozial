@@ -57,6 +57,11 @@ export class UsersService {
     return users;
   }
 
+  async getUsersByEmail(email: string): Promise<User[]> {
+    const url = `${this.backendURL}/api/users/${email}/users-by-email`;
+    const users: any = await lastValueFrom(this.http.get<User[]>(url));
+    return users;
+  }
   async getUser(id: string): Promise<User> {
     const user: any = await lastValueFrom(this.http.get<User[]>(`${this.backendURL}/api/users/${id}`));
     return user;

@@ -14,6 +14,7 @@ import { environment } from '../../../../../environments/environment';
 import { Community } from '../../../../interfaces/community';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { AuthService } from '../../../../services/auth.service';
+import { UsersService } from '../../../../services/users.service';
 
 @Component({
   selector: 'app-community',
@@ -40,6 +41,7 @@ export class CommunityComponent {
   commToEdit!: Community;
   communityTypeForEdit!: string;
   insert = true;
+  user: any = null;   //HZUMAETA es el usuario que será el que esté asociado a quien creó la comunidad 
 
   modalities: any = [{
     label: 'Public',
@@ -67,7 +69,15 @@ export class CommunityComponent {
     private router: Router,
     private _utilsService: UtilsService,
     private _authService: AuthService,
+    private usersService: UsersService,
   ) {
+  }
+
+  async ngAfterViewInit(){
+    //HZUMAETA Traigo al usuario para que el Id lo matricule como creador de la comunidad
+    const email = this._authService.getUserEmail();
+    const userKc: any = await this.usersService.getUsersByEmail(email);
+    if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
   }
 
   async ngOnInit(): Promise<void> {
@@ -119,7 +129,6 @@ export class CommunityComponent {
         this.myForm.get('modality')?.disable();
       }
     });
-
   }
 
   async saveCommunity() {
@@ -132,11 +141,17 @@ export class CommunityComponent {
       "type": this.myForm.value.type,
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
     }
-    console.log(community,"esto va a actualziar");
-    const communityResult = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
+    if(this.insert){
+      //HZUMAETA El creador solo se pone en la inserción NO en la edición
+      if(this.user){
+        community.creator = this.user.id; 
+      }
+    }
+    const communityResult: any = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
     if (communityResult) {
       this._utilsService.showMessage("Community's data was successfully updated", 2000, true);
       if (this.insert) {
+        const user = await this.usersService.updateCommunity(this.user.id, {"operation": "insert", "communityId": communityResult.doc.id});
         this.router.navigate(["/community"]);
       }
     }

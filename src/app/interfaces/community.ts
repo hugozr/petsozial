@@ -8,4 +8,5 @@ export interface Community {
     type?: any,
     communityImage?: any,
     coordinates: any,
+    creator?: string,
 }
