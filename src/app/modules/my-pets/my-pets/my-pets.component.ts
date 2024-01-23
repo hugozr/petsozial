@@ -38,14 +38,10 @@ export class MyPetsComponent {
   ngOnInit(): void {
     // this.route.params.subscribe(async (params: any) => {
     this.route.data.subscribe(async (params: any) => {
-      console.log(params,"lalalalal");
-      // if(!params.rqUserLoggedIn || params.rqUserLoggedIn == false) {
-      // if(params.rqUserLoggedIn == true) {
 
       let requireVerifyUserRole = false;
       if (params.rqUserLoggedIn == false){
       } else { 
-        // this.router.navigate(['/alerts']);
         requireVerifyUserRole = true;
       }
 
