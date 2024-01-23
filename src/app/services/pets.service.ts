@@ -12,9 +12,10 @@ export class PetsService {
   backendURL = environment.backendPetZocialURL;
   
   async getPets(limit: number, page: number, filter: string): Promise<Pet[]> {
-    const url = `${this.backendURL}/api/pets?sort=-createdAt&limit=${limit}&page=${page}`;
-    const pets: any = await lastValueFrom(this.http.get<Pet[]>(url));
-    return pets;
+    // const url = `${this.backendURL}/api/pets?sort=-createdAt&limit=${limit}&page=${page}`;
+    // const pets: any = await lastValueFrom(this.http.get<Pet[]>(url));
+    // return pets;
+    return this.filterPets(limit,page,'');
   }
 
   async filterPets(limit: number, page: number, filter: string): Promise<any> {

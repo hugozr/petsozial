@@ -62,7 +62,6 @@ export class NavigationComponent {
   ngOnInit(): void {
     this.initLogged();
     this.loadOptions();
-    console.log(this.appOptions, this.userName)
   }
 
   initLogged(){
@@ -83,7 +82,7 @@ export class NavigationComponent {
       data.docs.map( (elem: any) => {
         this.appOptions.push({
           name: elem.name, 
-          redirect: elem.redirect,
+          redirect: elem.redirect ,
           rqUserLoggedIn: elem.rqUserLoggedIn });
       });
     })

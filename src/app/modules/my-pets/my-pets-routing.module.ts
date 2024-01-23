@@ -4,6 +4,7 @@ import { MyPetsComponent } from './my-pets/my-pets.component';
 
 const routes: Routes = [
   {path: "", component: MyPetsComponent},
+  {path: "all", component: MyPetsComponent, data: { rqUserLoggedIn: false} },
 ];
 
 @NgModule({

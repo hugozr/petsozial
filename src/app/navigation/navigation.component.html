@@ -8,6 +8,7 @@
       <div *ngFor="let op of appOptions">
         @if (!op.rqUserLoggedIn || (userName && op.rqUserLoggedIn)) {
           <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
+          <!-- <a mat-list-item [routerLink]="[op.redirect]" [queryParams]="{rqUserLoggedIn: op.rqUserLoggedIn}">{{op.name}}</a> -->
         }
       </div>
     </mat-nav-list>

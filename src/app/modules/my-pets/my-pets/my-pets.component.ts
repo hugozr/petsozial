@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PetsService } from '../../../services/pets.service';
 import { MyPetCardComponent } from '../my-pet-card/my-pet-card.component';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
 import { AuthService } from '../../../services/auth.service';
 
@@ -30,14 +30,32 @@ export class MyPetsComponent {
   constructor(
     private petsService: PetsService,
     private router: Router,
+    private route: ActivatedRoute,
     private utilsService: UtilsService,
     private _authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    const username = this._authService.getUserName();
-    if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
-    this.loadPets(10,this.page,"");
+    // this.route.params.subscribe(async (params: any) => {
+    this.route.data.subscribe(async (params: any) => {
+      console.log(params,"lalalalal");
+      // if(!params.rqUserLoggedIn || params.rqUserLoggedIn == false) {
+      // if(params.rqUserLoggedIn == true) {
+
+      let requireVerifyUserRole = false;
+      if (params.rqUserLoggedIn == false){
+      } else { 
+        // this.router.navigate(['/alerts']);
+        requireVerifyUserRole = true;
+      }
+
+      if(requireVerifyUserRole){
+        const username = this._authService.getUserName();
+        if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
+      }
+      
+      this.loadPets(10,this.page,"");
+    })
   }
   
   async loadPets(pageSize: number, page: number, filter: string ) {
