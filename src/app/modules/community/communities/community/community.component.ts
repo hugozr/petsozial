@@ -112,6 +112,7 @@ export class CommunityComponent {
         this.commToEdit = await this.communitiesService.getCommunity(params.id);
         this.communityTypeForEdit = this.commToEdit.type?.id;
         const imagePath = this.commToEdit?.communityImage?.url;
+        this.loadTypes(this.commToEdit.modality);
 
         this.myForm.setValue({
           name: this.commToEdit.name,

@@ -36,7 +36,6 @@ export class MyPetsComponent {
   ) {}
 
   ngOnInit(): void {
-    // this.route.params.subscribe(async (params: any) => {
     this.route.data.subscribe(async (params: any) => {
 
       let requireVerifyUserRole = false;
@@ -49,14 +48,20 @@ export class MyPetsComponent {
         const username = this._authService.getUserName();
         if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
       }
-      
-      this.loadPets(10,this.page,"");
+
+      if(params.scope == "all") this.loadPets(10,this.page,"");
+      if(params.scope == "favorite") this.loadPetsByHumanId(10,this.page,"");
     })
   }
   
   async loadPets(pageSize: number, page: number, filter: string ) {
     const data: any = await this.petsService.getPets(pageSize, page, filter);
     this.pets = this.pets.concat(data.docs);
+    this.page++;
+  }
+  async loadPetsByHumanId(pageSize: number, page: number, filter: string ) {
+    const data: any = await this.petsService.filterPetsByHumanId(pageSize, page, filter);
+    this.pets = this.pets.concat(data);
     this.page++;
   }
 
