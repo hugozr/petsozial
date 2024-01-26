@@ -35,6 +35,10 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
   }
 
+  async updatePetMember(communityId: string, body: any): Promise<any> {
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/${communityId}/pet-update`, body));
+  }
+
   async getCommunityTypes(modality: string): Promise<CommunityType[]> {
     const filter = "&where[modality][equals]=" +  modality;
     const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0${filter}`)); 
