@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
 import { AuthService } from '../../../services/auth.service';
+import { HumansService } from '../../../services/humans.service';
 
 @Component({
   selector: 'app-my-pets',
@@ -26,9 +27,11 @@ export class MyPetsComponent {
   @ViewChild('invisibleCard') card: any | undefined;
   pets: any[] = [];
   page = 1;
+  message = ""
 
   constructor(
     private petsService: PetsService,
+    private humansService: HumansService,
     private router: Router,
     private route: ActivatedRoute,
     private utilsService: UtilsService,
@@ -37,18 +40,15 @@ export class MyPetsComponent {
 
   ngOnInit(): void {
     this.route.data.subscribe(async (params: any) => {
-
       let requireVerifyUserRole = false;
       if (params.rqUserLoggedIn == false){
       } else { 
         requireVerifyUserRole = true;
       }
-
       if(requireVerifyUserRole){
         const username = this._authService.getUserName();
         if (!this.utilsService.canAccessThisPage("only-with-username", username)) this.router.navigate(['/alerts']);
       }
-
       if(params.scope == "all") this.loadPets(10,this.page,"");
       if(params.scope == "favorite") this.loadPetsByHumanId(10,this.page,"");
     })
@@ -60,8 +60,13 @@ export class MyPetsComponent {
     this.page++;
   }
   async loadPetsByHumanId(pageSize: number, page: number, filter: string ) {
-    const data: any = await this.petsService.filterPetsByHumanId(pageSize, page, filter);
-    this.pets = this.pets.concat(data);
+    const userEmail = this._authService.getUserEmail();
+    if(userEmail == undefined) return;
+    const humans: any =  await this.humansService.getHumansByEmail(userEmail);
+    const humanId = humans[0].id
+    const pets: any = await this.petsService.filterPetsByHumanId(pageSize, page, filter, humanId);
+    if (pets.length == 0) this.message = "Without favorite pets";
+    this.pets = this.pets.concat(pets);
     this.page++;
   }
 

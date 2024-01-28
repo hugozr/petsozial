@@ -27,12 +27,12 @@ export class PetsService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me`, body));
   }
   
-  async filterPetsByHumanId(limit: number, page: number, filter: string): Promise<any> {
+  async filterPetsByHumanId(limit: number, page: number, filter: string, humanId: string): Promise<any> {
     const body = {
       filter,
       limit,
       page,
-      id: "6591dd5588ce077af4059344"
+      id: humanId
     }
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-human-id`, body));
   }

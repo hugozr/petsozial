@@ -1,0 +1,157 @@
+{
+  "main": {
+    "id": "188718ebb9ffd834",
+    "type": "split",
+    "children": [
+      {
+        "id": "fee8122b498518a4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6584b82c7c8cd722",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Mascotas/Mascotas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "63cfb0f25336a91b",
+    "type": "split",
+    "children": [
+      {
+        "id": "3a211aa1af35948e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c971778270941f5d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f2dd0ab3e86a3404",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "817195e5634f7e67",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "eff5abb089d93daa",
+    "type": "split",
+    "children": [
+      {
+        "id": "05619e13c385c752",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b64cca5a4a121ccb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Mascotas/Mascotas.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "a4f85a8f3f3179c3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Mascotas/Mascotas.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "fe7581e45b8a410e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "79b6cb03475b196a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Mascotas/Mascotas.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "6584b82c7c8cd722",
+  "lastOpenFiles": [
+    "Mascotas/petlist.png",
+    "Mascotas/Mascotas.md",
+    "petlist.md",
+    "Petzocial.md",
+    "Mascotas"
+  ]
+}

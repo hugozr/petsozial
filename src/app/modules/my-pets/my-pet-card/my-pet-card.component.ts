@@ -16,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 
 export class MyPetCardComponent {
   @Input() pet: any | undefined;
-  imageUrl? : string; // "assets/macallan.jpg";
+  imageUrl? : string; 
   backendURL = environment.backendPetZocialURL;
 
   ngOnInit(): void {

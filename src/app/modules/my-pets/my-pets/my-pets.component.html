@@ -1,3 +1,6 @@
+@if(message != ""){
+  <h3>{{message}}</h3>
+}
 <div *ngFor="let pet of pets">
   <app-my-pet-card [pet]="pet"></app-my-pet-card>
 </div>

@@ -177,6 +177,7 @@ export class PetComponent {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result) {
+        console.log(result)
         this.form.get('humanName')?.setValue(result.name);
         this.form.get('hiddenHumanId')?.setValue(result.id);
         this.form.get('hiddenHumanEmail')?.setValue(result.email);
