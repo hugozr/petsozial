@@ -73,4 +73,12 @@ export class UtilsService {
     }
     return false
   }
+
+  getShortenedComment(comment: string, maxLength: number): string {
+    if (comment.length <= maxLength) {
+      return comment;
+    } else {
+      return comment.substring(0, maxLength) + '...';
+    }
+  }
 }

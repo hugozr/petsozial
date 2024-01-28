@@ -1,1 +1,67 @@
-<p>pet-to-comunity works!</p>
+<mat-card class="my-card">
+  <mat-card-header style="height: 70px;">
+    <mat-card-title>I want to belong to this community</mat-card-title>
+    <mat-card-subtitle>Enter my human's email</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content style="height: 460px;">
+    <form [formGroup]="form" (ngSubmit)="findPetsByHuman()">
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Human's email" formControlName="email">
+          @if(form.get('email')!.hasError('required')){
+          <mat-error>Please enter an email address</mat-error>
+          }
+          @if (form.get('email')!.hasError('email'))
+          {
+          <mat-error>Please enter a valid email address</mat-error>
+          }
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid" mat-button>Find human
+        </button>
+      </div>
+    </form>
+    <div>
+      @if(founded){
+      <h3>{{ founded.name }}</h3>
+      @if(messageAboutHuman != ""){
+        <h3>{{messageAboutHuman}}</h3>
+      }
+      <div style="height: 280px; overflow: auto;">
+        <mat-list>
+          @for (pet of petsForAddToCommunity; track pet) {
+          <mat-list-item>
+            <div style="display: flex; ">
+              <div style="display: flex; align-items: center;">
+                <div>
+                  <img [src]="pet.thumbnail" alt="thumbnail" style="max-width: 100%; height: auto; margin-top: 10px;">
+                </div>
+                <div style="margin-left: 20px;">
+                  <div matListItemTitle>{{pet.name}}</div>
+                  <div matListItemLine [matTooltip]="pet.comment" [title]="getShortenedComment(pet.comment,30)">
+                    {{ getShortenedComment(pet.comment,30) }}
+                  </div>
+                </div>
+              </div>
+              <div style="flex-grow: 1"></div>
+              @if(pet.toAdd){
+                <button mat-raised-button color="primary" style="margin-top: 10px;"
+                (click)="AddPetToCommnity(pet)">Add</button>
+              }
+            </div>
+          </mat-list-item>
+          }
+        </mat-list>
+      </div>
+      }
+      @else {
+        <h3>{{messageAboutHuman}}</h3>
+      }
+    </div>
+  </mat-card-content>
+  <mat-card-actions class="actions">
+    <button mat-raised-button color="accent" (click)="close()" style="margin-left: 20px;"  (document:keydown.escape)="close()">
+      Close
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -42,12 +42,11 @@ export class PetToHumanComponent {
     });
   }
 
-  async buscarDatos() {
+  async findData() {
     const email = this.form.get("email")?.value;
     const humans: any = await this.humansService.getHumansByEmail(email);
-    console.log(humans)
-    if(humans.length != 0){
-      this.founded = humans[0]; //{ "name": "pepito" };
+    if (humans.length != 0) {
+      this.founded = humans[0]; 
     }
   }
 

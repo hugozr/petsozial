@@ -78,12 +78,12 @@ export class PetMembersComponent implements OnInit {
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
   communityId!: string;
-  communityName!: string;
+  community!: any;
 
   constructor(
     private petsService: PetsService,
     private communitiesService: CommunitiesService,
-    private _utilsService: UtilsService,
+    private _utilsServices: UtilsService,
     private route: ActivatedRoute,
     public dialog: MatDialog
   ) { }
@@ -96,14 +96,14 @@ export class PetMembersComponent implements OnInit {
   }
 
   async loadPets(pageSize: number, page: number, filter: string, communityId: string ) {
-    const data: any = await this.petsService.filterPetsByCommunityId(pageSize, page, filter, communityId);
-    this.communityName = data.name;
-    this.fillPetTable(data.petMembers);
+    // this.community = await this.petsService.filterPetsByCommunityId(pageSize, page, filter, communityId);
+    this.community = await this.communitiesService.getCommunity(this.communityId);
+    if(this.community.petMembers) this.fillPetTable(this.community.petMembers);
   }
 
   fillPetTable(data: any){
+    console.log("dadada", data);
     this.pets = [];
-    console.log(data,"aaaaaaaaa")
     data.map((elem: any) => {
       const imagePath = elem.petImage?.sizes?.thumbnail?.url
       this.pets.push({
@@ -117,7 +117,10 @@ export class PetMembersComponent implements OnInit {
         comment: elem.comment,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
+      console.log(imagePath, elem);
+      console.log(this.backendURL);
     });
+    console.log(this.pets,"ssssssssssddddddd")
     this.dataSource = new MatTableDataSource(this.pets);
     this.dataSource.sort = this.sort;
     
@@ -138,18 +141,22 @@ export class PetMembersComponent implements OnInit {
     const deleted = await this.communitiesService.updatePetMember(this.communityId, {"operation": "delete", "petId": element.id});
     this.loadPets(this.pageSize, 0,"",this.communityId); 
     if (deleted) {
-      this._utilsService.showMessage("Pet record successfully deleted", 2000, true);
+      this._utilsServices.showMessage("Pet record successfully deleted", 2000, true);
     }
   }
   asignPet(){
+    const ids = this.community.petMembers?.map((pet:any) => pet.id) || [];
     const dialogRef = this.dialog.open(PetToComunityComponent, {
-      width: '400px',
-      height: "400px",
-      data: this.communityId,
+      width: '500px',
+      height: "600px",
+      data: {"communityId": this.communityId, "petMemberIds": ids},
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result)
       if(result) {
+        this.loadPets(this.pageSize, 0, "", this.communityId);
+        
         // this.form.get('humanName')?.setValue(result.name);
         // this.form.get('hiddenHumanId')?.setValue(result.id);
       }

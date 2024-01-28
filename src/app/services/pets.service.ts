@@ -37,15 +37,15 @@ export class PetsService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-human-id`, body));
   }
 
-  async filterPetsByCommunityId(limit: number, page: number, filter: string, id: string): Promise<any> {
-    const body = {
-      filter,
-      limit,
-      page,
-      id
-    }
-    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-community-id`, body));
-  }
+  // async filterPetsByCommunityId(limit: number, page: number, filter: string, id: string): Promise<any> {
+  //   const body = {
+  //     filter,
+  //     limit,
+  //     page,
+  //     id
+  //   }
+  //   return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-community-id`, body));
+  // }
 
   async getPet(id: string): Promise<Pet> {
     const pet: any = await lastValueFrom(this.http.get<Pet[]>(`${this.backendURL}/api/pets/${id}`)); 

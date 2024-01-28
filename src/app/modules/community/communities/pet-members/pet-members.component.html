@@ -1,15 +1,17 @@
 <div class="container">
     <mat-toolbar>
-        <p>Members of {{communityName}}</p>
-        <span class="spacer"></span>
+        <p>Members of {{community?.name}}</p>
+        <span class="spacer"></span> 
         <button mat-raised-button color="primary" (click)="asignPet()">Add member</button>
     </mat-toolbar>
   
-      <mat-form-field appearance="outline">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Filtering by..." #input>
-      </mat-form-field>
       <div [hidden]="pets.length == 0">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtering by..." #input>
+        </mat-form-field>
+  
         <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
   
@@ -50,7 +52,6 @@
                 <img [src]="element.thumbnail" alt="thumbnail">
               </div>
               }
-  
             </td>
           </ng-container>
   
@@ -76,8 +77,8 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [length]="totalRows" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        <!-- <mat-paginator [length]="totalRows" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
           (page)="pageChanged($event)" aria-label="Select page of humans">
-        </mat-paginator>
+        </mat-paginator> -->
       </div>
       <h2 [hidden]="pets.length > 0">No pet records to show</h2>

@@ -5,10 +5,13 @@ import { CommunityRoutingModule } from './community-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     CommunityRoutingModule
+  ],
+  exports:[
   ]
 })
 export class CommunityModule { }

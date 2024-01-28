@@ -75,6 +75,7 @@ export class PetComponent {
       name: ["", Validators.required],
       humanName: ["", Validators.required],
       hiddenHumanId: [""],
+      hiddenHumanEmail: [""],
       specie: ["", Validators.required],
       breed: [""],
       gender: [""],
@@ -93,6 +94,7 @@ export class PetComponent {
           name: this.petToEdit.name,
           humanName: this.petToEdit.human.name || "",
           hiddenHumanId: this.petToEdit.human.humanId || "",
+          hiddenHumanEmail: this.petToEdit.human.email || "",
           comment: this.petToEdit.comment,
           address: this.petToEdit.address || "",
           specie: this.petToEdit.specie.specieId || "",
@@ -123,7 +125,7 @@ export class PetComponent {
     const breedName = this._utilsService.search(this.breeds, "id", "name", this.form.value.breed);
     const pet: Pet = {
       "name": this.form.value.name,
-      "human": {"name": this.form.value.humanName, "humanId": this.form.value.hiddenHumanId },
+      "human": {"name": this.form.value.humanName, "humanId": this.form.value.hiddenHumanId, "email": this.form.value.hiddenHumanEmail  },
       "comment": this.form.value.comment,
       "address": this.form.value.address,
       "gender": this.form.value.gender,
@@ -132,7 +134,6 @@ export class PetComponent {
       "breed":  {breedId: this.form.value.breed, name: breedName},
     }
     const petResult: any = this.insert ? await this.petsService.insertPet(pet) : await this.petsService.updatePet(this.petToEdit.id, pet);
-    console.log(petResult,"aaaaaaaaaaaaaaaaaaaaaa")
     if (petResult){
       let assigned = null;
       if(this.form.value.hiddenHumanId.length>0){   //Si se ha asignado un humano a la mascota
@@ -178,6 +179,7 @@ export class PetComponent {
       if(result) {
         this.form.get('humanName')?.setValue(result.name);
         this.form.get('hiddenHumanId')?.setValue(result.id);
+        this.form.get('hiddenHumanEmail')?.setValue(result.email);
       }
     });
   }
