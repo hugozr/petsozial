@@ -85,6 +85,7 @@ export class PetComponent {
       image: [this.loadMyPicture]
     });
     this.route.params.subscribe(async (params: any) => {
+      console.log(params,"loca")
       if(params.id){
         this.insert = false;
         this.petToEdit = await this.petsService.getPet(params.id);
@@ -169,6 +170,7 @@ export class PetComponent {
     }
   }
   asignHuman(){
+    console.log("holaaa");
     const dialogRef = this.dialog.open(PetToHumanComponent, {
       width: '400px',
       height: "400px",

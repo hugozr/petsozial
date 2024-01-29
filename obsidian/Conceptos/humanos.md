@@ -1,0 +1,1 @@
+Los humanos son las personas naturales o jurídicas que tienen bajo su responsabilidad o se encargan del cuidado de las mascotas.

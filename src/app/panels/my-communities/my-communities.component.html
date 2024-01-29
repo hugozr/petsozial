@@ -1,10 +1,11 @@
 @if(userName){
   <div style="margin-top: 22px" style="display: flex; align-items: center; height: 100vh;">
-    <mat-select class="custom-select" style="background-color: aliceblue; width: 300px; height: 30px;"  placeholder="Selecciona una opción">
+    <mat-select class="custom-select" style="background-color: aliceblue; width: 300px; height: 30px;" 
+      placeholder="Select one of your communities">
       @for (group of zociedadGroups; track group) {
         <mat-optgroup [label]="group.name" [disabled]="group.disabled"> 
           @for (zociedad of group.zociedad; track zociedad) {
-          <mat-option [value]="zociedad.value">{{ zociedad.viewValue }}</mat-option>
+          <mat-option [value]="zociedad.value" (click)="showPetsByCommunity(zociedad)">{{ zociedad.viewValue }}</mat-option>
           }
         </mat-optgroup>
         }

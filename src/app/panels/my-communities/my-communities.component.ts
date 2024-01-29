@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,26 +35,33 @@ export class MyCommunitiesComponent {
 
   constructor(
     private usersServices: UsersService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
     if (this.userName) {
       const users: any = await this.usersServices.getUsersByName(this.userName);
-      const communities = users.docs[0].communities;
-      const transformedArray = _.chain(communities)
-        .groupBy('type.id')
-        .map((items: any, typeId: any) => ({
-          id: typeId,
-          name: _.get(items[0], 'type.name', ''),
-          disabled: _.get(items[0], 'type.disable', false), 
-          zociedad: _.map(items, (item: any) => ({
-            value: item.id,
-            viewValue: item.name,
-          })),
-        }))
-        .value();
+      if (users.docs[0]) {
+        const communities = users.docs[0].communities;
+        const transformedArray = _.chain(communities)
+          .groupBy('type.id')
+          .map((items: any, typeId: any) => ({
+            id: typeId,
+            name: _.get(items[0], 'type.name', ''),
+            disabled: _.get(items[0], 'type.disable', false),
+            zociedad: _.map(items, (item: any) => ({
+              value: item.id,
+              viewValue: item.name,
+            })),
+          }))
+          .value();
         this.zociedadGroups = transformedArray;
-      console.log(transformedArray);
+      }
     }
+  }
+  showPetsByCommunity(elem: any) {
+    console.log(elem, "debo pasar el id de la comunidad");
+    this.router.navigate(['/my-pets/community', elem.value], 
+      { queryParams: {rqUserLoggedIn: false, scope: 'community', communityId: elem.value} });
   }
 }

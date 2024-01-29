@@ -13,13 +13,74 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Mascotas/Mascotas.md",
+                "file": "Mascotas/Listar mascotas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "3b85f74862ea0e4e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Humanos/Listar humanos.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "6c6a222eed2b3d10",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Mascotas/Listar mascotas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "449ae31416cd9fbd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Conceptos/administrador.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "7296502a9d07dde8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Mascotas/Listar mascotas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "52418c44af265b4f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Mascotas/Crear una mascota.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -85,7 +146,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Mascotas/Mascotas.md",
+                "file": "Conceptos/administrador.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +163,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Mascotas/Mascotas.md",
+                "file": "Conceptos/administrador.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +186,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Mascotas/Mascotas.md"
+                "file": "Conceptos/administrador.md"
               }
             }
           }
@@ -146,12 +207,26 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6584b82c7c8cd722",
+  "active": "449ae31416cd9fbd",
   "lastOpenFiles": [
-    "Mascotas/petlist.png",
-    "Mascotas/Mascotas.md",
+    "Mascotas/Listar mascotas.md",
+    "Conceptos/mascotas.md",
+    "Conceptos/humanos.md",
+    "Humanos/Listar humanos.md",
+    "Conceptos/administrador.md",
+    "Conceptos",
+    "Humanos/human list.png",
+    "Mascotas/pet list.png",
+    "Generalidades/welcome.png",
+    "Generalidades/Presentación.md",
+    "Humanos",
+    "Mascotas/Crear una mascota.md",
+    "Generalidades/Petzocial.md",
+    "Generalidades",
+    "Mascotas/Modificar una mascota.md",
+    "Mascotas/pet add.png",
+    "Mascotas/pet upd.png",
     "petlist.md",
-    "Petzocial.md",
     "Mascotas"
   ]
 }
