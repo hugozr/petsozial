@@ -5,6 +5,7 @@ import { Vet } from '../interfaces/vet';
 import { environment } from '../../environments/environment';
 import { HealthService } from '../interfaces/healthService';
 import { VetType } from '../interfaces/vetType';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ import { VetType } from '../interfaces/vetType';
 export class VetsService {
   backendURL = environment.backendPetZocialURL;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private _utilsServices: UtilsService
+    ) {}
 
   async getVets(limit: number, page: number): Promise<Vet[]> {
     const url = `${this.backendURL}/api/vets?sort=-createdAt&limit=${limit}&page=${page}`
@@ -59,5 +63,13 @@ export class VetsService {
 
   deleteVet(id: string): Observable<Vet> {
     return this.http.delete<Vet>(`${this.backendURL}/api/vets/${id}`);
+  }
+
+  downloadFile(fileName: string){
+    this._utilsServices.downloadExcel(`${this.backendURL}/api/vets/download-in-excel`).subscribe(response => {
+      // const contentDisposition = response.headers.get('Content-Disposition');
+      // const filenameMatch = contentDisposition && contentDisposition.match(/filename="(.+?)"/);
+      this._utilsServices.saveFile(response.body, fileName);
+    });
   }
 }

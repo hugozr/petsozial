@@ -1,0 +1,1 @@
+Negocio o empresa dedicada a la salud de las mascotas

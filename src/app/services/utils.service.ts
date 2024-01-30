@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
@@ -14,7 +14,7 @@ export class UtilsService {
 
   constructor(
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   showMessage (message: string, duration?: number, isSuccess: boolean = true) {
@@ -79,6 +79,28 @@ export class UtilsService {
       return comment;
     } else {
       return comment.substring(0, maxLength) + '...';
+    }
+  }
+
+  downloadExcel(baseUrl: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(baseUrl, {
+      responseType: 'blob',
+      observe: 'response'
+    });
+  }
+  saveFile(data: Blob | null, filename: string ) {
+    if (data) {
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } else {
+      console.error('Error: El archivo recibido del servidor es nulo.');
     }
   }
 }

@@ -1,1 +1,1 @@
-Es la persona que tiene las credenciales globales para la plataforma.
+Es la persona que tiene las credenciales globales para la plataforma [[Petzo]]

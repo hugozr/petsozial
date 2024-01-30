@@ -21,3 +21,17 @@ img {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
   max-width: 100px;     
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}
+
+.custom-green-button {
+  background-color: #4CAF50; 
+  color: white; 
+}
+
+.custom-green-button:hover {
+  background-color: #45a049; 
+}

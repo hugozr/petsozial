@@ -56,6 +56,78 @@
             }
           },
           {
+            "id": "45fc50f10397660a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Humanos/Listar humanos.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "8652ed87ac98568d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Humanos/Listar humanos.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "cc481af38c7a5b0f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Generalidades/Presentación.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "09d1309faeaa09be",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Veterinarias/Listar veterinarias.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "8c1ccb7596a91d54",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Veterinarias/Listar veterinarias.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "80b0cab92c9bdc30",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Veterinarias/Modificar una veterinaria.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
             "id": "7296502a9d07dde8",
             "type": "leaf",
             "state": {
@@ -80,7 +152,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 9
       }
     ],
     "direction": "vertical"
@@ -146,7 +218,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Conceptos/administrador.md",
+                "file": "Veterinarias/Modificar una veterinaria.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -163,7 +235,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Conceptos/administrador.md",
+                "file": "Veterinarias/Modificar una veterinaria.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -186,7 +258,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Conceptos/administrador.md"
+                "file": "Veterinarias/Modificar una veterinaria.md"
               }
             }
           }
@@ -207,25 +279,39 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "449ae31416cd9fbd",
+  "active": "80b0cab92c9bdc30",
   "lastOpenFiles": [
+    "Untitled 1.canvas",
+    "Untitled.canvas",
+    "Veterinarias/Listar veterinarias.md",
+    "Veterinarias/Modificar una veterinaria.md",
+    "Veterinarias/vet list.png",
     "Mascotas/Listar mascotas.md",
-    "Conceptos/mascotas.md",
+    "Crear una veterinaria.md",
+    "Veterinarias/vet add.png",
+    "Veterinarias/vet upd.png",
+    "Mascotas/Crear una mascota.md",
+    "Conceptos/veterinarias.md",
+    "Veterinarias",
+    "Generalidades/Presentación.md",
+    "Humanos/human upd01.png",
+    "Humanos/Modificar un humano.md",
     "Conceptos/humanos.md",
+    "Humanos/human upd.png",
+    "Humanos/human add.png",
     "Humanos/Listar humanos.md",
+    "Humanos/Crear un humano.md",
+    "Conceptos/Petzo.md",
     "Conceptos/administrador.md",
+    "Conceptos/mascotas.md",
     "Conceptos",
     "Humanos/human list.png",
     "Mascotas/pet list.png",
     "Generalidades/welcome.png",
-    "Generalidades/Presentación.md",
     "Humanos",
-    "Mascotas/Crear una mascota.md",
     "Generalidades/Petzocial.md",
     "Generalidades",
     "Mascotas/Modificar una mascota.md",
-    "Mascotas/pet add.png",
-    "Mascotas/pet upd.png",
     "petlist.md",
     "Mascotas"
   ]
