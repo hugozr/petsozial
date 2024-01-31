@@ -15,7 +15,7 @@ export class VetsService {
 
   constructor(
     private http: HttpClient,
-    private _utilsServices: UtilsService
+    private _utilsServices: UtilsService,
     ) {}
 
   async getVets(limit: number, page: number): Promise<Vet[]> {
@@ -67,8 +67,6 @@ export class VetsService {
 
   downloadFile(fileName: string){
     this._utilsServices.downloadExcel(`${this.backendURL}/api/vets/download-in-excel`).subscribe(response => {
-      // const contentDisposition = response.headers.get('Content-Disposition');
-      // const filenameMatch = contentDisposition && contentDisposition.match(/filename="(.+?)"/);
       this._utilsServices.saveFile(response.body, fileName);
     });
   }

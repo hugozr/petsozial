@@ -3,18 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom } from 'rxjs';
 import { Pet } from '../interfaces/pet';
 import { environment } from '../../environments/environment';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PetsService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private _utilsServices: UtilsService,
+    ) {}
   backendURL = environment.backendPetZocialURL;
   
   async getPets(limit: number, page: number, filter: string): Promise<Pet[]> {
-    // const url = `${this.backendURL}/api/pets?sort=-createdAt&limit=${limit}&page=${page}`;
-    // const pets: any = await lastValueFrom(this.http.get<Pet[]>(url));
-    // return pets;
     return this.filterPets(limit,page,'');
   }
 
@@ -67,5 +68,10 @@ export class PetsService {
 
   deletePet(id: string): Observable<Pet> {
     return this.http.delete<Pet>(`${this.backendURL}/api/pets/${id}`);
+  }
+  downloadFile(fileName: string){
+    this._utilsServices.downloadExcel(`${this.backendURL}/api/pets/download-in-excel`).subscribe(response => {
+      this._utilsServices.saveFile(response.body, fileName);
+    });
   }
 }

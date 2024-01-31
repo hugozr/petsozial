@@ -149,11 +149,5 @@ export class VeterinariesComponent implements OnInit {
 
   downloadFile(){
     this.vetsService.downloadFile("veterinaries.xlsx");
-    // this._utilsService.downloadExcel("http://localhost:3000/api/vets/download-in-excel").subscribe(response => {
-    //   const contentDisposition = response.headers.get('Content-Disposition');
-    //   const filenameMatch = contentDisposition && contentDisposition.match(/filename="(.+?)"/);
-    //   this._utilsService.saveFile(response.body, 'default.xlsx');
-    // });
   }
-  
 }

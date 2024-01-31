@@ -10,7 +10,7 @@
                         <div class="container" class="full-width">
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">
-                                    <mat-label>username</mat-label>
+                                    <mat-label>Username</mat-label>
                                     <input matInput placeholder="User's username" formControlName="username" 
                                     (blur)="form.get('username')!.updateValueAndValidity()">
                                     @if(form.get('username')!.hasError('containsWhitespace')){
@@ -20,7 +20,7 @@
                                         <mat-error>Please enter a valid username</mat-error>
                                     }
                                     @if(form.get('username')!.hasError('usernameExists')){
-                                        <mat-error>El usuario ya existe. Por favor, elige otro.</mat-error>
+                                        <mat-error>The user already exists. Please choose another one.</mat-error>
                                     }
                                 </mat-form-field>
                             </div>
@@ -36,6 +36,9 @@
                                     {
                                         <mat-error>Please enter a valid email address</mat-error>
                                     }
+                                    @if(form.get('email')!.hasError('emailExists')){
+                                        <mat-error>The email already exists. Please choose another one.</mat-error>
+                                    }
                                 </mat-form-field>
                             </div>
                             <div class="full-width">
@@ -48,6 +51,17 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                            @if (insert) {
+                                <div>
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label>Password</mat-label>
+                                        <input matInput placeholder="User's password" formControlName="password">
+                                        @if(form.get('password')!.hasError('minlength')){
+                                            <mat-error>The password must be at least 3 characters long</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                            }
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
@@ -61,7 +75,6 @@
                                 </div>
                             }
                             @else {
-                                <!-- <app-human-card [human]="userToEdit?.human" [imageUrl]="'/assets/load-my-user-picture.png'"> -->
                                 <app-human-card [human]="userToEdit?.human" [imageUrl]="humanImage">
                                 </app-human-card>
                             }

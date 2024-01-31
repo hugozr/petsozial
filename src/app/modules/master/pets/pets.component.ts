@@ -134,4 +134,8 @@ export class PetsComponent implements OnInit {
     // Lógica para otra acción
     console.log('Otra Acción');
   }
+
+  downloadFile(){
+    this.petsService.downloadFile("pets.xlsx");
+  }
 }

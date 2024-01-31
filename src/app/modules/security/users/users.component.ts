@@ -141,8 +141,9 @@ export class UsersComponent implements OnInit {
   }
 
   async manageCredentials(element: any) {
-    const tokens = await this.usersService.getAccessTokens();
-    console.log(tokens);
+    // const tokens: any = await this.usersService.getAccessTokens();
+    // const user = await this.usersService.insertKeycloakUser(tokens.access_token, "hugoax", "1234");
+    // console.log(user);
   }
 
   edit(element: any) {
@@ -151,5 +152,8 @@ export class UsersComponent implements OnInit {
 
   otraAccion() {
     console.log('Otra Acción');
+  }
+  downloadFile(){
+    this.usersService.downloadFile("users.xlsx");
   }
 }

@@ -62,10 +62,12 @@ export class UserComponent {
     this.form = this.formBuilder.group({
       username: ["", 
       [Validators.required, this.noWhitespaceValidator],
-      [this.validarUsuarioExistente.bind(this)]
+      [this.validateIfUserExists.bind(this)]
     ],
-      email: ["", [Validators.required, Validators.email]],
+      email: ["", [Validators.required, Validators.email],
+      [this.validateIfEmailExists.bind(this)]],
       roles: [[]],
+      password:["", [Validators.minLength(3)]],
       humanId: [""],
     });
     this.route.params.subscribe(async (params: any) => {
@@ -84,6 +86,7 @@ export class UserComponent {
           email: this.userToEdit.email,
           roles: this.userToEdit.roles,
           humanId: this.userToEdit.humanId || "",
+          password: ""
         });
       }
     });
@@ -94,18 +97,21 @@ export class UserComponent {
         "username": this.form.value.username,
         "email": this.form.value.email,
         "roles": this.form.value.roles,
-        "human": this.insert ? null : this.userToEdit.humanId
+        "human": this.insert ? null : this.userToEdit.humanId,
       }
-      if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
+      if (this.insert) {
+        if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
+        this.createUserInKeycloak(this.form.value.username, this.form.value.email, this.form.value.password);
+      };
       const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
       if (userResult) {
+        
         this._utilsService.showMessage("User's data was successfully updated", 2000, true);
         if (this.insert) {
           this.router.navigate(["/security"]);
         }
       }
     } catch (error: any) {
-      // console.log(error.error);
       const e:any = error.error.errors;
       console.log(e)
       if (e[0].name === 'ValidationError') {
@@ -116,6 +122,13 @@ export class UserComponent {
       }
     }
   }
+  
+  async createUserInKeycloak(username: string, email: string, password: string) {
+    const tokens: any = await this.usersService.getAccessTokens();
+    const user = await this.usersService.insertKeycloakUser(tokens.access_token, username, email, password);
+    console.log(user);
+  }
+
   async associateHuman(event: Event) {
     event.preventDefault();
     const userId: string = this.userToEdit.id ?? "";
@@ -136,23 +149,36 @@ export class UserComponent {
     return isValid ? null : { 'containsWhitespace': true };
   }
 
-  async validarUsuarioExistente(control: any) {
+  async validateIfUserExists(control: any) {
     const username = control.value;
     if (!username) {
       return null;
     }
-
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }
-
-
     return new Promise(resolve => {
-      // Configurar un nuevo timeout para ejecutar la validación después de 500 ms de inactividad
       this.timeoutId = setTimeout(async () => {
         const response: any = await this.usersService.getUsersByName(username);
         console.log(response);
         resolve(response.totalDocs === 0 ? null : { 'usernameExists': true });
+      }, 500);
+    });
+  }
+
+  async validateIfEmailExists(control: any) {
+    const email = control.value;
+    if (!email) {
+      return null;
+    }
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    return new Promise(resolve => {
+      this.timeoutId = setTimeout(async () => {
+        const response: any = await this.usersService.getUsersByEmail(email);
+        console.log(response);
+        resolve(response.totalDocs === 0 ? null : { 'emailExists': true });
       }, 500);
     });
   }
