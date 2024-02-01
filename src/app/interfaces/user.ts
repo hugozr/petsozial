@@ -8,4 +8,5 @@ export interface User {
     humanId?: string,
     humanName?: string,
     humanEmail?: string,
+    keycloakUserId?: string,
 }

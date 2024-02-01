@@ -100,8 +100,10 @@ export class UserComponent {
         "human": this.insert ? null : this.userToEdit.humanId,
       }
       if (this.insert) {
-        if (this.insert) user.password = environment.genericPassword;   //HZUMAETA Payload pide password
-        this.createUserInKeycloak(this.form.value.username, this.form.value.email, this.form.value.password);
+        user.password = environment.genericPassword;   //HZUMAETA Payload pide password
+        const usrKeycloak: any = await this.createUserInKeycloak(this.form.value.username, this.form.value.email, this.form.value.password);
+        console.log(usrKeycloak,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+        user.keycloakUserId = usrKeycloak.id;
       };
       const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
       if (userResult) {
@@ -125,8 +127,12 @@ export class UserComponent {
   
   async createUserInKeycloak(username: string, email: string, password: string) {
     const tokens: any = await this.usersService.getAccessTokens();
-    const user = await this.usersService.insertKeycloakUser(tokens.access_token, username, email, password);
-    console.log(user);
+    const response = await this.usersService.insertKeycloakUser(tokens.access_token, username, email, password);
+    if(response == "Created"){
+      const user = await this.usersService.queryKeycloakUser(tokens.access_token, "username=" + username);
+      return user;
+    }
+    return null;
   }
 
   async associateHuman(event: Event) {

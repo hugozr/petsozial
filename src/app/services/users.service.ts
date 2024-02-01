@@ -35,7 +35,7 @@ export class UsersService {
   clientId = environment.keycloakClientId;
   realm = environment.keycloakRealm;
 
-  constructor(private http: HttpClient, private _utilsServices: UtilsService) {}
+  constructor(private http: HttpClient, private _utilsServices: UtilsService) { }
 
   async getUsers(limit: number, page: number): Promise<User[]> {
     const url = `${this.backendURL}/api/users?sort=-createdAt&limit=${limit}&page=${page}`;
@@ -124,7 +124,6 @@ export class UsersService {
     return selectedLabels;
   }
 
-
   async getAccessTokens(): Promise<any> {
     const tokenPath = `${this.keycloakHost}/realms/${this.realm}/protocol/openid-connect/token`;
     const postData = {
@@ -153,8 +152,6 @@ export class UsersService {
     }
   }
 
-
-
   async insertKeycloakUser(token: string, newUserName: string, email: string, password: string): Promise<any> {
     try {
       const requestBody = {
@@ -169,16 +166,16 @@ export class UsersService {
           },
         ],
       };
-  
+
       const authHeader = { Authorization: `Bearer ${token}` };
-  
+
       const response = await axios.post(`${this.keycloakHost}/admin/realms/${this.realm}/users`, requestBody, {
         headers: {
           ...authHeader,
           'Content-Type': 'application/json',
         },
       });
-  
+
       console.log(response, "Usuario creado exitosamente.");
       return response.statusText;
     } catch (error) {
@@ -186,7 +183,24 @@ export class UsersService {
       throw error; // Puedes manejar el error de otra manera si es necesario
     }
   }
-  
+
+  async queryKeycloakUser(token: string, query: string): Promise<any> {
+    try {
+      const authHeader = { Authorization: `Bearer ${token}` };
+      const response: any = await axios.get(`${this.keycloakHost}/admin/realms/${this.realm}/users?${query}`, {
+        headers: {
+          ...authHeader,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response, "Usuario obtenido exitosamente.");
+      return response.data[0];
+    } catch (error) {
+      console.error('Error al crear el usuario:', error);
+      throw error; // Puedes manejar el error de otra manera si es necesario
+    }
+  }
+
   downloadFile(fileName: string) {
     this._utilsServices
       .downloadExcel(`${this.backendURL}/api/users/download-in-excel`)

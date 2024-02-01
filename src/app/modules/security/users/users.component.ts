@@ -141,9 +141,7 @@ export class UsersComponent implements OnInit {
   }
 
   async manageCredentials(element: any) {
-    // const tokens: any = await this.usersService.getAccessTokens();
-    // const user = await this.usersService.insertKeycloakUser(tokens.access_token, "hugoax", "1234");
-    // console.log(user);
+    
   }
 
   edit(element: any) {
