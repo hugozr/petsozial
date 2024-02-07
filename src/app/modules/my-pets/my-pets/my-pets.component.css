@@ -4,53 +4,49 @@
   }
   
   @media (min-width: 1200px) {
-    /* Si hay suficiente espacio, muestra 6 columnas */
     :host {
       grid-template-columns: repeat(5, 1fr);
     }
   }
   
   @media (max-width: 1199px) and (min-width: 900px) {
-    /* Si el espacio es moderado, muestra 4 columnas */
     :host {
       grid-template-columns: repeat(3, 1fr);
     }
   }
   
   @media (max-width: 899px) and (min-width: 600px) {
-    /* Si el espacio es más limitado, muestra 2 columnas */
     :host {
       grid-template-columns: repeat(2, 1fr);
     }
   }
   
   @media (max-width: 599px) {
-    /* Si el espacio es muy limitado, muestra 1 columna */
     :host {
       grid-template-columns: 1fr;
     }
   }
   
   app-pet-card {
-    width: 100%; /* Ancho del card en relación con la columna */
+    width: 100%; 
   }
     
   .custom-select {
-    border: 1px solid #ced4da; /* Color del borde */
-    border-radius: 4px; /* Bordes redondeados */
-    overflow: hidden; /* Evita que las esquinas de las opciones sobresalgan */
+    border: 1px solid #ced4da;
+    border-radius: 4px; 
+    overflow: hidden; 
     padding: 12px;
   }
   
   .mat-optgroup-label {
-    background-color: #f8f9fa; /* Color de fondo para las etiquetas de grupo */
-    padding: 8px; /* Espaciado interno para las etiquetas de grupo */
+    background-color: #f8f9fa;
+    padding: 8px;
   }
   
   .mat-option {
-    padding: 8px; /* Espaciado interno para las opciones */
+    padding: 8px;
   }
   
   .mat-optgroup {
-    border-bottom: 1px solid #ced4da; /* Línea entre grupos */
+    border-bottom: 1px solid #ced4da;
   }
