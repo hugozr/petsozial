@@ -12,8 +12,6 @@ import { WelcomeComponent } from '../panels/welcome/welcome.component';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { PortalService } from '../services/portal.service';
 import { AppOption } from '../interfaces/appOption';
-import { MyCommunitiesComponent } from '../panels/my-communities/my-communities.component';
-import { KeycloakService } from 'keycloak-angular';
 import { AuthService } from '../services/auth.service';
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
@@ -36,7 +34,6 @@ import { AuthService } from '../services/auth.service';
     RouterLink,
     RouterOutlet,
     CommonModule,
-    MyCommunitiesComponent
   ],
 })
 export class NavigationComponent {

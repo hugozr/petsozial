@@ -102,7 +102,6 @@ export class UserComponent {
       if (this.insert) {
         user.password = environment.genericPassword;   //HZUMAETA Payload pide password
         const usrKeycloak: any = await this.createUserInKeycloak(this.form.value.username, this.form.value.email, this.form.value.password);
-        console.log(usrKeycloak,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
         user.keycloakUserId = usrKeycloak.id;
       };
       const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
