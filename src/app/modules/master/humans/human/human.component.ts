@@ -110,6 +110,7 @@ export class HumanComponent {
       const lector = new FileReader();
       lector.onload = async () => {
         if(!this.insert){
+          console.log(archivo, "veeeeeeeeeeeeeeeeeee");
           const media: any  = {file: archivo, alt: this.humanToEdit.name, objId:this.humanToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
           const updatedHuman = await this.humansService.patchHuman(this.humanToEdit.id,{"humanImage": uploadedFile.doc.id});
@@ -124,6 +125,3 @@ export class HumanComponent {
   }
   
 }
-
-
-

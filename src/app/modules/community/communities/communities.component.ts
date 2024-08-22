@@ -130,6 +130,11 @@ export class CommunitiesComponent implements OnInit {
     }
   }
 
+  onRowClick(row: any) {
+    console.log(row); // prints the data for the clicked row
+    // perform any other actions you want when a row is clicked
+  }
+  
   edit(element: any) {
     this.router.navigate(['/community/community/', element.id]);
   }

@@ -13,6 +13,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { PortalService } from '../services/portal.service';
 import { AppOption } from '../interfaces/appOption';
 import { AuthService } from '../services/auth.service';
+import { UsersService } from '../services/users.service';
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
 //TODO: Investigar multiselect
@@ -47,6 +48,7 @@ export class NavigationComponent {
   constructor(
     private portalService: PortalService,
     private _authService: AuthService,
+    private usersService: UsersService,
     ) { }
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -61,9 +63,11 @@ export class NavigationComponent {
     this.loadOptions();
   }
 
-  initLogged(){
+  async initLogged(){
     if (this._authService.isLoggedIn()) {
       this.userName = this._authService.getUserName();
+      console.log(this._authService.getUserId(), "user id debo buscar y si no hay, debo crearlo");
+      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserId(), this._authService.getUserName(), this._authService.getUserEmail());
     }
   }
 

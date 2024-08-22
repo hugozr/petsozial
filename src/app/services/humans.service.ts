@@ -4,6 +4,7 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HealthService } from '../interfaces/healthService';
 import { Human } from '../interfaces/human';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,10 @@ import { Human } from '../interfaces/human';
 export class HumansService {
   backendURL = environment.backendPetZocialURL;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private _utilsServices: UtilsService,
+    ) {}
 
   async getHumans(limit: number, page: number): Promise<Human[]> {
     const url = `${this.backendURL}/api/humans?sort=-createdAt&limit=${limit}&page=${page}`;
@@ -39,7 +43,10 @@ export class HumansService {
   }
 
   async getHumansByEmail(email: string): Promise<any> {
+    console.log(email, "antes del error");
     const humans: any = await lastValueFrom(this.http.get<any>(`${this.backendURL}/api/humans/${email}/by-email`)); 
+    console.log(humans, "despues del error");
+
     return humans;
   }
 
@@ -63,5 +70,11 @@ export class HumansService {
   //En este sector vamos a incluir las operaciones de los humanos con las mascotas
   async assignHumanToPet(humanId: string, petId: string): Promise<Human> {
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/humans/${humanId}/assigned-to/${petId}`, null));
+  }
+  
+  downloadFile(fileName: string){
+    this._utilsServices.downloadExcel(`${this.backendURL}/api/humans/download-in-excel`).subscribe(response => {
+      this._utilsServices.saveFile(response.body, fileName);
+    });
   }
 }

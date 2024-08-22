@@ -4,12 +4,21 @@
       <span>Humans</span>
       <span class="spacer"></span>
       <button mat-raised-button color="primary" routerLink="/master/human">Add</button>
+      <button mat-raised-button color="primary" style="margin-left: 10px;" (click)="massiveAdd()">Massive add</button>
     </mat-toolbar>
-  
-      <mat-form-field appearance="outline">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Filtering by..." #input>
-      </mat-form-field>
+          
+      <div style="display: flex; align-items: center;">
+        <mat-form-field appearance="outline">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtering by..." #input>
+        </mat-form-field>
+        <div class="button-container"  style="padding-bottom: 25px;">
+          <button mat-fab class="custom-green-button" (click)="downloadFile()">
+            <mat-icon>download</mat-icon>
+          </button>
+        </div>
+      </div>
+
       <div [hidden]="humans.length == 0">
         <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>

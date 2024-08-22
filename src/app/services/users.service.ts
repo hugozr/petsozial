@@ -38,7 +38,7 @@ export class UsersService {
   constructor(private http: HttpClient, private _utilsServices: UtilsService) { }
 
   async getUsers(limit: number, page: number): Promise<User[]> {
-    const url = `${this.backendURL}/api/users?sort=-createdAt&limit=${limit}&page=${page}`;
+    const url = `${this.backendURL}/api/app-users?sort=-createdAt&limit=${limit}&page=${page}`;
     const users: any = await lastValueFrom(this.http.get<User[]>(url));
     return users;
   }
@@ -50,52 +50,52 @@ export class UsersService {
       page,
     };
     return await lastValueFrom(
-      this.http.put(`${this.backendURL}/api/users/filter-me`, body)
+      this.http.put(`${this.backendURL}/api/app-users/filter-me`, body)
     );
   }
 
   async updateCommunity(userId: string, body: any): Promise<any> {
     return await lastValueFrom(
       this.http.put(
-        `${this.backendURL}/api/users/${userId}/community-update`,
+        `${this.backendURL}/api/app-users/${userId}/community-update`,
         body
       )
     );
   }
 
   async getUsersByName(username: string): Promise<User[]> {
-    const url = `${this.backendURL}/api/users/${username}/users-by-name`;
+    const url = `${this.backendURL}/api/app-users/${username}/users-by-name`;
     const users: any = await lastValueFrom(this.http.get<User[]>(url));
     return users;
   }
 
   async getUsersByEmail(email: string): Promise<User[]> {
-    const url = `${this.backendURL}/api/users/${email}/users-by-email`;
+    const url = `${this.backendURL}/api/app-users/${email}/users-by-email`;
     const users: any = await lastValueFrom(this.http.get<User[]>(url));
     return users;
   }
   async getUser(id: string): Promise<User> {
     const user: any = await lastValueFrom(
-      this.http.get<User[]>(`${this.backendURL}/api/users/${id}`)
+      this.http.get<User[]>(`${this.backendURL}/api/app-users/${id}`)
     );
     return user;
   }
 
   async insertUser(user: User): Promise<User> {
     return await lastValueFrom(
-      this.http.post<User>(`${this.backendURL}/api/users/`, user)
+      this.http.post<User>(`${this.backendURL}/api/app-users/`, user)
     );
   }
 
   async updateUser(id: any, user: User): Promise<User> {
     return await lastValueFrom(
-      this.http.put<User>(`${this.backendURL}/api/users/${id}`, user)
+      this.http.put<User>(`${this.backendURL}/api/app-users/${id}`, user)
     );
   }
 
   async patchUser(id: any, userData: any): Promise<User> {
     const user = await lastValueFrom(
-      this.http.patch<User>(`${this.backendURL}/api/users/${id}`, userData)
+      this.http.patch<User>(`${this.backendURL}/api/app-users/${id}`, userData)
     );
     return user;
   }
@@ -104,14 +104,25 @@ export class UsersService {
   async associateUserToHuman(userId?: string): Promise<any> {
     return await lastValueFrom(
       this.http.post<User>(
-        `${this.backendURL}/api/users/${userId}/associate`,
+        `${this.backendURL}/api/app-users/${userId}/associate`,
         null
       )
     );
   }
 
+  async syncronizeWithAppUser(keycloakUserId: string, keycloakUserName: string, keycloakEmail: string){
+    console.log(keycloakUserId,keycloakUserName, keycloakEmail);
+    const keycloakUserData = {
+      keycloakUserId,
+      keycloakUserName, 
+      keycloakEmail};
+    return await lastValueFrom(
+      this.http.post<any>(`${this.backendURL}/api/app-users/sync-to-app-user`, keycloakUserData)
+    );
+  }
+
   deleteUser(id: string): Observable<User> {
-    return this.http.delete<User>(`${this.backendURL}/api/users/${id}`);
+    return this.http.delete<User>(`${this.backendURL}/api/app-users/${id}`);
   }
 
   getRoles(): any {
@@ -203,7 +214,7 @@ export class UsersService {
 
   downloadFile(fileName: string) {
     this._utilsServices
-      .downloadExcel(`${this.backendURL}/api/users/download-in-excel`)
+      .downloadExcel(`${this.backendURL}/api/app-users/download-in-excel`)
       .subscribe((response) => {
         this._utilsServices.saveFile(response.body, fileName);
       });

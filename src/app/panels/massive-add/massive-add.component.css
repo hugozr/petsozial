@@ -1,0 +1,14 @@
+.selected-file {
+    margin: 10px;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+  }
+
+.upload-button {
+    /* background-color: #4CAF50; 
+    color: white;  */
+    margin: 10px;
+    padding: 10px;
+
+}

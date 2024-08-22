@@ -38,6 +38,19 @@ export class UtilsService {
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/media`, formData));
   }
   
+  async uploadExcelFile(mediaData: any): Promise<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/*'
+      })
+    };
+    const formData = new FormData();
+    formData.append('file', mediaData.file);
+    formData.append('name', mediaData.name);
+    formData.append('username', mediaData.username);
+    return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/excels`, formData));
+  }
+  
   search(array: any, searchKey: string, returnKey: string, identifier: string) {
     const result = array.find((item: any) => item[searchKey] === identifier);
     return result ? result[returnKey] || '' : '';

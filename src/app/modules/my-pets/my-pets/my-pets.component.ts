@@ -8,7 +8,6 @@ import { UtilsService } from '../../../services/utils.service';
 import { AuthService } from '../../../services/auth.service';
 import { HumansService } from '../../../services/humans.service';
 import { CommunitiesService } from '../../../services/communities.service';
-import { flatMap } from 'lodash';
 import { UsersService } from '../../../services/users.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -104,6 +103,7 @@ export class MyPetsComponent {
     const userEmail = this._authService.getUserEmail();
     if (userEmail == undefined) return;
     const humans: any = await this.humansService.getHumansByEmail(userEmail);
+    if (humans.length == 0) return;
     const humanId = humans[0].id
     const pets: any = await this.petsService.filterPetsByHumanId(pageSize, page, filter, humanId);
     if (pets === null) {

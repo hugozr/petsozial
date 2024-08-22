@@ -31,6 +31,12 @@ export class AuthService {
     return undefined;
   }
 
+  getUserId (){
+    const keycloakInstance = this.getInstance();
+    if (keycloakInstance.tokenParsed) return keycloakInstance.tokenParsed!['sid']; 
+    return undefined;
+  }
+
   getUserEmail (){
     const keycloakInstance = this.getInstance();
     if (keycloakInstance.tokenParsed) return keycloakInstance.tokenParsed!['email']; 

@@ -16,6 +16,7 @@ import { UtilsService } from '../../../services/utils.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HumansService } from '../../../services/humans.service';
+import { MassiveAddComponent } from '../../../panels/massive-add/massive-add.component';
 
 @Component({
   selector: 'app-humans',
@@ -135,5 +136,19 @@ export class HumansComponent implements OnInit {
 
   goToLoation(element: any){
     this.router.navigate(['/locations'], { queryParams: { human: element.id } });
+  }
+  downloadFile(){
+    this.humansService.downloadFile("humans.xlsx");
+  }
+  massiveAdd(){
+    const dialogRef = this.dialog.open(MassiveAddComponent, {
+      width: '400px',
+      height: "300px",
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
+    });
   }
 }

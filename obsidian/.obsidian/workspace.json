@@ -25,8 +25,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Usuarios/Listar usuarios.md",
-                "mode": "source",
+                "file": "Generalidades/Presentación.md",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -37,14 +37,14 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Conceptos/mascotas.md",
+                "file": "Conceptos/usuarios.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Conceptos/mascotas.md",
+                "file": "Generalidades/Presentación.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Conceptos/mascotas.md",
+                "file": "Generalidades/Presentación.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Conceptos/mascotas.md"
+                "file": "Generalidades/Presentación.md"
               }
             }
           }
@@ -171,41 +171,44 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "161b4ab17580fe65",
+  "active": "64c3b159a8a1f403",
   "lastOpenFiles": [
+    "Generalidades/~$anual1.docx",
+    "Generalidades/manual1.docx",
+    "Humanos/Crear un humano.md",
+    "Mascotas/Crear una mascota.md",
+    "Mascotas/Listar mascotas.md",
+    "Generalidades/Presentación.md",
+    "manual.pdf",
+    "Conceptos/Petzo.md",
+    "Conceptos/mascotas.md",
+    "Conceptos/humanos.md",
+    "Conceptos/administrador.md",
+    "Usuarios/Listar usuarios.md",
+    "Untitled.canvas",
     "Usuarios/Crear un usuario.md",
+    "Conceptos/usuarios.md",
+    "Veterinarias/Modificar una veterinaria.md",
+    "Veterinarias/vet add.png",
+    "Veterinarias/Listar veterinarias.md",
+    "Veterinarias/Crear una veterinaria.md",
+    "Conceptos/veterinarias.md",
+    "Mascotas/pet upd.png",
+    "Mascotas/pet list.png",
+    "Mascotas/pet add.png",
     "Usuarios/user add val.png",
     "Usuarios/user add.png",
-    "Usuarios/Listar usuarios.md",
-    "Veterinarias/Listar veterinarias.md",
     "Usuarios/user list.png",
-    "Conceptos/usuarios.md",
-    "Veterinarias/Crear una veterinaria.md",
     "Usuarios",
-    "Untitled.canvas",
     "Untitled 1.canvas",
     "2024-01-30.md",
-    "Conceptos/administrador.md",
-    "Conceptos/Petzo.md",
-    "Mascotas/Listar mascotas.md",
-    "Veterinarias/Modificar una veterinaria.md",
     "Veterinarias/vet list.png",
-    "Veterinarias/vet add.png",
     "Veterinarias/vet upd.png",
-    "Mascotas/Crear una mascota.md",
-    "Conceptos/veterinarias.md",
     "Veterinarias",
-    "Generalidades/Presentación.md",
     "Humanos/human upd01.png",
     "Humanos/Modificar un humano.md",
-    "Conceptos/humanos.md",
-    "Humanos/human upd.png",
-    "Humanos/human add.png",
     "Humanos/Listar humanos.md",
-    "Humanos/Crear un humano.md",
-    "Conceptos/mascotas.md",
     "Conceptos",
-    "Humanos/human list.png",
     "Humanos",
     "Generalidades/Petzocial.md",
     "Generalidades",

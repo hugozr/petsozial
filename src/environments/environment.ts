@@ -9,7 +9,7 @@ export const environment = {
     keycloakRealm: 'petzocial',
     keycloakClientId: 'petzocial',
     adminUsername: "hzumaeta",
-    adminPassword: "1234",
+    adminPassword: "123",
     LATITUDE_PATTERN: /^([-+])?([1-8]?\d(\.\d+)?|90(\.0+)?)$/,
     LONGITUDE_PATTERN: /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/
 }
