@@ -67,7 +67,7 @@ export class NavigationComponent {
     if (this._authService.isLoggedIn()) {
       this.userName = this._authService.getUserName();
       console.log(this._authService.getUserId(), "user id debo buscar y si no hay, debo crearlo");
-      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserId(), this._authService.getUserName(), this._authService.getUserEmail());
+      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserKeycloakId(), this._authService.getUserName(), this._authService.getUserEmail());
     }
   }
 

@@ -1,0 +1,30 @@
+<h3 style="margin-left: 30px;">{{vetData.name}}</h3>
+<div class="transfer-container">
+  <mat-card>
+    <mat-card-title class="sticky-title">Available services</mat-card-title>
+    <mat-list class="scrollable-list">
+      <mat-list-item *ngFor="let service of availableServices">
+        <div class="option-content">
+          <span>{{ service.name }}</span>
+          <button mat-icon-button (click)="addOption(service)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title class="sticky-title">Selected services</mat-card-title>
+    <mat-list class="scrollable-list">
+      <mat-list-item *ngFor="let selected of selectedServices">
+        <div class="option-content">
+          <span>{{ selected.serviceName }}</span>
+          <button mat-icon-button (click)="removeOption(selected.id)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

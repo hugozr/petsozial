@@ -32,12 +32,12 @@ export class HealthServicesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-
   ngOnInit(): void {
     this.loadHealthServices();
   }
+
   async loadHealthServices() {
-    const data: any = await this.vetsService.getHealthService();
+    const data: any = await this.vetsService.getHealthServices();
     this.healtServices = [];
     data.map((elem: any) => {
       this.healtServices.push({

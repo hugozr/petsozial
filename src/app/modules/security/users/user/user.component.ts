@@ -16,6 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HumanCardComponent } from '../../../master/humans/human-card/human-card.component';
 import { environment } from '../../../../../environments/environment';
 import { debounceTime } from 'rxjs';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
   selector: 'app-user',
@@ -50,26 +51,30 @@ export class UserComponent {
   private timeoutId: any;
   constructor(
     private usersService: UsersService,
+    private settingsService: SettingsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
   ) {
+    this.form = this.formBuilder.group({
+        username: ["", 
+        [Validators.required, this.noWhitespaceValidator],
+        [this.validateIfUserExists.bind(this)]
+      ],
+        email: ["", [Validators.required, Validators.email],
+        [this.validateIfEmailExists.bind(this)]],
+        roles: [[]],
+        password:["", [Validators.minLength(3)]],
+        humanId: [""],
+      });
   }
 
-  ngOnInit(): void {
-    this.roles = this.usersService.getRoles();
-    this.form = this.formBuilder.group({
-      username: ["", 
-      [Validators.required, this.noWhitespaceValidator],
-      [this.validateIfUserExists.bind(this)]
-    ],
-      email: ["", [Validators.required, Validators.email],
-      [this.validateIfEmailExists.bind(this)]],
-      roles: [[]],
-      password:["", [Validators.minLength(3)]],
-      humanId: [""],
-    });
+  async ngOnInit(): Promise<void> {
+    // this.roles = this.usersService.getRoles();
+    const settings:any = await this.settingsService.getSettings();
+    this.roles = settings.roles;
+
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
@@ -105,8 +110,8 @@ export class UserComponent {
         user.keycloakUserId = usrKeycloak.id;
       };
       const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
+      console.log("actualizar roles en Keyloak",this.form.value.roles,this.roles );
       if (userResult) {
-        
         this._utilsService.showMessage("User's data was successfully updated", 2000, true);
         if (this.insert) {
           this.router.navigate(["/security"]);

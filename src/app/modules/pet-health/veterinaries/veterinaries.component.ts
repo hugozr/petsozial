@@ -17,6 +17,7 @@ import { VetsService } from '../../../services/vets.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HealthServicesComponent } from '../health-services/health-services.component';
+import { VetServicesComponent } from '../vet-services/vet-services.component';
 
 @Component({
   selector: 'app-veterinaries',
@@ -130,9 +131,10 @@ export class VeterinariesComponent implements OnInit {
     this.router.navigate(['/pet-health/veterinary/', element.id]);
   }
 
-  healthServices(element: any) {
-    const dialogRef = this.dialog.open(HealthServicesComponent, {
-      width: '800px', // Ajusta el ancho según tus necesidades
+  vetServices(element: any) {
+    // healthServices(element: any) {
+    const dialogRef = this.dialog.open(VetServicesComponent, {
+      width: '1200px', // Ajusta el ancho según tus necesidades
       height: "500px",
       data: element, // Puedes pasar cualquier dato que necesites al modal
     });

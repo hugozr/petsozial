@@ -17,8 +17,7 @@ import { UsersService } from '../../../services/users.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SelectCommunitiesComponent } from './select-communities/select-communities.component';
-
-
+import { SettingsService } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-users',
@@ -62,15 +61,19 @@ export class UsersComponent implements OnInit {
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
+  roles: any = null;
 
   constructor(
     private usersService: UsersService,
     private _utilsService: UtilsService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public settingsService: SettingsService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const settings: any = await this.settingsService.getSettings();
+    this.roles = settings.roles; 
     this.loadUsers(this.pageSize, 0);
   }
 
@@ -80,19 +83,24 @@ export class UsersComponent implements OnInit {
   }
 
   fillUserTable(data: any) {
+
     this.users = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.human?.humanImage?.sizes?.thumbnail?.url;
-      this.users.push({
+      const filledUser: any = {
         id: elem.id,
         username: elem.username,
         name: elem.human ? elem.human.name : null,    //HZUMAETA: Si existe humano registrado va, sino no va
-        roles: this.usersService.getRoleLabels(elem.roles),
+        // roles: this.usersService.getRoleLabels(elem.roles),
+        roles: this.usersService.getRoleLabels(elem.roles, this.roles),
         email: elem.email,
         communities: elem.communities,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
-      });
+      };
+      console.log(filledUser, "tiene el arrreglo?");
+      this.users.push(filledUser);
     });
+    console.log(this.users, "bacion?");
     this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.sort = this.sort;
 

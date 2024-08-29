@@ -6,23 +6,28 @@ import { environment } from '../../environments/environment';
 import { UtilsService } from './utils.service';
 import axios, { AxiosResponse } from 'axios';
 import * as querystring from 'querystring';
+import { PortalService } from './portal.service';
 
 const roles = [
   {
     label: 'I belong to a pet',
     value: 'ibtap',
+    keycloakGroup: 'petzocial.humans'
   },
   {
     label: 'I care about the health of pets',
     value: 'icahp',
+    keycloakGroup: 'petzocial.pet-vets'
   },
   {
     label: 'I take care of pets',
     value: 'itkp',
+    keycloakGroup: 'petzocial.pet-caretakers'
   },
   {
     label: 'I manage a community of pets',
     value: 'imcp',
+    keycloakGroup: 'petzocial.pet-communities'
   },
 ];
 
@@ -34,8 +39,13 @@ export class UsersService {
   keycloakHost = environment.keycloakHost;
   clientId = environment.keycloakClientId;
   realm = environment.keycloakRealm;
+  // roles: any =[];
 
-  constructor(private http: HttpClient, private _utilsServices: UtilsService) { }
+  constructor(
+    private http: HttpClient, 
+    private _utilsServices: UtilsService,
+  ) { 
+  }
 
   async getUsers(limit: number, page: number): Promise<User[]> {
     const url = `${this.backendURL}/api/app-users?sort=-createdAt&limit=${limit}&page=${page}`;
@@ -110,12 +120,13 @@ export class UsersService {
     );
   }
 
-  async syncronizeWithAppUser(keycloakUserId: string, keycloakUserName: string, keycloakEmail: string){
+  async syncronizeWithAppUser(keycloakUserId: any, keycloakUserName: any, keycloakEmail: any){
     console.log(keycloakUserId,keycloakUserName, keycloakEmail);
     const keycloakUserData = {
       keycloakUserId,
       keycloakUserName, 
       keycloakEmail};
+      console.log(keycloakUserData, "ver los datos que voy a enviar");
     return await lastValueFrom(
       this.http.post<any>(`${this.backendURL}/api/app-users/sync-to-app-user`, keycloakUserData)
     );
@@ -128,10 +139,19 @@ export class UsersService {
   getRoles(): any {
     return roles;
   }
-  getRoleLabels(values: string[]) {
+
+  // async getRoleLabels(values: string[]) {
+  //   const selectedLabels = roles
+  //     .filter((role) => values.includes(role.value))
+  //     .map((role) => role.label);
+  //   return selectedLabels;
+  // }
+
+  getRoleLabels(values: string[], roles: any) {
+    // console.log(roles, "que hay?");
     const selectedLabels = roles
-      .filter((role) => values.includes(role.value))
-      .map((role) => role.label);
+      .filter((role:any) => values.includes(role.value))
+      .map((role: any) => role.label);
     return selectedLabels;
   }
 
@@ -186,8 +206,6 @@ export class UsersService {
           'Content-Type': 'application/json',
         },
       });
-
-      console.log(response, "Usuario creado exitosamente.");
       return response.statusText;
     } catch (error) {
       console.error('Error al crear el usuario:', error);
@@ -195,6 +213,23 @@ export class UsersService {
     }
   }
 
+  async assignRoleToKeycloakUser(token: string, keycloakUserId: string, email: string, password: string): Promise<any> {
+    try {
+
+      const authHeader = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.post(`${this.keycloakHost}/admin/realms/${this.realm}/users`, {}, {
+        headers: {
+          ...authHeader,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.statusText;
+    } catch (error) {
+      console.error('Error al crear el usuario:', error);
+      throw error; // Puedes manejar el error de otra manera si es necesario
+    }
+  }
   async queryKeycloakUser(token: string, query: string): Promise<any> {
     try {
       const authHeader = { Authorization: `Bearer ${token}` };

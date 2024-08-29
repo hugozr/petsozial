@@ -12,6 +12,7 @@ import { UtilsService } from './utils.service';
 })
 export class VetsService {
   backendURL = environment.backendPetZocialURL;
+  backendHealthURL = environment.backendPetZocialHealthURL;
 
   constructor(
     private http: HttpClient,
@@ -38,7 +39,7 @@ export class VetsService {
     return types.docs;
   }
 
-  async getHealthService(): Promise<HealthService[]> {
+  async getHealthServices(): Promise<HealthService[]> {
     const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=0`)); 
     return healthService.docs;
   }
@@ -69,5 +70,20 @@ export class VetsService {
     this._utilsServices.downloadExcel(`${this.backendURL}/api/vets/download-in-excel`).subscribe(response => {
       this._utilsServices.saveFile(response.body, fileName);
     });
+  }
+
+  async setHealthServices(vetId: any, vetSericeData: any): Promise<any> {
+    const services = await lastValueFrom(this.http.post<any>(`${this.backendHealthURL}/api/vet-services/${vetId}/set-service`, vetSericeData));
+    return services;
+  }
+
+  async unsetHealthServices(vetServiceId: string): Promise<any> {
+    const deleteService = await lastValueFrom(this.http.delete<any>(`${this.backendHealthURL}/api/vet-services/${vetServiceId}`));
+    return deleteService;
+  }
+
+  async getVetServices(vetId: any): Promise<any> {
+    const vetServices = await lastValueFrom(this.http.get<any>(`${this.backendHealthURL}/api/vet-services/${vetId}/by-vet-id`));
+    return vetServices;
   }
 }
