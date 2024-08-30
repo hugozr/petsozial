@@ -7,7 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +22,7 @@ import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HealthServicesComponent } from '../health-services/health-services.component';
 import { VetServicesComponent } from '../vet-services/vet-services.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-veterinaries',
@@ -35,10 +40,10 @@ import { VetServicesComponent } from '../vet-services/vet-services.component';
     MatSortModule,
     MatSnackBarModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './veterinaries.component.html',
-  styleUrl: './veterinaries.component.css'
+  styleUrl: './veterinaries.component.css',
 })
 export class VeterinariesComponent implements OnInit {
   displayedColumns: string[] = [
@@ -62,13 +67,15 @@ export class VeterinariesComponent implements OnInit {
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
+  userName!: string;
 
   constructor(
     private vetsService: VetsService,
     private _utilsService: UtilsService,
+    private _authService: AuthService,
     private router: Router,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadVets(this.pageSize, 0);
@@ -79,7 +86,7 @@ export class VeterinariesComponent implements OnInit {
     this.fillVetTable(data);
   }
 
-  fillVetTable(data: any){
+  fillVetTable(data: any) {
     this.vets = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.vetImage?.sizes?.thumbnail?.url;
@@ -91,7 +98,7 @@ export class VeterinariesComponent implements OnInit {
         address: elem.address,
         phone: elem.phone,
         url: elem.url,
-        thumbnail: imagePath ? (this.backendURL + imagePath) : null
+        thumbnail: imagePath ? this.backendURL + imagePath : null,
       });
     });
     this.dataSource = new MatTableDataSource(this.vets);
@@ -103,27 +110,35 @@ export class VeterinariesComponent implements OnInit {
   pageChanged(event: PageEvent) {
     this.loadVets(event.pageSize, event.pageIndex + 1);
   }
-  
+
   applyFilter(event: Event) {
     //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    const miliSecondsToWait = 500; 
+    const miliSecondsToWait = 500;
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
-        this.filter(filterValue);
+      this.filter(filterValue);
     }, miliSecondsToWait);
   }
 
   async filter(filter: string) {
-    const data: any = await this.vetsService.filterVets(this.pageSize, 0, filter);
+    const data: any = await this.vetsService.filterVets(
+      this.pageSize,
+      0,
+      filter
+    );
     this.fillVetTable(data);
   }
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    this.loadVets(this.pageSize, 0); 
+    this.loadVets(this.pageSize, 0);
     if (deleted) {
-      this._utilsService.showMessage("Vet record successfully deleted",2000,true);
+      this._utilsService.showMessage(
+        'Vet record successfully deleted',
+        2000,
+        true
+      );
     }
   }
 
@@ -135,21 +150,32 @@ export class VeterinariesComponent implements OnInit {
     // healthServices(element: any) {
     const dialogRef = this.dialog.open(VetServicesComponent, {
       width: '1200px', // Ajusta el ancho según tus necesidades
-      height: "500px",
+      height: '500px',
       data: element, // Puedes pasar cualquier dato que necesites al modal
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('Modal cerrado:', result);
       // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
     });
   }
 
-  goToLoation(element: any){
+  goToLoation(element: any) {
     this.router.navigate(['/locations'], { queryParams: { vet: element.id } });
   }
 
-  downloadFile(){
-    this.vetsService.downloadFile("veterinaries.xlsx");
+  downloadFile() {
+    this.vetsService.downloadFile('veterinaries.xlsx');
+  }
+
+  addVet() {
+    this.userName = this._authService.getUserName();
+    if (this.userName) {
+      this.router.navigate(['/pet-health/veterinary']);
+    } else {
+      if (confirm('You need to be logged in. Will you log in?')) {
+        this._authService.login();
+      }
+    }
   }
 }

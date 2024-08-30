@@ -9,4 +9,5 @@ export interface Vet {
     url?: string,
     vetImage?: any,
     coordinates?: any,
+    kcUserName: string
 }

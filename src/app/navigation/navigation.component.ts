@@ -41,7 +41,7 @@ export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
   appOptions: AppOption[] = [];
 
-  userLoggedIn = false;
+  // userLoggedIn = false;
   tokenParsed: any;
   userName!: string;
 

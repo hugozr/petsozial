@@ -51,7 +51,7 @@ export class CommunityComponent {
   {
     label: 'Private',
     value: 'private',
-    disabled: !this._authService.hasRole("realm-pet-shop")  //HZUMAETA: Solo puede crear comunidades de modalidad privada si tiene rol de pet-shop
+    disabled: !this._authService.hasRole("realm-role-pet-health")  //HZUMAETA: Solo puede crear comunidades de modalidad privada si tiene rol de pet-shop
   }]; 
 
   types: any = [];
@@ -71,17 +71,6 @@ export class CommunityComponent {
     private _authService: AuthService,
     private usersService: UsersService,
   ) {
-  }
-
-  async ngAfterViewInit(){
-    //HZUMAETA Traigo al usuario para que el Id lo matricule como creador de la comunidad
-    const email = this._authService.getUserEmail();
-    const userKc: any = await this.usersService.getUsersByEmail(email);
-    if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
-  }
-
-  async ngOnInit(): Promise<void> {
-
     const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
       this.LATITUDE_PATTERN,
       'Enter a valid latitude.',
@@ -105,6 +94,22 @@ export class CommunityComponent {
       lng: ["", [Validators.required, Validators.compose([Validators.pattern(this.LONGITUDE_PATTERN), lngValidator])]],
       image: [this.loadMyPicture]
     });
+
+  }
+
+  async ngAfterViewInit(){
+    //HZUMAETA Traigo al usuario para que el Id lo matricule como creador de la comunidad
+    const email = this._authService.getUserEmail();
+    const userKc: any = await this.usersService.getUsersByEmail(email);
+    if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
+  }
+
+  async ngOnInit(): Promise<void> {
+
+    if(!this._authService.isLoggedIn()){
+      this.router.navigate(['/community']);
+      return;
+    }
 
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
@@ -141,6 +146,7 @@ export class CommunityComponent {
       "url": this.myForm.value.url,
       "type": this.myForm.value.type,
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
+      "kcUserName": this._authService.getUserName()
     }
     if(this.insert){
       //HZUMAETA El creador solo se pone en la inserción NO en la edición

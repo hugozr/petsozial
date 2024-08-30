@@ -16,6 +16,7 @@ import { environment } from '../../../../../environments/environment';
 import { Vet } from '../../../../interfaces/vet';
 import { VetsService } from '../../../../services/vets.service';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-veterinary',
@@ -57,13 +58,8 @@ export class VeterinaryComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
+    private _authService: AuthService,
   ) {
-  }
-
-  async ngAfterViewInit() {
-    
-  }
-  async ngOnInit(): Promise<void> {
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],
       comment: [""],
@@ -74,6 +70,18 @@ export class VeterinaryComponent {
       email: ["", [Validators.required, Validators.email]],
       image: [this.loadMyPicture]
     });
+
+  }
+
+  async ngAfterViewInit() {
+    
+  }
+
+  async ngOnInit(): Promise<void> {
+    if(!this._authService.isLoggedIn()){
+      this.router.navigate(['/pet-health']);
+      return;
+    }
 
     //HZUMAETA: Tiene que ir aca sino sale un error.
     this.vetTypes = await this.vetsService.getVetTypes();
@@ -106,6 +114,7 @@ export class VeterinaryComponent {
       "email": this.myForm.value.email,
       "url": this.myForm.value.url,
       "vetType": this.myForm.value.vetType,
+      "kcUserName": this._authService.getUserName()
     }
     const vetResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
     if (vetResult) {

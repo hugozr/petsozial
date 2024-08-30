@@ -81,8 +81,8 @@ export class CommunitiesComponent implements OnInit {
     const data: any = await this.communitiesService.getCommunities(pageSize, page);
     this.fillCommunityTable(data);
   }
-  
-  fillCommunityTable(data: any){
+
+  fillCommunityTable(data: any) {
     this.communities = [];
     data.docs.map((elem: any) => {
       const imagePath = elem.communityImage?.sizes?.thumbnail?.url;
@@ -102,31 +102,31 @@ export class CommunitiesComponent implements OnInit {
     this.totalRows = data.totalDocs;
     this.pageSize = data.limit;
   }
-  
+
   pageChanged(event: PageEvent) {
     this.loadCommunities(event.pageSize, event.pageIndex + 1);
   }
-  
+
   applyFilter(event: Event) {
     //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    const miliSecondsToWait = 500; 
+    const miliSecondsToWait = 500;
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
-        this.filter(filterValue);
+      this.filter(filterValue);
     }, miliSecondsToWait);
- }
+  }
 
   async filter(filter: string) {
     const data: any = await this.communitiesService.filterCommunities(this.pageSize, 0, filter);
     this.fillCommunityTable(data);
   }
-  
+
   async delete(element: any) {
     const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
-    this.loadCommunities(this.pageSize, 0); 
+    this.loadCommunities(this.pageSize, 0);
     if (deleted) {
-      this._utilsService.showMessage("Community record successfully deleted",2000,true);
+      this._utilsService.showMessage("Community record successfully deleted", 2000, true);
     }
   }
 
@@ -134,16 +134,27 @@ export class CommunitiesComponent implements OnInit {
     console.log(row); // prints the data for the clicked row
     // perform any other actions you want when a row is clicked
   }
-  
+
   edit(element: any) {
     this.router.navigate(['/community/community/', element.id]);
   }
 
-  goToLoation(element: any){
+  goToLoation(element: any) {
     this.router.navigate(['/locations'], { queryParams: { community: element.id } });
   }
-  goToPetMembers(element: any){
-    this.router.navigate(['/community/pet-members', element.id ]);
+  goToPetMembers(element: any) {
+    this.router.navigate(['/community/pet-members', element.id]);
   }
-  
+  addCommunity() {
+    // this.userName = this._authService.getUserName();
+    if (this.userName) {
+      this.router.navigate(['/community/community']);
+    } else {
+      if (confirm('You need to be logged in. Will you log in?')) {
+        this._authService.login();
+      }
+    }
+  }
 }
+  
+
