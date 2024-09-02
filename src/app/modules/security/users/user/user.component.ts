@@ -15,7 +15,6 @@ import { User } from '../../../../interfaces/user';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HumanCardComponent } from '../../../master/humans/human-card/human-card.component';
 import { environment } from '../../../../../environments/environment';
-import { debounceTime } from 'rxjs';
 import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
@@ -58,21 +57,21 @@ export class UserComponent {
     private _utilsService: UtilsService,
   ) {
     this.form = this.formBuilder.group({
-        username: ["", 
+      username: ["",
         [Validators.required, this.noWhitespaceValidator],
         [this.validateIfUserExists.bind(this)]
       ],
-        email: ["", [Validators.required, Validators.email],
+      email: ["", [Validators.required, Validators.email],
         [this.validateIfEmailExists.bind(this)]],
-        roles: [[]],
-        password:["", [Validators.minLength(3)]],
-        humanId: [""],
-      });
+      roles: [[]],
+      password: ["", [Validators.minLength(3)]],
+      humanId: [""],
+    });
   }
 
   async ngOnInit(): Promise<void> {
     // this.roles = this.usersService.getRoles();
-    const settings:any = await this.settingsService.getSettings();
+    const settings: any = await this.settingsService.getSettings();
     this.roles = settings.roles;
 
     this.route.params.subscribe(async (params: any) => {
@@ -97,7 +96,7 @@ export class UserComponent {
     });
   }
   async saveUser() {
-    try{
+    try {
       const user: User = {
         "username": this.form.value.username,
         "email": this.form.value.email,
@@ -109,30 +108,38 @@ export class UserComponent {
         const usrKeycloak: any = await this.createUserInKeycloak(this.form.value.username, this.form.value.email, this.form.value.password);
         user.keycloakUserId = usrKeycloak.id;
       };
-      const userResult = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
-      console.log("actualizar roles en Keyloak",this.form.value.roles,this.roles );
+      const userResult: any = this.insert ? await this.usersService.insertUser(user) : await this.usersService.updateUser(this.userToEdit.id, user);
+      const userkcGroups = this.roles
+        .filter((role: any) => this.form.value.roles.includes(role.value))
+        .map((role: any) => role.keycloakGroup);
+
+      console.log("actualizar gripos en Keyloak busco el id de kc", userResult);
       if (userResult) {
-        this._utilsService.showMessage("User's data was successfully updated", 2000, true);
-        if (this.insert) {
-          this.router.navigate(["/security"]);
+        const kcUsrId = userResult.doc.keycloakUserId;
+        const auth  = await this.usersService.assignGroupsToKeycloakUser(kcUsrId, {groups: userkcGroups});
+        if(auth){
+          this._utilsService.showMessage("User's data was successfully updated", 2000, true);
+          if (this.insert) {
+            this.router.navigate(["/security"]);
+          }
         }
       }
     } catch (error: any) {
-      const e:any = error.error.errors;
+      const e: any = error.error.errors;
       console.log(e)
       if (e[0].name === 'ValidationError') {
-        const errorMessage = e[0].data[0].message ;
+        const errorMessage = e[0].data[0].message;
         this._utilsService.showMessage(errorMessage, 5000, false);
       } else {
         console.error('Error:', error);
       }
     }
   }
-  
+
   async createUserInKeycloak(username: string, email: string, password: string) {
     const tokens: any = await this.usersService.getAccessTokens();
     const response = await this.usersService.insertKeycloakUser(tokens.access_token, username, email, password);
-    if(response == "Created"){
+    if (response == "Created") {
       const user = await this.usersService.queryKeycloakUser(tokens.access_token, "username=" + username);
       return user;
     }
@@ -143,7 +150,7 @@ export class UserComponent {
     event.preventDefault();
     const userId: string = this.userToEdit.id ?? "";
     const associatedUser = await this.usersService.associateUserToHuman(userId);
-    if(associatedUser){
+    if (associatedUser) {
       this._utilsService.showMessage("usuario asociado a humano", 2000, false);
       this.userToEdit = await this.usersService.getUser(userId);
       console.log(this.userToEdit, "saco la imagen")

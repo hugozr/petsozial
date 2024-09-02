@@ -140,12 +140,6 @@ export class UsersService {
     return roles;
   }
 
-  // async getRoleLabels(values: string[]) {
-  //   const selectedLabels = roles
-  //     .filter((role) => values.includes(role.value))
-  //     .map((role) => role.label);
-  //   return selectedLabels;
-  // }
 
   getRoleLabels(values: string[], roles: any) {
     // console.log(roles, "que hay?");
@@ -213,23 +207,15 @@ export class UsersService {
     }
   }
 
-  async assignRoleToKeycloakUser(token: string, keycloakUserId: string, email: string, password: string): Promise<any> {
-    try {
+  
 
-      const authHeader = { Authorization: `Bearer ${token}` };
-
-      const response = await axios.post(`${this.keycloakHost}/admin/realms/${this.realm}/users`, {}, {
-        headers: {
-          ...authHeader,
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.statusText;
-    } catch (error) {
-      console.error('Error al crear el usuario:', error);
-      throw error; // Puedes manejar el error de otra manera si es necesario
-    }
+  async assignGroupsToKeycloakUser(kcUserId: string, groupData: any): Promise<any> {
+    const auths = await lastValueFrom(
+      this.http.post<User>(`${this.backendURL}/api/app-users/${kcUserId}/assign-groups`, groupData)
+    );
+    return auths;
   }
+  
   async queryKeycloakUser(token: string, query: string): Promise<any> {
     try {
       const authHeader = { Authorization: `Bearer ${token}` };
