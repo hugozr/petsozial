@@ -1,0 +1,48 @@
+.transfer-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  mat-card {
+    width: 45%;
+    height: 400px; /* Definimos una altura fija para el panel */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sticky-title {
+    position: sticky;
+    top: 0;
+    background-color: white; /* Fondo blanco para que no se superponga el contenido */
+    z-index: 1; /* Asegura que el título esté encima del contenido */
+    padding: 10px 0;
+  }
+  
+  .scrollable-list {
+    overflow-y: auto; /* Permite que el contenido sea desplazable */
+    flex: 1;
+  }
+  
+  .option-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  mat-list-item {
+    padding: 0 10px;
+  }
+  
+  span {
+    flex: 1;
+    word-wrap: break-word;
+    white-space: normal; /* Permitir que el texto ocupe más de una línea */
+    padding-right: 10px;
+  }
+  
+  button {
+    flex-shrink: 0; /* Evita que el botón se reduzca cuando el texto es muy largo */
+  }
+  

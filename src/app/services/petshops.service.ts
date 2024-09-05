@@ -34,10 +34,10 @@ export class PetshopsService {
     return types.docs;
   }
 
-  async getHealthService(): Promise<HealthService[]> {
-    const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=0`)); 
-    return healthService.docs;
-  }
+  // async getHealthService(): Promise<HealthService[]> {
+  //   const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=0`)); 
+  //   return healthService.docs;
+  // }
 
   async getPetshop(id: string): Promise<Petshop> {
     const petshop: any = await lastValueFrom(this.http.get<Petshop[]>(`${this.backendURL}/api/petshops/${id}`)); 

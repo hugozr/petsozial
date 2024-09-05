@@ -52,14 +52,16 @@ export class PetToComunityComponent {
     private _utilsServices: UtilsService,
     private _authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
-
-  ngOnInit(): void {
+  ) { 
     //TODO Documentar por defecto se muestra el correo del usuario que tiene el login
     const email = this._authService.getUserEmail() || "";
     this.form = this.formBuilder.group({
       email: [email, [Validators.required, Validators.email]],
     });
+  }
+
+  ngOnInit(): void {
+    
   }
   
   async findPetsByHuman(){

@@ -14,6 +14,7 @@ import { PortalService } from '../services/portal.service';
 import { AppOption } from '../interfaces/appOption';
 import { AuthService } from '../services/auth.service';
 import { UsersService } from '../services/users.service';
+import { UtilsService } from '../services/utils.service';
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
 //TODO: Investigar multiselect
@@ -48,6 +49,7 @@ export class NavigationComponent {
   constructor(
     private portalService: PortalService,
     private _authService: AuthService,
+    private _utilsService: UtilsService,
     private usersService: UsersService,
     ) { }
 
@@ -66,8 +68,12 @@ export class NavigationComponent {
   async initLogged(){
     if (this._authService.isLoggedIn()) {
       this.userName = this._authService.getUserName();
-      console.log(this._authService.getUserId(), "user id debo buscar y si no hay, debo crearlo");
-      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserKeycloakId(), this._authService.getUserName(), this._authService.getUserEmail());
+      const userEmail: any = this._authService.getUserEmail();
+      if(!userEmail){
+        this._utilsService.showMessage("This user dows not have an email");
+        return;
+      }
+      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserKeycloakId(), this._authService.getUserName(), userEmail);
     }
   }
 

@@ -51,15 +51,8 @@ export class PetShop01Component {
     private petshopsService: PetshopsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
     private _utilsService: UtilsService,
   ) {
-  }
-
-  async ngAfterViewInit() {
-    
-  }
-  async ngOnInit(): Promise<void> {
     const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
       this.LATITUDE_PATTERN,
       'Enter a valid latitude.',
@@ -77,6 +70,13 @@ export class PetShop01Component {
       field1: [""],
       field2: [""],
     });
+  }
+
+  async ngAfterViewInit() {
+    
+  }
+  async ngOnInit(): Promise<void> {
+    
 
     this.route.params.subscribe(async (params: any) => {
         this.petshopId = params.id;

@@ -54,12 +54,6 @@ export class PetShopComponent {
     private router: Router,
     private _utilsService: UtilsService,
   ) {
-  }
-
-  async ngAfterViewInit() {
-    
-  }
-  async ngOnInit(): Promise<void> {
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],
       comment: [""],
@@ -70,6 +64,13 @@ export class PetShopComponent {
       email: ["", [Validators.required, Validators.email]],
       image: [this.loadMyPicture]
     });
+  }
+
+  async ngAfterViewInit() {
+    
+  }
+  async ngOnInit(): Promise<void> {
+    
 
     //HZUMAETA: Tiene que ir aca sino sale un error.
     this.petshopTypes = await this.petshopsService.getPetshopTypes();

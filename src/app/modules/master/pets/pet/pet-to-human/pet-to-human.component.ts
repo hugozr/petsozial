@@ -34,12 +34,14 @@ export class PetToHumanComponent {
     private dialogRef: MatDialogRef<PetToHumanComponent>,
     private formBuilder: FormBuilder,
     private humansService: HumansService,
-  ) { }
-
-  ngOnInit(): void {
+  ) { 
     this.form = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
     });
+  }
+
+  ngOnInit(): void {
+    
   }
 
   async findData() {

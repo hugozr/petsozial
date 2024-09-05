@@ -79,6 +79,7 @@ export class VeterinaryComponent {
 
   async ngOnInit(): Promise<void> {
     if(!this._authService.isLoggedIn()){
+      this._utilsService.showMessage("You must have authenticated.");
       this.router.navigate(['/pet-health']);
       return;
     }

@@ -69,12 +69,6 @@ export class Human01Component {
     private router: Router,
     private _utilsService: UtilsService,
   ) {
-  }
-
-  async ngAfterViewInit() {
-
-  }
-  async ngOnInit(): Promise<void> {
     const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
       this.LATITUDE_PATTERN,
       'Enter a valid latitude.',
@@ -92,6 +86,13 @@ export class Human01Component {
       gender: [""],
       field2: [""],
     });
+  }
+
+  async ngAfterViewInit() {
+
+  }
+  async ngOnInit(): Promise<void> {
+    
 
     this.route.params.subscribe(async (params: any) => {
       this.humanId = params.id;

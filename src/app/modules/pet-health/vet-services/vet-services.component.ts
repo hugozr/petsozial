@@ -22,8 +22,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrl: './vet-services.component.css'
 })
 export class VetServicesComponent {
-  // vetId = "6594428ce2aa1ef1b12a2c2d";
-
   allServices: any = [];
   availableServices: any = [];
   selectedServices: any = [];

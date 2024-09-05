@@ -65,12 +65,7 @@ export class PetComponent {
     private router: Router,
     private _utilsService: UtilsService,
     public dialog: MatDialog
-    
-  ) { 
-  }
-
-  ngOnInit(): void {
-    this.loadSpecies();
+  ) {
     this.form = this.formBuilder.group({
       name: ["", Validators.required],
       humanName: ["", Validators.required],
@@ -84,6 +79,11 @@ export class PetComponent {
       birthday: [""],
       image: [this.loadMyPicture]
     });
+  }
+
+  ngOnInit(): void {
+    this.loadSpecies();
+    
     this.route.params.subscribe(async (params: any) => {
       console.log(params,"loca")
       if(params.id){

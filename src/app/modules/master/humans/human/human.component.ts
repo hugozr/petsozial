@@ -49,11 +49,7 @@ export class HumanComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
-    
   ) { 
-  }
-
-  ngOnInit(): void {
     this.form = this.formBuilder.group({
       nickName: ["", Validators.required],
       name: ["", Validators.required],
@@ -63,6 +59,10 @@ export class HumanComponent {
       email: ["", [Validators.required, Validators.email]],
       image: [this.loadMyPicture]
     });
+  }
+
+  ngOnInit(): void {
+    
     this.route.params.subscribe(async (params: any) => {
       if(params.id){
         this.humanId = params.id;

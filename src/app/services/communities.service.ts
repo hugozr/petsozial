@@ -45,16 +45,22 @@ export class CommunitiesService {
     return healthService.docs;
   }
 
-  async getHealthService(): Promise<HealthService[]> {
-    const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
-    return healthService.docs;
-  }
+  // async getHealthService(): Promise<HealthService[]> {
+  //   const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
+  //   return healthService.docs;
+  // }
 
   async getCommunity(id: string): Promise<Community> {
     const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${id}`)); 
     return community;
   }
 
+  
+  async getCommunitiesByUsername(kcUserName: string): Promise<Community> {
+    const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${kcUserName}/by-username`)); 
+    return community;
+  }
+  
   async insertCommunity(community: Community): Promise<Community> {
     return await lastValueFrom(this.http.post<Community>(`${this.backendURL}/api/communities/`, community));
   }

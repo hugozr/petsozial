@@ -32,10 +32,10 @@ export class HumansService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/humans/filter-me`, body));
   }
 
-  async getHealthService(): Promise<HealthService[]> {
-    const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
-    return healthService.docs;
-  }
+  // async getHealthService(): Promise<HealthService[]> {
+  //   const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
+  //   return healthService.docs;
+  // }
 
   async getHuman(id: string): Promise<Human> {
     const human: any = await lastValueFrom(this.http.get<Human[]>(`${this.backendURL}/api/humans/${id}`)); 

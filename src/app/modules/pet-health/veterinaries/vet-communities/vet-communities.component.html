@@ -1,0 +1,30 @@
+<h3 style="margin-left: 30px;">{{vetData.name}}</h3>
+<div class="transfer-container">
+  <mat-card>
+    <mat-card-title class="sticky-title">Available communities</mat-card-title>
+    <mat-list class="scrollable-list">
+      <mat-list-item *ngFor="let community of availableCommunities">
+        <div class="option-content">
+          <span>{{ community.name }}</span>
+          <button mat-icon-button (click)="addOption(community)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title class="sticky-title">Selected communities</mat-card-title>
+    <mat-list class="scrollable-list">
+      <mat-list-item *ngFor="let selected of selectedCommunities">
+        <div class="option-content">
+          <span>{{ selected.jsonData.communityName }}</span>
+          <button mat-icon-button (click)="removeOption(selected.id)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

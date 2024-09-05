@@ -23,6 +23,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HealthServicesComponent } from '../health-services/health-services.component';
 import { VetServicesComponent } from '../vet-services/vet-services.component';
 import { AuthService } from '../../../services/auth.service';
+import { VetCommunitiesComponent } from './vet-communities/vet-communities.component';
 
 @Component({
   selector: 'app-veterinaries',
@@ -78,6 +79,7 @@ export class VeterinariesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.userName = this._authService.getUserName();
     this.loadVets(this.pageSize, 0);
   }
 
@@ -99,7 +101,9 @@ export class VeterinariesComponent implements OnInit {
         phone: elem.phone,
         url: elem.url,
         thumbnail: imagePath ? this.backendURL + imagePath : null,
+        canManageCOmmunities: elem.kcUserName == this.userName && this.userName != undefined
       });
+      console.log(elem.kcUserName, this.userName, elem.name);
     });
     this.dataSource = new MatTableDataSource(this.vets);
     this.dataSource.sort = this.sort;
@@ -146,17 +150,27 @@ export class VeterinariesComponent implements OnInit {
     this.router.navigate(['/pet-health/veterinary/', element.id]);
   }
 
+  async communities(element: any) {
+    console.log(element, "Ver user", this.userName);
+    const dialogRef = this.dialog.open(VetCommunitiesComponent, {
+      width: '1200px',
+      height: "500px",
+      data: element,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
+    });
+  }
   vetServices(element: any) {
-    // healthServices(element: any) {
     const dialogRef = this.dialog.open(VetServicesComponent, {
-      width: '1200px', // Ajusta el ancho según tus necesidades
+      width: '1200px', 
       height: '500px',
-      data: element, // Puedes pasar cualquier dato que necesites al modal
+      data: element, 
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Modal cerrado:', result);
-      // Aquí puedes manejar los datos que obtuviste después de cerrar el modal
     });
   }
 
@@ -169,7 +183,6 @@ export class VeterinariesComponent implements OnInit {
   }
 
   addVet() {
-    this.userName = this._authService.getUserName();
     if (this.userName) {
       this.router.navigate(['/pet-health/veterinary']);
     } else {
