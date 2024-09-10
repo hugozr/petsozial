@@ -107,6 +107,7 @@ export class CommunityComponent {
   async ngOnInit(): Promise<void> {
 
     if(!this._authService.isLoggedIn()){
+      this._utilsService.showMessage("You must have authenticated.");
       this.router.navigate(['/community']);
       return;
     }
@@ -147,12 +148,6 @@ export class CommunityComponent {
       "type": this.myForm.value.type,
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
       "kcUserName": this._authService.getUserName()
-    }
-    if(this.insert){
-      //HZUMAETA El creador solo se pone en la inserción NO en la edición
-      if(this.user){
-        community.creator = this.user.id; 
-      }
     }
     const communityResult: any = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
     if (communityResult) {

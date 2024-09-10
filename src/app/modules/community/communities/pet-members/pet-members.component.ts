@@ -96,7 +96,6 @@ export class PetMembersComponent implements OnInit {
   }
 
   async loadPets(pageSize: number, page: number, filter: string, communityId: string ) {
-    // this.community = await this.petsService.filterPetsByCommunityId(pageSize, page, filter, communityId);
     this.community = await this.communitiesService.getCommunity(this.communityId);
     if(this.community.petMembers) this.fillPetTable(this.community.petMembers);
   }

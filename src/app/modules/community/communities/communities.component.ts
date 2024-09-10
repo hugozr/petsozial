@@ -47,6 +47,7 @@ export class CommunitiesComponent implements OnInit {
     'modality',
     'comment',
     'address',
+    'user',
     'thumbnail',
     'actions',
   ];
@@ -93,6 +94,7 @@ export class CommunitiesComponent implements OnInit {
         type: elem.type?.name,
         address: elem.address,
         modality: elem.modality,
+        user: elem.kcUserName,
         url: elem.url,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
