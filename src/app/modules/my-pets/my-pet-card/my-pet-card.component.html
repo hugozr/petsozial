@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title style="padding-left: 10px;">{{ pet.name }}</mat-card-title>
-    <img mat-card-image [src]="imageUrl" alt="Pet Image">
+    <img mat-card-image [src]="imageUrl" alt="Pet Image" (click)="gotoProfile()">
     <mat-card-content>
       {{ pet.comment }}
     </mat-card-content>

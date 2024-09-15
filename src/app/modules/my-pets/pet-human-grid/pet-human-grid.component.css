@@ -1,0 +1,61 @@
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 5 cards por fila en pantallas grandes */
+  gap: 16px;
+}
+
+/* Media query para pantallas medianas (tabletas) */
+@media (max-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards por fila en pantallas medianas */
+  }
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards por fila en pantallas pequeñas */
+  }
+}
+
+/* Media query para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .card-container {
+    grid-template-columns: 1fr; /* 1 card por fila en pantallas muy pequeñas */
+  }
+}
+
+.card-item {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card-item:hover {
+  transform: scale(1.05);
+}
+
+.card-item {
+  padding: 5px;
+  /* Separación general del contenido */
+  background-color: #fff;
+  /* Color de fondo del card */
+  border-radius: 5px;
+  /* Opcional: bordes redondeados para el card */
+}
+
+.image-container {
+  padding: 5px;
+  /* Espacio entre la imagen y el borde del card */
+}
+
+.card-item img {
+  border-radius: 20px;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  /* Asegura que la imagen cubra el área */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  /* Sombra difuminada en la imagen */
+  display: block;
+  /* Asegura que la imagen no tenga espacio debajo */
+}

@@ -32,7 +32,7 @@ import _ from 'lodash';
 export class MyPetsSelectorComponent {
   @Output() selectedValueChange = new EventEmitter<string>(); // Emite el valor seleccionado
 
-  userName = "abc";
+  userName = "abc";     //TODO: quitar abc
   pets: any[] = [];
   page = 1;
   communityGroups: any = [];

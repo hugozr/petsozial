@@ -43,7 +43,6 @@ export class HumansService {
   }
 
   async getHumansByEmail(email: string): Promise<any> {
-    console.log(email, "antes del error");
     const humans: any = await lastValueFrom(this.http.get<any>(`${this.backendURL}/api/humans/${email}/by-email`)); 
     return humans;
   }

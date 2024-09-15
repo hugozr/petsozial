@@ -1,0 +1,5 @@
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Opcional: para alinear verticalmente si hay diferencia de altura */
+}

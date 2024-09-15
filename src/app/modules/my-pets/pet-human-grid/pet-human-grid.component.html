@@ -1,0 +1,14 @@
+<div class="card-container" style="padding: 20px;">
+    @for (item of petHumans; track item) {
+    <mat-card (click)="onCardClick(item)" class="card-item">
+        <div class="card-item">
+            <div class="image-container">
+                <img mat-card-image [src]="item.humanImageUrl" alt="{{item.nickName}}">
+            </div>
+          </div>
+        <mat-card-content>
+            <p>{{ item.nickName }}</p>
+        </mat-card-content>
+    </mat-card>
+    }
+</div>

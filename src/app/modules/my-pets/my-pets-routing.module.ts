@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MyPetsComponent } from './my-pets/my-pets.component';
+import { PetProfileComponent } from './pet-profile/pet-profile.component';
 
 const routes: Routes = [
   {path: "", component: MyPetsComponent,  data: { scope: "favorite"}},

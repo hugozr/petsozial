@@ -1,0 +1,31 @@
+
+  <div class="image-uploader">
+    <mat-card class="image-card">
+        @if (imageSrc) {
+            <img [src]="imageSrc" alt="Selected Image" />
+        } @else {
+            <div class="placeholder">No image selected</div>
+        }
+    </mat-card>
+  
+    <input
+      type="file"
+      id="fileInput"
+      (change)="onFileSelected($event)"
+      hidden
+      accept="image/jpeg"
+    />
+    <button mat-raised-button color="primary" (click)="triggerFileInput()">
+      Load image
+    </button>
+  
+    <div
+      class="drop-zone"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+    >
+      Drag & drop an image here
+    </div>
+  </div>
+  

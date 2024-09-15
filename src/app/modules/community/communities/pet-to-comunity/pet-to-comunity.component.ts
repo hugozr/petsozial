@@ -67,8 +67,6 @@ export class PetToComunityComponent {
   async findPetsByHuman(){
     const email = this.form.get("email")?.value;
     const humans: any = await this.humansService.getHumansByEmail(email);
-    console.log(humans,this.petsForAddToCommunity)
-
     if (humans.length != 0) {
       this.founded = humans[0];
       if(this.founded.pets){

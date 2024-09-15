@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { environment } from '../../../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { PetProfileComponent } from '../pet-profile/pet-profile.component';
 
 @Component({
   selector: 'app-my-pet-card',
@@ -19,6 +21,11 @@ export class MyPetCardComponent {
   imageUrl? : string; 
   backendURL = environment.backendPetZocialURL;
 
+  
+  constructor(
+    public dialog: MatDialog
+  ) {}
+
   ngOnInit(): void {
     const imagePath = this.pet.petImage?.sizes?.tablet?.url;
     imagePath ? (this.backendURL + imagePath) : null;
@@ -29,5 +36,17 @@ export class MyPetCardComponent {
     else{
       this.imageUrl = "assets/macallan.jpg";
     };
+  }
+
+  gotoProfile(){
+    const dialogRef = this.dialog.open(PetProfileComponent, {
+      width: '600px', 
+      height: '700px',
+      data: this.pet, 
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Modal cerrado:', result);
+    });
   }
 }

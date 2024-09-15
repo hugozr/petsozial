@@ -1,7 +1,7 @@
 # Pendientes
 >>> Campañas de cercanía
-My Profile
-Incorporacion de area para definir cercanias
+My Profile: humanos de contacto 
+Incorporacion de area para definir cercanias: Ubications
 Manejar el menu prinicipal en funcion de los roles de los usuarios
 Social login
 Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo

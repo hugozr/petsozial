@@ -170,7 +170,6 @@ export class PetComponent {
     }
   }
   asignHuman(){
-    console.log("holaaa");
     const dialogRef = this.dialog.open(PetToHumanComponent, {
       width: '400px',
       height: "400px",
