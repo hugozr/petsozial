@@ -5,10 +5,10 @@
         <img class="logo-image" src="assets/macallan.jpg" alt="Logotipo">
     </mat-toolbar>
     <mat-nav-list style="margin-top: 20px;">
+      <app-select-zone></app-select-zone>
       <div *ngFor="let op of appOptions">
         @if (!op.rqUserLoggedIn || (userName && op.rqUserLoggedIn)) {
           <a mat-list-item [routerLink]="op.redirect">{{op.name}}</a>
-          <!-- <a mat-list-item [routerLink]="[op.redirect]" [queryParams]="{rqUserLoggedIn: op.rqUserLoggedIn}">{{op.name}}</a> -->
         }
       </div>
     </mat-nav-list>

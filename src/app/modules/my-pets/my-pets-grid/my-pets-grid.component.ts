@@ -37,13 +37,13 @@ import _ from 'lodash';
 
 export class MyPetsGridComponent {
   @ViewChild('invisibleCard') card: any | undefined;
-  // @Input() filterData: string = ''; 
   @Input() filterData: any = null;
   @Input() filterOptions: any = null;
+  @Input() zoneId: string = "";
   pets: any[] = [];
   page = 1;
   message = "";
-  userName = "abc"
+  userName = "abc"    //TODO: sacar abc
   showCommunitySelector = false;
   flagFilterByCommunity = false;
 
@@ -55,27 +55,47 @@ export class MyPetsGridComponent {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.filterData, this.filterOptions,   "atento con los filtros");
-    if(this.filterOptions.scope == "all") this.loadPets(10, this.page, "");
-    if(this.filterOptions.scope == "favorite") this.loadPetsByHumanId(10, this.page, "");
-    if(this.filterOptions.scope == "community") this.flagFilterByCommunity = true;
+    console.log(this.zoneId, "atento con la zona");
+    // this.loadData();
+  }
+
+  loadData(perPage: number, pageNumber: number) {
+    // if (this.filterOptions.scope == "all") this.loadPetsByZone(this.zoneId, 10, this.page, "");
+    // if (this.filterOptions.scope == "favorite") this.loadPetsByHumanId(10, this.page, "");
+    // if (this.filterOptions.scope == "community") this.flagFilterByCommunity = true;
+  
+    if (this.filterOptions.scope == "all") this.loadPetsByZone(this.zoneId, perPage, pageNumber, "");
+    if (this.filterOptions.scope == "favorite") this.loadPetsByHumanId(perPage, pageNumber, "");
+    if (this.filterOptions.scope == "community") this.flagFilterByCommunity = true;
+  
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['filterData']) {
       this.onFilterDataChange(changes['filterData'].currentValue);
+    };
+    if (changes['zoneId']) {
+      this.zoneId = changes['zoneId'].currentValue;
+      this.loadData(10, 0);
     }
   }
 
   async onFilterDataChange(newValue: any) {
-    if(this.flagFilterByCommunity){
+    if (this.flagFilterByCommunity) {
       await this.loadPetsByCommunity(newValue);
-    }  
+    }
   }
 
-  async loadPets(pageSize: number, page: number, filter: string) {
-    const data: any = await this.petsService.getPets(pageSize, page, filter);
-    this.pets = this.pets.concat(data.docs);
+  // async loadPets(pageSize: number, page: number, filter: string) {
+  //   const data: any = await this.petsService.getPets(pageSize, page, filter);
+  //   this.pets = this.pets.concat(data.docs);
+  //   this.page++;
+  // }
+
+  async loadPetsByZone(zoneId: string, pageSize: number, page: number, filter: string) {
+    console.log("trae las mascotas de la zona", zoneId)
+    const data: any = await this.petsService.getPetsByZone(zoneId, pageSize, page, filter);
+    this.pets = page == 0 ?  data.docs : this.pets.concat(data.docs);
     this.page++;
   }
 
@@ -96,7 +116,7 @@ export class MyPetsGridComponent {
 
   onScroll(): void {
     if (this.card && this.isScrolledIntoView(this.card._elementRef.nativeElement)) {
-      this.loadPets(10, this.page, "");
+      this.loadPetsByZone(this.zoneId, 10, this.page, "");
     }
   }
 
@@ -108,8 +128,8 @@ export class MyPetsGridComponent {
   }
 
   async loadPetsByCommunity(filter: any) {
-    if ( filter.value == undefined) return;
-    const community: any = await this.communitiesService.getCommunity( filter.value );
+    if (filter.value == undefined) return;
+    const community: any = await this.communitiesService.getCommunity(filter.value);
     this.pets = community.petMembers;
     this.page++;
   }

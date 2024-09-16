@@ -97,7 +97,6 @@ export class UsersComponent implements OnInit {
         communities: elem.communities,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       };
-      console.log(filledUser, "tiene el arrreglo?");
       this.users.push(filledUser);
     });
     console.log(this.users, "bacion?");

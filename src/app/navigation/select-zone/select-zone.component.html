@@ -1,0 +1,6 @@
+    <mat-form-field appearance="outline" class="custom-select no-bottom-margin">
+        <mat-label>Select a zone</mat-label>
+        <mat-select [(value)]="selectedZone" (selectionChange)="onZoneChange()"  >
+            <mat-option *ngFor="let zone of zones" [value]="zone.id">{{ zone.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>

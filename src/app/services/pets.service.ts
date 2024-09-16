@@ -19,6 +19,20 @@ export class PetsService {
     return this.filterPets(limit,page,'');
   }
 
+  async getPetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<Pet[]> {
+    return this.filterPetsByZone(zoneId, limit, page,'');
+  }
+
+  async filterPetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page,
+      zone: zoneId
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me-by-zone`, body));
+  }
+  
   async filterPets(limit: number, page: number, filter: string): Promise<any> {
     const body = {
       filter,
@@ -27,7 +41,6 @@ export class PetsService {
     }
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me`, body));
   }
-  
   async filterPetsByHumanId(limit: number, page: number, filter: string, humanId: string): Promise<any> {
     const body = {
       filter,

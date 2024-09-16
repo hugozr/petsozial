@@ -1,12 +1,14 @@
 # Pendientes
 >>> Campañas de cercanía
 My Profile: humanos de contacto 
-Incorporacion de area para definir cercanias: Ubications
+Incorporacion de zonas 
+Todo: Scroll de pets
+Poner zonas tambien en Vets y en Cares 
 Manejar el menu prinicipal en funcion de los roles de los usuarios
 Social login
 Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
 Hacer que cuando un usuario no tenga un rol espexifico tenga el rol guest.
-Cintactos por IG, Tiktok
+Contactos por IG, Tiktok
 Manejar mejor los tipos de comunidades privadas: vets y cares
 Asociar veterinarias con petshops
 
@@ -14,6 +16,8 @@ Verificación de carga masiva de humanos
 Revisar servicios de salud ... no esta grabando al parecer
 Arreglar la visualizacion del mapa ... independizar la invocacion
 Pet profiles: Mis lugares favoritos, mis comidas favoritas. 
+
+Jynx Maze
 
 # Atendidos
 Veterinarias con comumidades privadas 

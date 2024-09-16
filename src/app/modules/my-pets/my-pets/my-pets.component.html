@@ -2,5 +2,5 @@
 @if(filterOptions.scope == "community"){
     <app-my-pets-selector (selectedValueChange)="onSelectedValueChange($event)"></app-my-pets-selector>
 }
-<app-my-pets-grid [filterData]="filterSelector" [filterOptions]="filterOptions"></app-my-pets-grid>
+<app-my-pets-grid [filterData]="filterSelector" [filterOptions]="filterOptions" [zoneId]="selectedZone" ></app-my-pets-grid>
 

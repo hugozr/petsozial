@@ -15,6 +15,7 @@ import { AppOption } from '../interfaces/appOption';
 import { AuthService } from '../services/auth.service';
 import { UsersService } from '../services/users.service';
 import { UtilsService } from '../services/utils.service';
+import { SelectZoneComponent } from "./select-zone/select-zone.component";
 
 //https://stackoverflow.com/questions/44725980/angular-2-material-design-multi-select-drop-down-with-hierarchical-indentation
 //TODO: Investigar multiselect
@@ -36,7 +37,8 @@ import { UtilsService } from '../services/utils.service';
     RouterLink,
     RouterOutlet,
     CommonModule,
-  ],
+    SelectZoneComponent
+],
 })
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
