@@ -72,10 +72,11 @@ export class NavigationComponent {
       this.userName = this._authService.getUserName();
       const userEmail: any = this._authService.getUserEmail();
       if(!userEmail){
-        this._utilsService.showMessage("This user dows not have an email");
+        this._utilsService.showMessage("This user does not have an email");
         return;
       }
       const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserKeycloakId(), this._authService.getUserName(), userEmail);
+      console.log("amq Debe mandar al perfile del usuario, en todo caso preguntar", user);
     }
   }
 
@@ -88,6 +89,7 @@ export class NavigationComponent {
 
   loadOptions(){
     this.portalService.getOptions().subscribe( (data: any) => {
+      console.log(data, "busca opcion perdida");
       data.docs.map( (elem: any) => {
         this.appOptions.push({
           name: elem.name, 

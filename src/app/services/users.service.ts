@@ -126,7 +126,7 @@ export class UsersService {
       keycloakUserId,
       keycloakUserName, 
       keycloakEmail};
-      console.log(keycloakUserData, "ver los datos que voy a enviar");
+      // console.log(keycloakUserData, "ver los datos que voy a enviar");
     return await lastValueFrom(
       this.http.post<any>(`${this.backendURL}/api/app-users/sync-to-app-user`, keycloakUserData)
     );

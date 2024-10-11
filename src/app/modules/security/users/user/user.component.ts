@@ -113,7 +113,7 @@ export class UserComponent {
         .filter((role: any) => this.form.value.roles.includes(role.value))
         .map((role: any) => role.keycloakGroup);
 
-      console.log("actualizar gripos en Keyloak busco el id de kc", userResult);
+      // console.log("actualizar gripos en Keyloak busco el id de kc", userResult);
       if (userResult) {
         const kcUsrId = userResult.doc.keycloakUserId;
         const auth  = await this.usersService.assignGroupsToKeycloakUser(kcUsrId, {groups: userkcGroups});
