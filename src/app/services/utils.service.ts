@@ -47,6 +47,7 @@ export class UtilsService {
     const formData = new FormData();
     formData.append('file', mediaData.file);
     formData.append('name', mediaData.name);
+    formData.append('collection', mediaData.collection);
     formData.append('username', mediaData.username);
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/excels`, formData));
   }
@@ -101,6 +102,7 @@ export class UtilsService {
       observe: 'response'
     });
   }
+
   saveFile(data: Blob | null, filename: string ) {
     if (data) {
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -116,4 +118,7 @@ export class UtilsService {
       console.error('Error: El archivo recibido del servidor es nulo.');
     }
   }
+  
+
+
 }

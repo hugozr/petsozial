@@ -13,5 +13,8 @@ export const environment = {
     adminUsername: "hzumaeta",
     adminPassword: "123",
     LATITUDE_PATTERN: /^([-+])?([1-8]?\d(\.\d+)?|90(\.0+)?)$/,
-    LONGITUDE_PATTERN: /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/
+    LONGITUDE_PATTERN: /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/,
+    folderTemplate: "assets/excel-templates/",
+    humansTemplate: "massive-load-humans.xlsx",
+    vetsTemplate: "massive-load-vets.xlsx"
 }

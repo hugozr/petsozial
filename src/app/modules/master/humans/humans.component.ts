@@ -142,9 +142,9 @@ export class HumansComponent implements OnInit {
   }
   massiveAdd(){
     const dialogRef = this.dialog.open(MassiveAddComponent, {
-      width: '400px',
-      height: "300px",
-      data: {},
+      width: '500px',
+      height: "500px",
+      data: {typeFile: "humans"},
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -24,6 +24,7 @@ import { HealthServicesComponent } from '../health-services/health-services.comp
 import { VetServicesComponent } from '../vet-services/vet-services.component';
 import { AuthService } from '../../../services/auth.service';
 import { VetCommunitiesComponent } from './vet-communities/vet-communities.component';
+import { MassiveAddComponent } from '../../../panels/massive-add/massive-add.component';
 
 @Component({
   selector: 'app-veterinaries',
@@ -190,5 +191,17 @@ export class VeterinariesComponent implements OnInit {
         this._authService.login();
       }
     }
+  }
+
+  vetMassiveAdd(){
+    const dialogRef = this.dialog.open(MassiveAddComponent, {
+      width: '500px',
+      height: "500px",
+      data: {typeFile: "vets"},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
+    });
   }
 }

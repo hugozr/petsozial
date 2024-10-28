@@ -1,11 +1,22 @@
 <div style="margin: 10px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-  <h3>Subir Archivo</h3>
+  <h3>{{title}}</h3>
   <div>
     <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none" />
     <button mat-raised-button color="primary" (click)="selectFile()">Select an Excel file</button>
   </div>
-  <div *ngIf="selectedFile" class="selected-file">
-    <p>Selected file: {{ selectedFile.name }}</p>
-  </div>
+  @if(selectedFile){
+    <div class="selected-file">
+      <p>Selected file: {{ selectedFile.name }}</p>
+    </div>
+    <mat-form-field appearance="outline" style="width: 100%; margin-top: 15px; margin-bottom: 15px;">
+      <mat-label>Additional Information</mat-label>
+      <textarea matInput [(ngModel)]="someDescription" rows="2"></textarea>
+    </mat-form-field>
+  }
+
   <button mat-raised-button class="upload-button" color="primary" (click)="uploadExcelFile()" [disabled]="!selectedFile">Upload file</button>
+  <!-- Enlace para descargar el archivo -->
+  <a href={{templateFile}} download>
+    Download example file
+  </a>
 </div>
