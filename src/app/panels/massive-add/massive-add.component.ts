@@ -56,6 +56,11 @@ export class MassiveAddComponent {
       this.title = "Upload vets from Excel file";
       this.templateFile = environment.folderTemplate + environment.vetsTemplate;
     }
+    
+    if(this.uploadData.typeFile == "pets") {
+      this.title = "Upload pets from Excel file";
+      this.templateFile = environment.folderTemplate + environment.petsTemplate;
+    }
   }
 
   onFileSelected(event: any): void {

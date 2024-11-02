@@ -75,8 +75,11 @@ export class NavigationComponent {
         this._utilsService.showMessage("This user does not have an email");
         return;
       }
-      const user = await this.usersService.syncronizeWithAppUser(this._authService.getUserKeycloakId(), this._authService.getUserName(), userEmail);
-      console.log("amq Debe mandar al perfile del usuario, en todo caso preguntar", user);
+      const user = await this.usersService.syncronizeWithAppUser(
+        this._authService.getUserKeycloakId(), 
+        this._authService.getUserName(), 
+        userEmail);
+      console.log("amq Debe mandar al perfile del usuario, en todo caso preguntar", user); //TODO: Ir al profile si es que no se tienen todos los datos
     }
   }
 

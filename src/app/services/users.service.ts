@@ -120,13 +120,11 @@ export class UsersService {
     );
   }
 
-  async syncronizeWithAppUser(keycloakUserId: any, keycloakUserName: any, keycloakEmail: any){
-    console.log(keycloakUserId,keycloakUserName, keycloakEmail);
+  async syncronizeWithAppUser(keycloakUserId: any, keycloakUserName: any, keycloakEmail: string){
     const keycloakUserData = {
       keycloakUserId,
       keycloakUserName, 
       keycloakEmail};
-      // console.log(keycloakUserData, "ver los datos que voy a enviar");
     return await lastValueFrom(
       this.http.post<any>(`${this.backendURL}/api/app-users/sync-to-app-user`, keycloakUserData)
     );

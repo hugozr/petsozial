@@ -1,12 +1,12 @@
 # Pendientes
+
+Asociar comunidades a vets, condominios, etc. Ver manual 8.4. Linking a community to…
 >>> Campañas de cercanía
-My Profile: humanos de contacto 
-Incorporacion de zonas 
+My Profile: humanos de contacto, al ingresar en el login debe mandar al mantenimiento del profile 
 Todo: Scroll de pets
 Poner zonas tambien en Vets y en Cares 
 Manejar el menu prinicipal en funcion de los roles de los usuarios
 Social login
-Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
 Hacer que cuando un usuario no tenga un rol espexifico tenga el rol guest.
 Contactos por IG, Tiktok
 Manejar mejor los tipos de comunidades privadas: vets y cares
@@ -16,16 +16,22 @@ Verificación de carga masiva de humanos
 Revisar servicios de salud ... no esta grabando al parecer
 Arreglar la visualizacion del mapa ... independizar la invocacion
 Pet profiles: Mis lugares favoritos, mis comidas favoritas. 
+Al eliminar un usuario en Angular, debe eliminarse de Keycloak. Lo mismo si se modifica.
+Cuando carga vets y pets, se debe considerar la zona 
+
 
 Jynx Maze
 
 # Atendidos
+Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
+
 Veterinarias con comumidades privadas 
 Al autenticar un usuario en Keycloak verificar si el app-users existe
 Manejo de listas de servicios de vet disponibles y seleccionados 28/08
 Creando settings de los roles para evitar hardcode
 Al asignar roles al usuario se deben actualizar los roles en Keycloak por API 
 Opcion Mis comunidades
+Incorporacion de zonas 
 
 # Alejandra
 Definir el producto mínimo viable: Por donde empezamos y una ruta de trabajo, justificar

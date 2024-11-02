@@ -16,5 +16,6 @@ export const environment = {
     LONGITUDE_PATTERN: /^([-+]?)((([1-9]?\d|1[0-7]\d)(\.\d+)?)|180(\.0+)?)$/,
     folderTemplate: "assets/excel-templates/",
     humansTemplate: "massive-load-humans.xlsx",
-    vetsTemplate: "massive-load-vets.xlsx"
+    vetsTemplate: "massive-load-vets.xlsx",
+    petsTemplate: "massive-load-pets.xlsx"
 }

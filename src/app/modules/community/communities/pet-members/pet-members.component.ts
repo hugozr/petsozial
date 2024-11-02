@@ -32,6 +32,7 @@ import { UtilsService } from '../../../../services/utils.service';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PetToComunityComponent } from '../pet-to-comunity/pet-to-comunity.component';
+import { MassiveAddComponent } from '../../../../panels/massive-add/massive-add.component';
 
 @Component({
   selector: 'app-pet-members',
@@ -159,6 +160,18 @@ export class PetMembersComponent implements OnInit {
         // this.form.get('humanName')?.setValue(result.name);
         // this.form.get('hiddenHumanId')?.setValue(result.id);
       }
+    });
+  }
+
+  MassiveAddMembers(){
+    const dialogRef = this.dialog.open(MassiveAddComponent, {
+      width: '500px',
+      height: "500px",
+      data: {typeFile: "pets"},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado:', result);
     });
   }
 }
