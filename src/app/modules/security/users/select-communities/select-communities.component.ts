@@ -42,6 +42,8 @@ export class SelectCommunitiesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.userData = await this.usersService.getUser(this.data.id);
+
+    //TODO: Se puede seleccionar por ahora publicos, pero con el mimso componente podemos seleccionar comuniadades privadas
     await this.loadPublicCommunities(this.pageSize, 0);
   }
   async loadPublicCommunities(pageSize: number, page: number) {

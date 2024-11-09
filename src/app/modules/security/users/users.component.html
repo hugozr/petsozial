@@ -68,7 +68,11 @@
                 <mat-icon>security</mat-icon>Credentials
               </button>
               <button mat-menu-item (click)="selectCommunities(element)">
-                <mat-icon>people</mat-icon>Communities
+                <mat-icon>people</mat-icon>Public communities
+              </button>
+              <!-- Solo debe aparecer siempre y cuando se el usuario tenga comunidades privadas  -->
+              <button mat-menu-item (click)="selectCommunities(element)">
+                <mat-icon>people</mat-icon>Private communities    
               </button>
               <button mat-menu-item (click)="delete(element)">
                 <mat-icon>delete</mat-icon> Delete

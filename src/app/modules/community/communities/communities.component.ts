@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,6 +17,8 @@ import { CommunitiesService } from '../../../services/communities.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
+import { EventsService } from '../../../services/events.service';
+import { ZonesService } from '../../../services/zones.service';
 
 @Component({
   selector: 'app-communities',
@@ -64,24 +66,44 @@ export class CommunitiesComponent implements OnInit {
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
   userName = null;
+  selectedZone: string = "";
+  private eventSubscription?: Subscription;
 
   constructor(
     private communitiesService: CommunitiesService,
     private _utilsService: UtilsService,
     private _authService: AuthService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private eventsServices: EventsService,
+    private zonesServices: ZonesService
+
   ) { }
 
   ngOnInit(): void {
     this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
-    this.loadCommunities(this.pageSize, 0);
+    this.selectedZone = this.zonesServices.getCurrentZone();
+
+    // console.log(this.selectedZone, "debe estar el codugo de zona")
+    // this.loadCommunities(this.pageSize, 0);
+    this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);
+    this.eventSubscription = this.eventsServices.event$.subscribe(data => {
+      this.selectedZone = data;
+      // console.log(data, "vr que viee , debe benir la zona");
+      this.loadCommunitiesByZone(data, this.pageSize, 0);
+    });
   }
 
-  async loadCommunities(pageSize: number, page: number) {
-    const data: any = await this.communitiesService.getCommunities(pageSize, page);
+  // async loadCommunities(pageSize: number, page: number) {
+  //   const data: any = await this.communitiesService.getCommunities(pageSize, page);
+  //   this.fillCommunityTable(data);
+  // }
+
+  async loadCommunitiesByZone(zoneId:string, pageSize: number, page: number) {
+    const data: any = await this.communitiesService.getCommunitiesByZone(zoneId, pageSize, page);
     this.fillCommunityTable(data);
   }
+
 
   fillCommunityTable(data: any) {
     this.communities = [];
@@ -106,7 +128,8 @@ export class CommunitiesComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.loadCommunities(event.pageSize, event.pageIndex + 1);
+    // this.loadCommunities(event.pageSize, event.pageIndex + 1);
+    this.loadCommunitiesByZone(this.selectedZone, event.pageSize, event.pageIndex + 1);
   }
 
   applyFilter(event: Event) {
@@ -120,13 +143,14 @@ export class CommunitiesComponent implements OnInit {
   }
 
   async filter(filter: string) {
-    const data: any = await this.communitiesService.filterCommunities(this.pageSize, 0, filter);
+    // const data: any = await this.communitiesService.filterCommunities(this.pageSize, 0, filter);
+    const data: any = await this.communitiesService.filterCommunitiesByZone(this.pageSize, 0, filter, this.selectedZone);
     this.fillCommunityTable(data);
   }
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
-    this.loadCommunities(this.pageSize, 0);
+    this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);
     if (deleted) {
       this._utilsService.showMessage("Community record successfully deleted", 2000, true);
     }
@@ -158,5 +182,5 @@ export class CommunitiesComponent implements OnInit {
     }
   }
 }
-  
+
 

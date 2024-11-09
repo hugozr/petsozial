@@ -20,6 +20,12 @@ export class CommunitiesService {
     return comms;
   }
   
+  async getCommunitiesByZone(zoneId: string, limit: number, page: number): Promise<Community[]> {
+    const url = `${this.backendURL}/api/communities?sort=-createdAt&where[zone][equals]=${zoneId}&limit=${limit}&page=${page}&zone`
+    const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
+    return comms;
+  }
+  
   async getPublicCommunities(limit: number, page: number): Promise<Community[]> {
     const url = `${this.backendURL}/api/communities?sort=-createdAt&where[modality][equals]=public&limit=${limit}&page=${page}`
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
@@ -31,6 +37,16 @@ export class CommunitiesService {
       filter,
       limit,
       page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
+  }
+  
+  async filterCommunitiesByZone(limit: number, page: number, filter: string, zoneId: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page,
+      zone: zoneId
     }
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
   }

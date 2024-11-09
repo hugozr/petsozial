@@ -15,6 +15,7 @@ import { Community } from '../../../../interfaces/community';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { AuthService } from '../../../../services/auth.service';
 import { UsersService } from '../../../../services/users.service';
+import { ZonesService } from '../../../../services/zones.service';
 
 @Component({
   selector: 'app-community',
@@ -70,6 +71,7 @@ export class CommunityComponent {
     private _utilsService: UtilsService,
     private _authService: AuthService,
     private usersService: UsersService,
+    private zonesService: ZonesService,
   ) {
     const latValidator: ValidatorFn = this._utilsService.createPatternValidator(
       this.LATITUDE_PATTERN,
@@ -94,7 +96,6 @@ export class CommunityComponent {
       lng: ["", [Validators.required, Validators.compose([Validators.pattern(this.LONGITUDE_PATTERN), lngValidator])]],
       image: [this.loadMyPicture]
     });
-
   }
 
   async ngAfterViewInit(){
@@ -148,11 +149,14 @@ export class CommunityComponent {
       "type": this.myForm.value.type,
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
       "kcUserName": this._authService.getUserName()
-    }
+    };
+    //Si está insertando asigna la zona para la comunidad
+    if(this.insert) community.zone = this.zonesService.getCurrentZone();
     const communityResult: any = this.insert ? await this.communitiesService.insertCommunity(community) : await this.communitiesService.updateCommunity(this.commToEdit.id, community);
     if (communityResult) {
       this._utilsService.showMessage("Community's data was successfully updated", 2000, true);
       if (this.insert) {
+        //La comunidad se le asigna al usuario que la ha creado, ya que UN USUARIO PUEDE ADMINISTRAR VARIAS COMUNIDADES
         const user = await this.usersService.updateCommunity(this.user.id, {"operation": "insert", "communityId": communityResult.doc.id});
         this.router.navigate(["/community"]);
       }

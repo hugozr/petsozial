@@ -57,7 +57,7 @@ export class AuthService {
 
   getRoles(): any {
     const roles: any = this._keycloakService.getUserRoles(true);
-    console.log('Roles del usuario:', roles);
+    // console.log('Roles del usuario:', roles);
     return roles;
   }
 

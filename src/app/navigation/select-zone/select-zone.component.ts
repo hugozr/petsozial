@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { ZonesService } from '../../services/zones.service';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-select-zone',
@@ -19,6 +20,7 @@ export class SelectZoneComponent {
   zones: any = [];
   constructor(
     private zonesServices: ZonesService,
+    private eventsServices: EventsService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -39,7 +41,7 @@ export class SelectZoneComponent {
     if (this.selectedZone) {
       this.zonesServices.emitSelectedZone(this.selectedZone); // Emitir el valor seleccionado a través del servicio
       localStorage.setItem('selectedZone', this.selectedZone);
-      console.log(localStorage.getItem('selectedZone'), "esto pongo ");
+      this.eventsServices.emitEvent(this.selectedZone);
     }
   }
 }

@@ -9,5 +9,6 @@ export interface Community {
     communityImage?: any,
     coordinates: any,
     creator?: string,
-    kcUserName: string
+    kcUserName: string,
+    zone?: string
 }

@@ -72,7 +72,7 @@ export class NavigationComponent {
       this.userName = this._authService.getUserName();
       const userEmail: any = this._authService.getUserEmail();
       if(!userEmail){
-        this._utilsService.showMessage("This user does not have an email");
+        this._utilsService.showMessage("This user does not have an email in SSO");
         return;
       }
       const user = await this.usersService.syncronizeWithAppUser(
