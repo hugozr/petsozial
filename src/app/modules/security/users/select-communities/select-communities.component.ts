@@ -28,10 +28,11 @@ export class SelectCommunitiesComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   communities: any[] = [];
+  selectedCommunities: any[] = [];
   pageSize: number = 6;
   totalRows: number = 0;
   pageSizeOptions: number[] = [6, 20, 50];
-  userData: any;
+  // userData: any;
 
   constructor(
     private usersService: UsersService,
@@ -41,13 +42,19 @@ export class SelectCommunitiesComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.userData = await this.usersService.getUser(this.data.id);
+    // this.userData = await this.usersService.getUser(this.data.id);
 
+    // console.log(this.userData, this.data, "aaa")
     //TODO: Se puede seleccionar por ahora publicos, pero con el mimso componente podemos seleccionar comuniadades privadas
-    await this.loadPublicCommunities(this.pageSize, 0);
+    const a = await this.loadPublicCommunities(this.pageSize, 0);
+    console.log(a);
+    this.selectedCommunities = await this.usersService.getCommunitiesByUsername(this.data.username);
+    console.log(this.selectedCommunities, "este es un arreglo de comunidaddes")
   }
+
   async loadPublicCommunities(pageSize: number, page: number) {
     const data: any = await this.communitiesService.getPublicCommunities(pageSize, page);
+    console.log(data);
     this.communities = [];
     data.docs.map((elem: any) => {
       this.communities.push({
@@ -64,19 +71,29 @@ export class SelectCommunitiesComponent implements OnInit {
   pageChanged(event: PageEvent) {
     this.loadPublicCommunities(event.pageSize, event.pageIndex + 1);
   }
-  
+
   async onCheckboxChange(event: MatCheckboxChange, row: any): Promise<void> {
-    let operation = "insert"
+    const body: any = { community: row.id, username: this.data.username };
     if (event.checked) {
+      const added = await this.usersService.insertCommunityByUsername(body);
+      console.log(added);
     } else {
-      operation = "delete";
+      const deleted = await this.usersService.deleteCommunityByUsername(body);
+      this.selectedCommunities = this.selectedCommunities.filter(community => community !== deleted.id);
+
+      console.log(deleted);
     }
-    const user = await this.usersService.updateCommunity(this.userData.id, {operation, "communityId": row.id});
+    // const user = await this.usersService.updateCommunity(this.userData.id, {operation, "communityId": row.id});
   }
-  
-  communityIsSelected(id: string){
-    if(this.userData.communities == undefined ) return false;
-    const found = this.userData.communities.find((community: any) => community.id === id);
+
+  communityIsSelected(id: string) {
+    // console.log(this.userData.communities, "que tiene")
+    // if (this.userData.communities == undefined) return false;
+    // const found = this.userData.communities.find((community: any) => community.id === id);
+    // return found ? true : false;
+
+    if (this.selectedCommunities == undefined) return false;
+    const found = this.selectedCommunities.find((communityId) => communityId === id);
     return found ? true : false;
   }
 

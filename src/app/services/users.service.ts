@@ -73,6 +73,34 @@ export class UsersService {
     );
   }
 
+  async insertCommunityByUsername(body: any): Promise<any> {
+    return await lastValueFrom(
+      this.http.post(
+        `${this.backendURL}/api/communities-by-username`,
+        body
+      )
+    );
+  }
+
+  async deleteCommunityByUsername(body: any): Promise<any> {
+    return await lastValueFrom(
+      this.http.post(
+        `${this.backendURL}/api/communities-by-username/delete`,
+        body
+      )
+    );
+  }
+
+  async getCommunitiesByUsername(username: string): Promise<any> {
+    console.log("debe salir")
+    const communities: any = await lastValueFrom(
+      this.http.get(
+        `${this.backendURL}/api/communities-by-username/${username}/retrieve-communities`
+      )
+    );
+    const communityIds = communities.map((obj: any) => obj.community.id);
+    return communityIds;
+  }
   async getUsersByName(username: string): Promise<User[]> {
     const url = `${this.backendURL}/api/app-users/${username}/users-by-name`;
     const users: any = await lastValueFrom(this.http.get<User[]>(url));

@@ -157,7 +157,7 @@ export class CommunityComponent {
       this._utilsService.showMessage("Community's data was successfully updated", 2000, true);
       if (this.insert) {
         //La comunidad se le asigna al usuario que la ha creado, ya que UN USUARIO PUEDE ADMINISTRAR VARIAS COMUNIDADES
-        const user = await this.usersService.updateCommunity(this.user.id, {"operation": "insert", "communityId": communityResult.doc.id});
+        // const user = await this.usersService.updateCommunity(this.user.id, {"operation": "insert", "communityId": communityResult.doc.id});
         this.router.navigate(["/community"]);
       }
     }

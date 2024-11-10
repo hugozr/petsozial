@@ -99,7 +99,7 @@ export class UsersComponent implements OnInit {
       };
       this.users.push(filledUser);
     });
-    console.log(this.users, "bacion?");
+    // console.log(this.users, "bacion?");
     this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.sort = this.sort;
 
