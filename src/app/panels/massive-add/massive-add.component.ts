@@ -80,6 +80,7 @@ export class MassiveAddComponent {
             file: this.selectedFile, 
             name: this.someDescription,
             collection: this.uploadData.typeFile,
+            filterId: this.uploadData.filterId,
             username: "hzumaeta" };
           this._utilsService.showMessage("Success! File was uploaded.");
           const uploadedFile: any = await this._utilsService.uploadExcelFile(media);

@@ -48,6 +48,7 @@ export class UtilsService {
     formData.append('file', mediaData.file);
     formData.append('name', mediaData.name);
     formData.append('collection', mediaData.collection);
+    formData.append('filterId', mediaData.filterId);
     formData.append('username', mediaData.username);
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/excels`, formData));
   }

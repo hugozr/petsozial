@@ -81,9 +81,8 @@ export class PetComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.loadSpecies();
-    
+  async ngOnInit(): Promise<void> {
+    await this.loadSpecies();
     this.route.params.subscribe(async (params: any) => {
       console.log(params,"loca")
       if(params.id){
@@ -110,9 +109,11 @@ export class PetComponent {
 
   async loadSpecies() {
     this.species = await this.speciesService.getSpecies();
+    console.log(this.species, "que habrá?")
   }
 
   selectedSpecieChanged(specieId: string) {
+    console.log(specieId, "buscar esto carajo", this.species)
     const result = this.species.find(item => item.id === specieId);
     if (result) {
       this.breeds = result.breeds;

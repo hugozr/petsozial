@@ -1,5 +1,6 @@
 # Pendientes
-
+Remitir correo al usuario cuando se le da de alta, en especial cuando se hace carga masiva.
+En pet-members.component paginar las mascotas de la comunidad
 Asociar comunidades a vets, condominios, etc. Ver manual 8.4. Linking a community to…
 >>> Campañas de cercanía
 My Profile: humanos de contacto, al ingresar en el login debe mandar al mantenimiento del profile 
@@ -56,6 +57,10 @@ Hacer benchmark con productos en Perú y USA.
     VoiceFlow 
     Powtoon: Para comuniar funcionalidades
 
+https://www.purina.com/es/articulos/perro/salud/nutricion/como-leer-la-etiqueta-del-alimento-para-perros
+Levantar informacion del alimento para mascotas: 
+- Tomar fotos de cada producto y ponerlo en una base de datos a los humanos  les pueden interesar saaber quienes venden un producto de acuerdo a sus caracteristicas.
+- 
 
 # Aca me quede
 Comunidades con usuarios

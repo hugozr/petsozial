@@ -52,7 +52,8 @@ export class CommunityComponent {
   {
     label: 'Private',
     value: 'private',
-    disabled: !this._authService.hasRole("realm-role-pet-health")  //HZUMAETA: Solo puede crear comunidades de modalidad privada si tiene rol de pet-shop
+    // disabled: !this._authService.hasRole("realm-role-pet-health")  //HZUMAETA: Solo puede crear comunidades de modalidad privada si tiene rol de pet-shop
+    disabled: false
   }]; 
 
   types: any = [];

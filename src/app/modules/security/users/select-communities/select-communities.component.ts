@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { UsersService } from '../../../../services/users.service';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
@@ -16,7 +17,8 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
     MatCheckboxModule,
     MatTableModule,
     MatPaginatorModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule
   ],
   selector: 'app-select-communities',
   templateUrl: './select-communities.component.html',
@@ -42,18 +44,15 @@ export class SelectCommunitiesComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // this.userData = await this.usersService.getUser(this.data.id);
-
-    // console.log(this.userData, this.data, "aaa")
     //TODO: Se puede seleccionar por ahora publicos, pero con el mimso componente podemos seleccionar comuniadades privadas
-    const a = await this.loadPublicCommunities(this.pageSize, 0);
-    console.log(a);
+    const a = await this.loadCommunities(this.data.modality, this.pageSize, 0);
     this.selectedCommunities = await this.usersService.getCommunitiesByUsername(this.data.username);
-    console.log(this.selectedCommunities, "este es un arreglo de comunidaddes")
+    // console.log(this.selectedCommunities, "este es un arreglo de comunidaddes")
   }
 
-  async loadPublicCommunities(pageSize: number, page: number) {
-    const data: any = await this.communitiesService.getPublicCommunities(pageSize, page);
+  async loadCommunities(modality: string, pageSize: number, page: number) {
+    // const data: any = await this.communitiesService.getPublicCommunities(pageSize, page);
+    const data: any = await this.communitiesService.getCommunitiesByModality(modality,pageSize, page);
     console.log(data);
     this.communities = [];
     data.docs.map((elem: any) => {
@@ -69,7 +68,7 @@ export class SelectCommunitiesComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.loadPublicCommunities(event.pageSize, event.pageIndex + 1);
+    this.loadCommunities(this.data.modality, event.pageSize, event.pageIndex + 1);
   }
 
   async onCheckboxChange(event: MatCheckboxChange, row: any): Promise<void> {

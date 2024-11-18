@@ -127,7 +127,8 @@ export class UsersComponent implements OnInit {
     this.fillUserTable(data);
   }
 
-  async selectCommunities(element: any) {
+  async selectCommunities(element: any, modality: string) {
+    element.modality = modality;   
     const dialogRef = this.dialog.open(SelectCommunitiesComponent, {
       width: '600px',
       height: "500px",

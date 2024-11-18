@@ -77,8 +77,6 @@ export class Veterinary01Component {
     
   }
   async ngOnInit(): Promise<void> {
-    
-
     this.route.params.subscribe(async (params: any) => {
         this.vetId = params.id;
         this.vetToEdit = await this.vetsService.getVet(params.id);

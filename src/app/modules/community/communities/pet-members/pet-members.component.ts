@@ -27,7 +27,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
-import { PetsService } from '../../../../services/pets.service';
 import { UtilsService } from '../../../../services/utils.service';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -80,9 +79,9 @@ export class PetMembersComponent implements OnInit {
   timeoutId!: any;
   communityId!: string;
   community!: any;
+  petMembers!: any;
 
   constructor(
-    private petsService: PetsService,
     private communitiesService: CommunitiesService,
     private _utilsServices: UtilsService,
     private route: ActivatedRoute,
@@ -97,30 +96,33 @@ export class PetMembersComponent implements OnInit {
   }
 
   async loadPets(pageSize: number, page: number, filter: string, communityId: string ) {
+    //TODO: Falta paginar
     this.community = await this.communitiesService.getCommunity(this.communityId);
-    if(this.community.petMembers) this.fillPetTable(this.community.petMembers);
+    const pets = await this.communitiesService.getPetMembers(this.communityId);
+    console.log(pets, "llenar")
+    // if(this.community.petMembers) this.fillPetTable(this.community.petMembers);
+    if(pets) this.fillPetTable(pets);
   }
 
   fillPetTable(data: any){
     console.log("dadada", data);
     this.pets = [];
     data.map((elem: any) => {
-      const imagePath = elem.petImage?.sizes?.thumbnail?.url
+      const imagePath = elem.pet.petImage?.sizes?.thumbnail?.url
       this.pets.push({
-        id: elem.id,
-        name: elem.name,
-        human: elem.human.name,
-        gender: elem.gender,
-        specie: elem.specie.name,
-        breed: elem.breed.name,
-        birthday: elem.birthday,
-        comment: elem.comment,
+        id: elem.pet.id,
+        name: elem.pet.name,
+        human: elem.pet.human.name,
+        gender: elem.pet.gender,
+        specie: elem.pet.specie.name,
+        breed: elem.pet.breed.name,
+        birthday: elem.pet.birthday,
+        comment: elem.pet.comment,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
       console.log(imagePath, elem);
       console.log(this.backendURL);
     });
-    console.log(this.pets,"ssssssssssddddddd")
     this.dataSource = new MatTableDataSource(this.pets);
     this.dataSource.sort = this.sort;
     
@@ -138,12 +140,22 @@ export class PetMembersComponent implements OnInit {
  }
 
   async delete(element: any) {
-    const deleted = await this.communitiesService.updatePetMember(this.communityId, {"operation": "delete", "petId": element.id});
-    this.loadPets(this.pageSize, 0,"",this.communityId); 
+    // const deleted = await this.communitiesService.updatePetMember(this.communityId, {"operation": "delete", "petId": element.id});
+    // this.loadPets(this.pageSize, 0,"",this.communityId); 
+    // if (deleted) {
+    //   this._utilsServices.showMessage("Pet record successfully deleted", 2000, true);
+    // }
+    const toDelete: any = {
+      communityId: this.communityId,
+      petId: element.id
+    }
+    const deleted = await this.communitiesService.deletePetMembers(toDelete);
+    this.loadPets(this.pageSize, 0,"",this.communityId);  //TODO: Refrescar optimizadamente
     if (deleted) {
       this._utilsServices.showMessage("Pet record successfully deleted", 2000, true);
     }
   }
+
   asignPet(){
     const ids = this.community.petMembers?.map((pet:any) => pet.id) || [];
     const dialogRef = this.dialog.open(PetToComunityComponent, {
@@ -167,7 +179,7 @@ export class PetMembersComponent implements OnInit {
     const dialogRef = this.dialog.open(MassiveAddComponent, {
       width: '500px',
       height: "500px",
-      data: {typeFile: "pets"},
+      data: {typeFile: "pets", filterId: this.communityId},
     });
 
     dialogRef.afterClosed().subscribe(result => {

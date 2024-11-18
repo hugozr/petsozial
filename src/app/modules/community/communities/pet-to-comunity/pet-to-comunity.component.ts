@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PetsService } from '../../../../services/pets.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HumansService } from '../../../../services/humans.service';
@@ -67,11 +66,12 @@ export class PetToComunityComponent {
   async findPetsByHuman(){
     const email = this.form.get("email")?.value;
     const humans: any = await this.humansService.getHumansByEmail(email);
+    this.petsForAddToCommunity = [];
     if (humans.length != 0) {
       this.founded = humans[0];
       if(this.founded.pets){
         this.founded.pets.map((pet: any) => {
-          const imagePath = pet.petImage?.sizes?.thumbnail?.url;
+          const imagePath = pet.petImage?.sizes?.thumbnail?.url; 
           this.petsForAddToCommunity.push(
             {
               "petId": pet.id, 

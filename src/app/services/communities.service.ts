@@ -26,8 +26,19 @@ export class CommunitiesService {
     return comms;
   }
   
-  async getPublicCommunities(limit: number, page: number): Promise<Community[]> {
-    const url = `${this.backendURL}/api/communities?sort=-createdAt&where[modality][equals]=public&limit=${limit}&page=${page}`
+  async getPetMembers(communityId: string): Promise<any[]> {
+    const petMembers: any = await lastValueFrom(this.http.get<any[]>(`${this.backendURL}/api/communities-by-pets/${communityId}/retrieve-pets`)); 
+    return petMembers;
+  }
+  
+  async deletePetMembers(body: any): Promise<any[]> {
+    console.log(body, "borrando miembro")
+    const deleted: any = await lastValueFrom(this.http.post<any[]>(`${this.backendURL}/api/communities-by-pets/delete`, body)); 
+    return deleted.docs;
+  }
+  
+  async getCommunitiesByModality(modality: string, limit: number, page: number): Promise<Community[]> {
+    const url = `${this.backendURL}/api/communities?sort=-createdAt&where[modality][equals]=${modality}&limit=${limit}&page=${page}`
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
     return comms;
   }
@@ -55,16 +66,12 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/${communityId}/pet-update`, body));
   }
 
+
   async getCommunityTypes(modality: string): Promise<CommunityType[]> {
     const filter = "&where[modality][equals]=" +  modality;
-    const healthService: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0${filter}`)); 
-    return healthService.docs;
+    const communityTypes: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0${filter}`)); 
+    return communityTypes.docs;
   }
-
-  // async getHealthService(): Promise<HealthService[]> {
-  //   const healthService: any = await lastValueFrom(this.http.get<HealthService[]>(`${this.backendURL}/api/health-services?sort=-createdAt&limit=100`)); 
-  //   return healthService.docs;
-  // }
 
   async getCommunity(id: string): Promise<Community> {
     const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${id}`)); 
