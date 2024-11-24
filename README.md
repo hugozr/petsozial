@@ -1,4 +1,8 @@
 # Pendientes
+Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues
+cuando cambian las zonas, deben cambiar las veterinarias y las petshops
+Al eliminar la mascota, eliminar tambien las relaciones con comunidades y humanos
+Al asignar un humano a una mascota escribir en "humanos por mascotas"
 Remitir correo al usuario cuando se le da de alta, en especial cuando se hace carga masiva.
 En pet-members.component paginar las mascotas de la comunidad
 Asociar comunidades a vets, condominios, etc. Ver manual 8.4. Linking a community to…
@@ -12,19 +16,21 @@ Hacer que cuando un usuario no tenga un rol espexifico tenga el rol guest.
 Contactos por IG, Tiktok
 Manejar mejor los tipos de comunidades privadas: vets y cares
 Asociar veterinarias con petshops
+Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
 
-Verificación de carga masiva de humanos
-Revisar servicios de salud ... no esta grabando al parecer
 Arreglar la visualizacion del mapa ... independizar la invocacion
 Pet profiles: Mis lugares favoritos, mis comidas favoritas. 
 Al eliminar un usuario en Angular, debe eliminarse de Keycloak. Lo mismo si se modifica.
 Cuando carga vets y pets, se debe considerar la zona 
 
+El paginador debe verse al botton de la ventana
 
 Jynx Maze
 
 # Atendidos
-Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
+Cuando cambian las zonas debe cambiar las mascotas
+Verificación de carga masiva de humanos
+Revisar servicios de salud ... no esta grabando al parecer
 
 Veterinarias con comumidades privadas 
 Al autenticar un usuario en Keycloak verificar si el app-users existe

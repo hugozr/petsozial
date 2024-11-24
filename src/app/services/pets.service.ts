@@ -37,10 +37,12 @@ export class PetsService {
     const body = {
       filter,
       limit,
-      page
+      page,
     }
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me`, body));
   }
+
+  
   async filterPetsByHumanId(limit: number, page: number, filter: string, humanId: string): Promise<any> {
     const body = {
       filter,
@@ -51,15 +53,6 @@ export class PetsService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-human-id`, body));
   }
 
-  // async filterPetsByCommunityId(limit: number, page: number, filter: string, id: string): Promise<any> {
-  //   const body = {
-  //     filter,
-  //     limit,
-  //     page,
-  //     id
-  //   }
-  //   return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-community-id`, body));
-  // }
 
   async getPet(id: string): Promise<Pet> {
     const pet: any = await lastValueFrom(this.http.get<Pet[]>(`${this.backendURL}/api/pets/${id}`)); 
@@ -82,6 +75,7 @@ export class PetsService {
   deletePet(id: string): Observable<Pet> {
     return this.http.delete<Pet>(`${this.backendURL}/api/pets/${id}`);
   }
+
   downloadFile(fileName: string){
     this._utilsServices.downloadExcel(`${this.backendURL}/api/pets/download-in-excel`).subscribe(response => {
       this._utilsServices.saveFile(response.body, fileName);

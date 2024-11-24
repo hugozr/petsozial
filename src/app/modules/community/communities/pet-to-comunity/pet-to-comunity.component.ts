@@ -107,10 +107,7 @@ export class PetToComunityComponent {
   }
 
   async AddPetToCommnity(pet: any){
-    // const communityId = this.data.communityId;
-    // const data: any =  {"operation": "insert", "petId": pet.petId};
     const data: any =  {community: this.data.communityId, pet: pet.petId};
-    // const added = await this.communitiesService.updatePetMember(communityId, data);
     const added = await this.communitiesService.insertPetMember(data);
     if (added){
         this._utilsServices.showMessage("Pet successfully associated", 2000, true);

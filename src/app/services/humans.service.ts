@@ -28,6 +28,16 @@ export class HumansService {
     return pets;
   }
 
+  async retrieveHumansByPet(limit: number, page: number, filter: string, petId: string): Promise<any> {
+    console.log("hinest")
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/${petId}/humans-by-pet-id`, body));
+  }
+
   async filterHumans(limit: number, page: number, filter: string): Promise<any> {
     const body = {
       filter,

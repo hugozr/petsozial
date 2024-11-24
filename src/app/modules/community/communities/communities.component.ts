@@ -84,26 +84,17 @@ export class CommunitiesComponent implements OnInit {
     this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
     this.selectedZone = this.zonesServices.getCurrentZone();
 
-    // console.log(this.selectedZone, "debe estar el codugo de zona")
-    // this.loadCommunities(this.pageSize, 0);
     this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);
     this.eventSubscription = this.eventsServices.event$.subscribe(data => {
       this.selectedZone = data;
-      // console.log(data, "vr que viee , debe benir la zona");
       this.loadCommunitiesByZone(data, this.pageSize, 0);
     });
   }
-
-  // async loadCommunities(pageSize: number, page: number) {
-  //   const data: any = await this.communitiesService.getCommunities(pageSize, page);
-  //   this.fillCommunityTable(data);
-  // }
 
   async loadCommunitiesByZone(zoneId:string, pageSize: number, page: number) {
     const data: any = await this.communitiesService.getCommunitiesByZone(zoneId, pageSize, page);
     this.fillCommunityTable(data);
   }
-
 
   fillCommunityTable(data: any) {
     this.communities = [];
