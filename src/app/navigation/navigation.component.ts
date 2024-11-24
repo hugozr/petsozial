@@ -92,7 +92,6 @@ export class NavigationComponent {
 
   loadOptions(){
     this.portalService.getOptions().subscribe( (data: any) => {
-      console.log(data, "busca opcion perdida");
       data.docs.map( (elem: any) => {
         this.appOptions.push({
           name: elem.name, 

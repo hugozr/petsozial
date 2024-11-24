@@ -99,13 +99,10 @@ export class PetMembersComponent implements OnInit {
     //TODO: Falta paginar
     this.community = await this.communitiesService.getCommunity(this.communityId);
     const pets = await this.communitiesService.getPetMembers(this.communityId);
-    console.log(pets, "llenar")
-    // if(this.community.petMembers) this.fillPetTable(this.community.petMembers);
     if(pets) this.fillPetTable(pets);
   }
 
   fillPetTable(data: any){
-    console.log("dadada", data);
     this.pets = [];
     data.map((elem: any) => {
       const imagePath = elem.pet.petImage?.sizes?.thumbnail?.url
@@ -140,11 +137,7 @@ export class PetMembersComponent implements OnInit {
  }
 
   async delete(element: any) {
-    // const deleted = await this.communitiesService.updatePetMember(this.communityId, {"operation": "delete", "petId": element.id});
-    // this.loadPets(this.pageSize, 0,"",this.communityId); 
-    // if (deleted) {
-    //   this._utilsServices.showMessage("Pet record successfully deleted", 2000, true);
-    // }
+
     const toDelete: any = {
       communityId: this.communityId,
       petId: element.id
@@ -157,20 +150,18 @@ export class PetMembersComponent implements OnInit {
   }
 
   asignPet(){
-    const ids = this.community.petMembers?.map((pet:any) => pet.id) || [];
+    // const ids = this.community.petMembers?.map((pet:any) => pet.id) || [];
     const dialogRef = this.dialog.open(PetToComunityComponent, {
       width: '500px',
       height: "600px",
-      data: {"communityId": this.communityId, "petMemberIds": ids},
+      // data: {"communityId": this.communityId, "petMemberIds": ids},
+      data: {"communityId": this.communityId},
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log(result)
       if(result) {
         this.loadPets(this.pageSize, 0, "", this.communityId);
-        
-        // this.form.get('humanName')?.setValue(result.name);
-        // this.form.get('hiddenHumanId')?.setValue(result.id);
       }
     });
   }

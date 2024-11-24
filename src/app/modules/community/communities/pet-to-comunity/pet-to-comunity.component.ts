@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UtilsService } from '../../../../services/utils.service';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { AuthService } from '../../../../services/auth.service';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
   selector: 'app-pet-to-comunity',
@@ -36,12 +37,13 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class PetToComunityComponent {
   email: string = '';
-  founded: any = null;
+  human: any = null;
   form!: FormGroup;
   petsForAddToCommunity: any[] = [];
   backendURL = environment.backendPetZocialURL;
   refreshMembers = false;
   messageAboutHuman = "";
+  noImagePath = "";
   
   constructor(
     private dialogRef: MatDialogRef<PetToComunityComponent>,
@@ -50,6 +52,7 @@ export class PetToComunityComponent {
     private communitiesService: CommunitiesService,
     private _utilsServices: UtilsService,
     private _authService: AuthService,
+    public settingsService: SettingsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     //TODO Documentar por defecto se muestra el correo del usuario que tiene el login
@@ -59,19 +62,24 @@ export class PetToComunityComponent {
     });
   }
 
-  ngOnInit(): void {
-    
+  async ngOnInit(): Promise<void> {
+    const settings: any = await this.settingsService.getSettings();
+    this.noImagePath = settings.noImage.sizes.thumbnail.url;
   }
   
   async findPetsByHuman(){
     const email = this.form.get("email")?.value;
-    const humans: any = await this.humansService.getHumansByEmail(email);
+    let imagePath = "";
+    const humanPets: any = await this.humansService.getPetsByHumanEmail(email);
+
     this.petsForAddToCommunity = [];
-    if (humans.length != 0) {
-      this.founded = humans[0];
-      if(this.founded.pets){
-        this.founded.pets.map((pet: any) => {
-          const imagePath = pet.petImage?.sizes?.thumbnail?.url; 
+    if (humanPets.human) {
+      this.human = humanPets.human;
+      if(humanPets.pets.length != 0){
+        for (const pet of humanPets.pets) {
+          imagePath = pet.petImage?.sizes?.thumbnail?.url;
+          imagePath = imagePath ? imagePath : this.noImagePath
+          const isMember = await this.petIsMember(this.data.communityId, pet.id); 
           this.petsForAddToCommunity.push(
             {
               "petId": pet.id, 
@@ -79,9 +87,9 @@ export class PetToComunityComponent {
               "thumbnail": imagePath ? (this.backendURL + imagePath) : null,
               "comment": pet.comment,
               "breed": pet.breed.name,
-              "toAdd": !this.data.petMemberIds.includes(pet.id)
-            })
-        })
+              "toAdd": !isMember
+            });
+        };
       } else {
         this.messageAboutHuman = "Human without associated pets";
       }
@@ -89,14 +97,21 @@ export class PetToComunityComponent {
       this.messageAboutHuman = "There is no human associated with this email account";
     }
   }
+
+  async petIsMember(communityId: string, petId: string){
+    const members: any = await this.communitiesService.petIsMember(communityId, petId);
+    return members[0] ? true : false;
+  }
   getShortenedComment(comment: string, maxLength: number): string {
     return this._utilsServices.getShortenedComment(comment,maxLength);
   }
 
   async AddPetToCommnity(pet: any){
-    const communityId = this.data.communityId;
-    const data: any =  {"operation": "insert", "petId": pet.petId};
-    const added = await this.communitiesService.updatePetMember(communityId, data);
+    // const communityId = this.data.communityId;
+    // const data: any =  {"operation": "insert", "petId": pet.petId};
+    const data: any =  {community: this.data.communityId, pet: pet.petId};
+    // const added = await this.communitiesService.updatePetMember(communityId, data);
+    const added = await this.communitiesService.insertPetMember(data);
     if (added){
         this._utilsServices.showMessage("Pet successfully associated", 2000, true);
         this.refreshMembers = true;

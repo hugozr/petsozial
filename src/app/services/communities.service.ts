@@ -30,9 +30,13 @@ export class CommunitiesService {
     const petMembers: any = await lastValueFrom(this.http.get<any[]>(`${this.backendURL}/api/communities-by-pets/${communityId}/retrieve-pets`)); 
     return petMembers;
   }
-  
+
+  async petIsMember(communityId: string, petId: string): Promise<any[]> {
+    const isMember: any = await lastValueFrom(this.http.get<any[]>(`${this.backendURL}/api/communities-by-pets/${communityId}/${petId}/is-member`)); 
+    return isMember;
+  }
+
   async deletePetMembers(body: any): Promise<any[]> {
-    console.log(body, "borrando miembro")
     const deleted: any = await lastValueFrom(this.http.post<any[]>(`${this.backendURL}/api/communities-by-pets/delete`, body)); 
     return deleted.docs;
   }
@@ -66,6 +70,10 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/${communityId}/pet-update`, body));
   }
 
+  async insertPetMember(body: any): Promise<any> {
+    return await lastValueFrom(this.http.post(`${this.backendURL}/api/communities-by-pets/insert-member`, body));
+  }
+
 
   async getCommunityTypes(modality: string): Promise<CommunityType[]> {
     const filter = "&where[modality][equals]=" +  modality;
@@ -77,7 +85,6 @@ export class CommunitiesService {
     const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${id}`)); 
     return community;
   }
-
   
   async getCommunitiesByUsername(kcUserName: string): Promise<Community> {
     const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${kcUserName}/by-username`)); 

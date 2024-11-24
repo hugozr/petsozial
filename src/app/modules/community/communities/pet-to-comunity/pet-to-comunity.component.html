@@ -22,8 +22,8 @@
       </div>
     </form>
     <div>
-      @if(founded){
-      <h3>{{ founded.name }}</h3>
+      @if(human){
+      <h3>{{ human.name }}</h3>
       @if(messageAboutHuman != ""){
         <h3>{{messageAboutHuman}}</h3>
       }
@@ -34,7 +34,9 @@
             <div style="display: flex; ">
               <div style="display: flex; align-items: center;">
                 <div>
-                  <img [src]="pet.thumbnail" alt="thumbnail" style="max-width: 100%; height: auto; margin-top: 10px;">
+                  @if(pet.thumbnail){
+                    <img [src]="pet.thumbnail" alt="thumbnail" style="max-width: 100%; height: auto; margin-top: 10px;">
+                  } 
                 </div>
                 <div style="margin-left: 20px;">
                   <div matListItemTitle>{{pet.name}}</div>
