@@ -106,6 +106,7 @@ export class CommunitiesComponent implements OnInit {
         name: elem.name,
         comment: elem.comment,
         type: elem.type?.name,
+        typeId: elem.type?.id,
         address: elem.address,
         modality: elem.modality,
         user: elem.kcUserName,
@@ -165,7 +166,6 @@ export class CommunitiesComponent implements OnInit {
   }
 
   goToOrganization(community: any) {
-    console.log(community,"cocacila")
     const dialogRef = this.dialog.open(HumansByCommunitiesComponent, {
       width: '900px',
       height: "600px",

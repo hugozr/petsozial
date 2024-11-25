@@ -1,0 +1,48 @@
+<mat-card class="my-card">
+    <mat-card-header style="height: 70px;">
+      <mat-card-title>I want to belong to this community</mat-card-title>
+      <mat-card-subtitle>Enter my human's email</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content style="height: 460px;">
+      <form [formGroup]="form" (ngSubmit)="addHumanToCommunity()">
+        <div style="display: flex; flex-direction: column; align-items: stretch;">
+          <mat-form-field appearance="outline" style="flex: 1;">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Human's email" formControlName="email">
+            @if(form.get('email')!.hasError('required')){
+            <mat-error>Please enter an email address</mat-error>
+            }
+            @if (form.get('email')!.hasError('email'))
+            {
+            <mat-error>Please enter a valid email address</mat-error>
+            }
+          </mat-form-field>
+          
+        </div>
+        <div class="full-width">
+            <mat-form-field class="full-width" appearance="outline" >
+                <mat-label>Select a position</mat-label>
+                <mat-select name="community-type" formControlName="position"  (selectionChange)="onPositionChange($event.value)">
+                    @for (position of positions; track position) {
+                    <mat-option [value]="position">{{position.name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea matInput style="margin-top: 0px" formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+      </form>
+      
+    </mat-card-content>
+    <mat-card-actions class="actions">
+        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid" mat-button>Add human
+        </button>
+      <button mat-raised-button color="accent" (click)="close()" style="margin-left: 20px;"  (document:keydown.escape)="close()">
+        Close
+      </button>
+    </mat-card-actions>
+  </mat-card>

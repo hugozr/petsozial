@@ -1,7 +1,7 @@
 # Pendientes
-Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues
-cuando cambian las zonas, deben cambiar las veterinarias y las petshops
+Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues: Poner los cargos en los tipos de comunidad
 Al eliminar la mascota, eliminar tambien las relaciones con comunidades y humanos
+cuando cambian las zonas, deben cambiar las veterinarias y las petshops
 Al asignar un humano a una mascota escribir en "humanos por mascotas"
 Remitir correo al usuario cuando se le da de alta, en especial cuando se hace carga masiva.
 En pet-members.component paginar las mascotas de la comunidad
@@ -69,9 +69,7 @@ Levantar informacion del alimento para mascotas:
 - 
 
 # Aca me quede
-Comunidades con usuarios
-Servicios en Petshops
-
+Creando humanos para la comunidad. posicion y descripcion. con formulario y validaciones custom. Ver "validateIfUserExists"
 
 # Referencias
 https://mascotas365.com/

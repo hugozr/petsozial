@@ -20,6 +20,12 @@ export class CommunitiesService {
     return comms;
   }
   
+  async getCommunityById(id: string): Promise<any> {
+    const url = `${this.backendURL}/api/communities/${id}`
+    const comm: any = await lastValueFrom(this.http.get<any>(url));
+    return comm;
+  }
+
   async getCommunitiesByZone(zoneId: string, limit: number, page: number): Promise<Community[]> {
     const url = `${this.backendURL}/api/communities?sort=-createdAt&where[zone][equals]=${zoneId}&limit=${limit}&page=${page}&zone`
     const comms: any = await lastValueFrom(this.http.get<Community[]>(url));
@@ -88,6 +94,11 @@ export class CommunitiesService {
     const filter = "&where[modality][equals]=" +  modality;
     const communityTypes: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types?sort=-name&limit=0${filter}`)); 
     return communityTypes.docs;
+  }
+
+  async getCommunityType(id: string): Promise<any> {
+    const communityType: any = await lastValueFrom(this.http.get<CommunityType[]>(`${this.backendURL}/api/community-types/${id}`)); 
+    return communityType;
   }
 
   async getCommunity(id: string): Promise<Community> {

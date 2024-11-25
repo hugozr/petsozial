@@ -6,8 +6,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '../../../../../environments/environment';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CommunitiesService } from '../../../../services/communities.service';
+import { HumanToCommunityComponent } from '../../../community/communities/human-to-community/human-to-community.component';
 
 @Component({
   selector: 'app-humans-by-communities',
@@ -48,19 +49,19 @@ export class HumansByCommunitiesComponent {
 
   constructor(
     private communitiesService: CommunitiesService,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
   }
 
   async ngOnInit(): Promise<void> {
-    console.log(this.data, "mosr")
     this.communityId = this.data.community.id;
     await this.loadHumans(this.pageSize, 0);
+    console.log(this.data, "buscar posision")
   }
 
   async loadHumans(pageSize: number, page: number) {
     const data = await this.communitiesService.retrieveHumansByCommunity(pageSize, page, "", this.communityId);
-    console.log(data, "drdo");  
     this.fillHumanTable(data);
   }
 
@@ -90,5 +91,20 @@ export class HumansByCommunitiesComponent {
 
   pageChanged(event: PageEvent) {
     this.loadHumans(event.pageSize, event.pageIndex + 1);
+  }
+
+  addHuman() {
+    const dialogRef = this.dialog.open(HumanToCommunityComponent, {
+      width: '500px',
+      height: "400px",
+      data: {community: this.data.community},
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result)
+      if(result) {
+        // this.loadPets(this.pageSize, 0, "", this.communityId);
+      }
+    });
   }
 }

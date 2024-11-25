@@ -177,7 +177,6 @@ export class UserComponent {
     return new Promise(resolve => {
       this.timeoutId = setTimeout(async () => {
         const response: any = await this.usersService.getUsersByName(username);
-        console.log(response);
         resolve(response.totalDocs === 0 ? null : { 'usernameExists': true });
       }, 500);
     });
