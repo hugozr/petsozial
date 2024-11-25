@@ -1,0 +1,57 @@
+<!-- https://www.angularjswiki.com/material/mat-table-serverside-pagination/ -->
+<div class="container">
+    <mat-toolbar>
+        <span>These people belong to {{data.community.name}}</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary" routerLink="/master/human">Add</button>
+      </mat-toolbar>
+      
+      <div [hidden]="humans.length == 0">
+        <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+  
+          <ng-container matColumnDef="nickName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nickname </th>
+            <td mat-cell *matCellDef="let element"> {{element.nickName}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Human's name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="contact">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact</th>
+            <td mat-cell *matCellDef="let element"> {{element.phone}} <br> {{element.email}}</td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="comment">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
+            <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="thumbnail">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pict </th>
+            <td mat-cell *matCellDef="let element"> 
+              @if (element.thumbnail) {
+  
+                <div class="image-container">
+                <img [src]="element.thumbnail" alt="thumbnail">
+                </div>
+              } 
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator
+          [length]="totalRows"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="pageChanged($event)"
+          aria-label="Select page of humans">
+        </mat-paginator>
+      </div>
+    <h2 [hidden]="humans.length > 0">No human records to show</h2> 
+  

@@ -67,17 +67,17 @@ export class HumansByPetsComponent {
   fillHumanTable(data: any){
     this.humans = [];
 
-    for (const pet of data) {
-      const imagePath = pet.humanImage?.sizes?.thumbnail?.url;
+    for (const human of data) {
+      const imagePath = human.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
-        id: pet.id,
-        nickName: pet.nickName,
-        name: pet.name,
-        comment: pet.comment,
-        email: pet.email,
-        address: pet.address,
-        phone: pet.phone,
-        socialUrl: pet.socialUrl,
+        id: human.id,
+        nickName: human.nickName,
+        name: human.name,
+        comment: human.comment,
+        email: human.email,
+        address: human.address,
+        phone: human.phone,
+        socialUrl: human.socialUrl,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     };

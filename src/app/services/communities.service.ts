@@ -66,6 +66,15 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/filter-me`, body));
   }
 
+  async retrieveHumansByCommunity(limit: number, page: number, filter: string, communityId: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page
+    }
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/humans-by-communities/${communityId}/retrieve-humans`, body));
+  }
+
   async updatePetMember(communityId: string, body: any): Promise<any> {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/communities/${communityId}/pet-update`, body));
   }

@@ -19,6 +19,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
 import { EventsService } from '../../../services/events.service';
 import { ZonesService } from '../../../services/zones.service';
+import { HumansByCommunitiesComponent } from '../../master/humans/humans-by-communities/humans-by-communities.component';
 
 @Component({
   selector: 'app-communities',
@@ -162,6 +163,23 @@ export class CommunitiesComponent implements OnInit {
   goToPetMembers(element: any) {
     this.router.navigate(['/community/pet-members', element.id]);
   }
+
+  goToOrganization(community: any) {
+    console.log(community,"cocacila")
+    const dialogRef = this.dialog.open(HumansByCommunitiesComponent, {
+      width: '900px',
+      height: "600px",
+      data: {community},
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result)
+      if(result) {
+        // this.loadPets(this.pageSize, 0, "", this.communityId);
+      }
+    });
+  }
+  
   addCommunity() {
     // this.userName = this._authService.getUserName();
     if (this.userName) {

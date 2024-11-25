@@ -162,7 +162,6 @@ export class PetsComponent implements OnInit {
   }
 
   showHumans(pet: any){
-    // const ids = this.community.petMembers?.map((pet:any) => pet.id) || [];
     const dialogRef = this.dialog.open(HumansByPetsComponent, {
       width: '900px',
       height: "600px",
