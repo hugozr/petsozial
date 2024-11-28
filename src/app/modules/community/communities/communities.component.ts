@@ -143,8 +143,8 @@ export class CommunitiesComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
-    this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);
     if (deleted) {
+      this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);      //TODO: Optimizar
       this._utilsService.showMessage("Community record successfully deleted", 2000, true);
     }
   }

@@ -42,6 +42,11 @@ export class CommunitiesService {
     return isMember;
   }
 
+  async existsHumanByEmail( email: string, communityId: string): Promise<any[]> {
+    const exists: any = await lastValueFrom(this.http.get<any[]>(`${this.backendURL}/api/humans-by-communities/${email}/${communityId}/exists`)); 
+    return exists;
+  }
+
   async deletePetMembers(body: any): Promise<any[]> {
     const deleted: any = await lastValueFrom(this.http.post<any[]>(`${this.backendURL}/api/communities-by-pets/delete`, body)); 
     return deleted.docs;
@@ -89,6 +94,10 @@ export class CommunitiesService {
     return await lastValueFrom(this.http.post(`${this.backendURL}/api/communities-by-pets/insert-member`, body));
   }
 
+  async insertHuman(body: any): Promise<any> {
+    return await lastValueFrom(this.http.post(`${this.backendURL}/api/humans-by-communities/insert-human`, body));
+  }
+
 
   async getCommunityTypes(modality: string): Promise<CommunityType[]> {
     const filter = "&where[modality][equals]=" +  modality;
@@ -126,5 +135,10 @@ export class CommunitiesService {
 
   deleteCommunity(id: string): Observable<Community> {
     return this.http.delete<Community>(`${this.backendURL}/api/communities/${id}`);
+  }
+
+  async deleteHumanByCommunity(id: string): Promise<Community> {
+    const human = await lastValueFrom(this.http.delete<any>(`${this.backendURL}/api/humans-by-communities/${id}`));
+    return human;
   }
 }

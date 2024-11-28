@@ -142,8 +142,8 @@ export class UsersComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.usersService.deleteUser(element.id));
-    this.loadUsers(this.pageSize, 0);
     if (deleted) {
+      this.loadUsers(this.pageSize, 0);
       this._utilsService.showMessage("User record successfully deleted", 2000, true);
     }
   }

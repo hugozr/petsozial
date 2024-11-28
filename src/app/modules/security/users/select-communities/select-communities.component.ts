@@ -79,7 +79,6 @@ export class SelectCommunitiesComponent implements OnInit {
     } else {
       const deleted = await this.usersService.deleteCommunityByUsername(body);
       this.selectedCommunities = this.selectedCommunities.filter(community => community !== deleted.id);
-
       console.log(deleted);
     }
     // const user = await this.usersService.updateCommunity(this.userData.id, {operation, "communityId": row.id});

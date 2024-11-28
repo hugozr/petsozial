@@ -13,13 +13,13 @@
                                     <mat-label>Username</mat-label>
                                     <input matInput placeholder="User's username" formControlName="username" 
                                     (blur)="form.get('username')!.updateValueAndValidity()">
-                                    @if(form.get('username')!.hasError('containsWhitespace')){
+                                    @if (form.get('username')!.hasError('containsWhitespace')){
                                         <mat-error>The username must not contain white spaces</mat-error>
                                     }
-                                    @if(form.get('username')!.hasError('required')){
+                                    @if (form.get('username')!.hasError('required')){
                                         <mat-error>Please enter a valid username</mat-error>
                                     }
-                                    @if(form.get('username')!.hasError('usernameExists')){
+                                    @if (form.get('username')!.hasError('usernameExists')){
                                         <mat-error>The user already exists. Please choose another one.</mat-error>
                                     }
                                 </mat-form-field>
@@ -29,14 +29,14 @@
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Email</mat-label>
                                     <input matInput placeholder="User's email" formControlName="email">
-                                    @if(form.get('email')!.hasError('required')){
+                                    @if (form.get('email')!.hasError('required')){
                                         <mat-error>Please enter an email address</mat-error>
                                     }
                                     @if (form.get('email')!.hasError('email'))
                                     {
                                         <mat-error>Please enter a valid email address</mat-error>
                                     }
-                                    @if(form.get('email')!.hasError('emailExists')){
+                                    @if (form.get('email')!.hasError('emailExists')){
                                         <mat-error>The email already exists. Please choose another one.</mat-error>
                                     }
                                 </mat-form-field>
@@ -56,7 +56,7 @@
                                     <mat-form-field class="full-width" appearance="outline">
                                         <mat-label>Password</mat-label>
                                         <input matInput placeholder="User's password" formControlName="password">
-                                        @if(form.get('password')!.hasError('minlength')){
+                                        @if (form.get('password')!.hasError('minlength')){
                                             <mat-error>The password must be at least 3 characters long</mat-error>
                                         }
                                     </mat-form-field>

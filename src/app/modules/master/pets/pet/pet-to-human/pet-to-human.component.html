@@ -11,7 +11,7 @@
                     <!-- <input matInput [(ngModel)]="email" placeholder="Ingresa el email" /> -->
 
                     <input matInput placeholder="Human's email" formControlName="email">
-                    @if(form.get('email')!.hasError('required')){
+                    @if(form.get ('email')!.hasError('required')){
                     <mat-error>Please enter an email address</mat-error>
                     }
                     @if (form.get('email')!.hasError('email'))

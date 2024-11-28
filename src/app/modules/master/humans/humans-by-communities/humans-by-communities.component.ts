@@ -9,17 +9,23 @@ import { environment } from '../../../../../environments/environment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CommunitiesService } from '../../../../services/communities.service';
 import { HumanToCommunityComponent } from '../../../community/communities/human-to-community/human-to-community.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
   selector: 'app-humans-by-communities',
   standalone: true,
   imports: [
     CommonModule,
-    
     MatToolbarModule,
     MatButtonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatMenuModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './humans-by-communities.component.html',
   styleUrl: './humans-by-communities.component.css'
@@ -39,9 +45,10 @@ export class HumansByCommunitiesComponent {
   displayedColumns: string[] = [
     'nickName',
     'name',
-    'comment',
+    'position',
     'contact',
     'thumbnail',
+    'actions',
   ];
 
   dataSource = new MatTableDataSource(this.humans);
@@ -49,6 +56,7 @@ export class HumansByCommunitiesComponent {
 
   constructor(
     private communitiesService: CommunitiesService,
+    private _utilsService: UtilsService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
@@ -57,7 +65,6 @@ export class HumansByCommunitiesComponent {
   async ngOnInit(): Promise<void> {
     this.communityId = this.data.community.id;
     await this.loadHumans(this.pageSize, 0);
-    console.log(this.data, "buscar posision")
   }
 
   async loadHumans(pageSize: number, page: number) {
@@ -68,17 +75,21 @@ export class HumansByCommunitiesComponent {
   fillHumanTable(data: any){
     this.humans = [];
 
-    for (const human of data) {
-      const imagePath = human.humanImage?.sizes?.thumbnail?.url;
+    console.log(data, "ver");
+    for (const item of data) {
+      const imagePath = item.human.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
-        id: human.id,
-        nickName: human.nickName,
-        name: human.name,
-        comment: human.comment,
-        email: human.email,
-        address: human.address,
-        phone: human.phone,
-        socialUrl: human.socialUrl,
+        id: item.id,
+        humanId: item.human.id,
+        nickName: item.human.nickName,
+        name: item.human.name,
+        comment: item.human.comment,
+        email: item.human.email,
+        address: item.human.address,
+        phone: item.human.phone,
+        socialUrl: item.human.socialUrl,
+        position: item.position.name,
+        positionDescription: item.position.description,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     };
@@ -93,6 +104,14 @@ export class HumansByCommunitiesComponent {
     this.loadHumans(event.pageSize, event.pageIndex + 1);
   }
 
+  async delete(element: any){
+    const deleted = await this.communitiesService.deleteHumanByCommunity(element.id);
+    if (deleted) {
+      await this.loadHumans(this.pageSize, 0);
+      this._utilsService.showMessage("Community record successfully deleted", 2000, true);
+    }
+  }
+
   addHuman() {
     const dialogRef = this.dialog.open(HumanToCommunityComponent, {
       width: '500px',
@@ -100,11 +119,8 @@ export class HumansByCommunitiesComponent {
       data: {community: this.data.community},
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(result)
-      if(result) {
-        // this.loadPets(this.pageSize, 0, "", this.communityId);
-      }
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+        await this.loadHumans(this.pageSize, 0);
     });
   }
 }

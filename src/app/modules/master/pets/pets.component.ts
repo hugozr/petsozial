@@ -146,8 +146,8 @@ export class PetsComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
-    this.loadPets(this.pageSize, 0,""); 
     if (deleted) {
+      this.loadPets(this.pageSize, 0,""); 
       this._utilsService.showMessage("Pet record successfully deleted", 2000, true);
     }
   }

@@ -1,5 +1,5 @@
 # Pendientes
-Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues: Poner los cargos en los tipos de comunidad
+Controlar la integridad al eliminar las comunidades
 Al eliminar la mascota, eliminar tambien las relaciones con comunidades y humanos
 cuando cambian las zonas, deben cambiar las veterinarias y las petshops
 Al asignar un humano a una mascota escribir en "humanos por mascotas"
@@ -28,6 +28,7 @@ El paginador debe verse al botton de la ventana
 Jynx Maze
 
 # Atendidos
+Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues: Poner los cargos en los tipos de comunidad
 Cuando cambian las zonas debe cambiar las mascotas
 Verificación de carga masiva de humanos
 Revisar servicios de salud ... no esta grabando al parecer

@@ -139,6 +139,8 @@ export class PetComponent {
     if (petResult){
       let assigned = null;
       if(this.form.value.hiddenHumanId.length>0){   //Si se ha asignado un humano a la mascota
+        
+        //TODO: Esto hay que reformularlo URGENTE
         assigned = this.humansService.assignHumanToPet(this.form.value.hiddenHumanId, petResult.doc.id);
       } 
       this._utilsService.showMessage("Pet's data was successfully updated" + (assigned ? ", with its human.":""),2000,true);

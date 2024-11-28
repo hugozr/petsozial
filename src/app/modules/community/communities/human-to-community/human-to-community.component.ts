@@ -12,6 +12,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../../../services/auth.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { HumansService } from '../../../../services/humans.service';
+import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
   selector: 'app-human-to-community',
@@ -37,48 +39,87 @@ export class HumanToCommunityComponent {
   form!: FormGroup;
   email: string = '';
   positions: any = [];
+  private timeoutId: any;
 
   constructor(
     private communitiesService: CommunitiesService,
     public dialog: MatDialog,
     private _authService: AuthService,
     private formBuilder: FormBuilder,
-
+    private humansService: HumansService,
+    private utilsService: UtilsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     const email = this._authService.getUserEmail() || "";
     this.form = this.formBuilder.group({
-      email: [email, [Validators.required, Validators.email]],
-      position: [],
-      description: []
+      email: [email, [Validators.required, Validators.email],[
+        this.validateIfHumanExists.bind(this), 
+      ]],
+      positionName: [],
+      positionDescription: []
     });
   }
 
   async ngOnInit(): Promise<void> {
-    console.log(this.data);
     this.communityId = this.data.community.id;
     const community: any = await this.communitiesService.getCommunityById(this.communityId);
     if(community){
-
       this.positions = community.type.positions
-      console.log(this.positions,"asasasa")
     }
   }
 
-  addHumanToCommunity(){}
+  async addHumanToCommunity(){
+    const email = this.form.get("email")?.value;
+    const humans: any = await this.humansService.getHumansByEmail(email);
+    if (humans.length == 0) {
+      this.utilsService.showMessage("The email address do not exists")
+      return;
+    }
 
+    const response: any = await this.communitiesService.existsHumanByEmail(email, this.communityId);
+    if(response.exists){
+      this.utilsService.showMessage("The email already exists in this community");
+      return;
+    }
 
- 
+    const data: any =  {
+      community: this.communityId, 
+      human: humans[0].id,
+      position: {
+        name: (this.form.get("positionName")?.value).name,
+        description: this.form.get("positionDescription")?.value,
+      }
+    };
+    const humanCommunity: any = await this.communitiesService.insertHuman(data);
+    if(humanCommunity){
+
+    }
+  }
+
   onPositionChange(selectedPosition: any): void {
-    console.log(selectedPosition, "nadaaaaaaaaaa")
-    
-    // Actualiza la descripción en el formulario
     this.form.patchValue({
-      description: selectedPosition ? selectedPosition.description : ''
+      positionDescription: selectedPosition ? selectedPosition.description : ''
     });
   }
 
   close() {
     // this.dialogRef.close(this.refreshMembers);
   }
+  async validateIfHumanExists(control: any) {
+    const email = control.value;
+    if (!email) {
+      return null;
+    }
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    return new Promise(resolve => {
+      this.timeoutId = setTimeout(async () => {
+        const response: any = await this.humansService.getHumansByEmail(email);
+        resolve(response.length != 0 ? null : { 'humanNotExists': true });
+      }, 500);
+    });
+  }
+
+
 }

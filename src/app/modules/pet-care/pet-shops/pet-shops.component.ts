@@ -120,8 +120,8 @@ export class PetShopsComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.petshopsService.deletePetshop(element.id));
-    this.loadVets(this.pageSize, 0); 
     if (deleted) {
+      this.loadVets(this.pageSize, 0); 
       this._utilsService.showMessage("Petshop record successfully deleted",2000,true);
     }
   }

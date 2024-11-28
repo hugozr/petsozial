@@ -26,9 +26,9 @@
           </ng-container>
 
 
-          <ng-container matColumnDef="comment">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
-            <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Position</th>
+            <td mat-cell *matCellDef="let element"  [matTooltip]="element.positionDescription" > {{element.position}} </td>
           </ng-container>
 
           <ng-container matColumnDef="thumbnail">
@@ -42,6 +42,22 @@
               } 
             </td>
           </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element" style="text-align: right;">
+              <a [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </a>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="delete(element)">
+                  <mat-icon>delete</mat-icon> Delete
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>

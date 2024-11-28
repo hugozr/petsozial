@@ -124,8 +124,8 @@ export class HumansComponent implements OnInit {
 
   async delete(element: any) {
     const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
-    this.loadHumans(this.pageSize, 0); 
     if (deleted) {
+      this.loadHumans(this.pageSize, 0); 
       this._utilsService.showMessage("Vet record successfully deleted",2000,true);
     }
   }
