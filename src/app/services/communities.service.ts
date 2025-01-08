@@ -116,9 +116,14 @@ export class CommunitiesService {
   }
   
   async getCommunitiesByUsername(kcUserName: string): Promise<Community> {
-    const community: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${kcUserName}/by-username`)); 
-    return community;
+    const communities: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${kcUserName}/by-username`)); 
+    return communities;
   }
+  async getCommunitiesByUsernameAndZone(kcUserName: string, zone: string): Promise<Community> {
+    const communities: any = await lastValueFrom(this.http.get<Community[]>(`${this.backendURL}/api/communities/${kcUserName}/${zone}/by-username-and-zone`)); 
+    return communities;
+  }
+  
   
   async insertCommunity(community: Community): Promise<Community> {
     return await lastValueFrom(this.http.post<Community>(`${this.backendURL}/api/communities/`, community));
@@ -135,6 +140,10 @@ export class CommunitiesService {
 
   deleteCommunity(id: string): Observable<Community> {
     return this.http.delete<Community>(`${this.backendURL}/api/communities/${id}`);
+  }
+
+  canDeleteCommunity(id: string): Observable<Community> {
+    return this.http.get<Community>(`${this.backendURL}/api/communities/${id}/can-delete`);
   }
 
   async deleteHumanByCommunity(id: string): Promise<Community> {

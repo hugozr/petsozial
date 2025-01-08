@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,8 @@ import { VetServicesComponent } from '../vet-services/vet-services.component';
 import { AuthService } from '../../../services/auth.service';
 import { VetCommunitiesComponent } from './vet-communities/vet-communities.component';
 import { MassiveAddComponent } from '../../../panels/massive-add/massive-add.component';
+import { EventsService } from '../../../services/events.service';
+import { ZonesService } from '../../../services/zones.service';
 
 @Component({
   selector: 'app-veterinaries',
@@ -71,21 +73,42 @@ export class VeterinariesComponent implements OnInit {
   timeoutId!: any;
   userName!: string;
 
+
+  selectedZone: string = "";
+  private eventSubscription?: Subscription;
+
   constructor(
     private vetsService: VetsService,
     private _utilsService: UtilsService,
     private _authService: AuthService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private eventsServices: EventsService,
+    private zonesServices: ZonesService,
+    
   ) {}
 
   ngOnInit(): void {
     this.userName = this._authService.getUserName();
-    this.loadVets(this.pageSize, 0);
+    // this.loadVets(this.pageSize, 0);
+    this.selectedZone = this.zonesServices.getCurrentZone();
+    this.loadVetsByZone(this.selectedZone, this.pageSize, 0, "");
+    //Reacciona al cambio de zonas
+    this.eventSubscription = this.eventsServices.event$.subscribe(data => {
+      this.selectedZone = data;
+      console.log("cambia", this.selectedZone)
+      this.loadVetsByZone(this.selectedZone, this.pageSize, 0, "");
+    });
   }
 
   async loadVets(pageSize: number, page: number) {
     const data: any = await this.vetsService.getVets(pageSize, page);
+    this.fillVetTable(data);
+  }
+
+  async loadVetsByZone(zoneId: string, pageSize: number, page: number, filter: string) {
+    const data: any = await this.vetsService.getVetsByZone(zoneId, pageSize, page, filter);
+    console.log(data)
     this.fillVetTable(data);
   }
 
@@ -104,7 +127,7 @@ export class VeterinariesComponent implements OnInit {
         thumbnail: imagePath ? this.backendURL + imagePath : null,
         canManageCOmmunities: elem.kcUserName == this.userName && this.userName != undefined
       });
-      console.log(elem.kcUserName, this.userName, elem.name);
+      // console.log(elem.kcUserName, this.userName, elem.name);
     });
     this.dataSource = new MatTableDataSource(this.vets);
     this.dataSource.sort = this.sort;
@@ -127,10 +150,11 @@ export class VeterinariesComponent implements OnInit {
   }
 
   async filter(filter: string) {
-    const data: any = await this.vetsService.filterVets(
+    const data: any = await this.vetsService.filterVetsByZone(
+      this.selectedZone,
       this.pageSize,
       0,
-      filter
+      filter,
     );
     this.fillVetTable(data);
   }

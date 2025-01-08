@@ -111,7 +111,8 @@ export class Human01Component {
       "gender": this.myForm.value.gender,
       "coordinates": { "x": this.myForm.value.lat, "y": this.myForm.value.lng },
     }
-    const humanResult = await this.humansService.updateHuman(this.humanToEdit.id, humanData);
+    // const humanResult = await this.humansService.updateHuman(this.humanToEdit.id, humanData);
+    const humanResult = await this.humansService.patchHuman(this.humanToEdit.id, humanData);
     if (humanResult) {
       this._utilsService.showMessage("Human's data was successfully updated", 2000, true);
     }

@@ -62,13 +62,14 @@ export class HumansService {
     return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/humans/`, human));
   }
 
-  async updateHuman(id: any, human: Human): Promise<Human> {
-    return await lastValueFrom(this.http.put<Human>(`${this.backendURL}/api/humans/${id}`, human));
-  }
+  // async updateHuman(id: any, human: Human): Promise<Human> {
+  //   return await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/humans/${id}`, human));
+  // }
   
   async patchHuman(id: any, humanData: any): Promise<Human> {
-    const pet = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/humans/${id}`, humanData));
-    return pet;
+    console.log(humanData, id)
+    const human = await lastValueFrom(this.http.patch<Human>(`${this.backendURL}/api/humans/${id}`, humanData));
+    return human;
   }
 
   deleteHuman(id: string): Observable<Human> {
@@ -80,6 +81,10 @@ export class HumansService {
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/humans/${humanId}/assigned-to/${petId}`, null));
   }
   
+  canDeleteHuman(id: string): Observable<any> {
+    return this.http.get<any>(`${this.backendURL}/api/humans/${id}/can-delete`);
+  }
+
   downloadFile(fileName: string){
     this._utilsServices.downloadExcel(`${this.backendURL}/api/humans/download-in-excel`).subscribe(response => {
       this._utilsServices.saveFile(response.body, fileName);

@@ -24,7 +24,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     }).then(async (authenticated : any) => {
       const token = await keycloak.getToken();
       localStorage.setItem('token-keycloak',token);
-      console.log("dejo el localstorage")
+      // console.log("dejo el localstorage")
     });
 }
 

@@ -73,7 +73,7 @@ export class HumanComponent {
         this.form.setValue({
           nickName: this.humanToEdit.nickName,
           name: this.humanToEdit.name,
-          comment: this.humanToEdit.comment,
+          comment: this.humanToEdit.comment || "",
           phone: this.humanToEdit.phone,
           email: this.humanToEdit.email,
           address: this.humanToEdit.address || "",
@@ -91,7 +91,8 @@ export class HumanComponent {
       "phone": this.form.value.phone,
       "email": this.form.value.email,
     }
-    const humanResult = this.insert ? await this.humansService.insertHuman(human) : await this.humansService.updateHuman(this.humanToEdit.id, human);
+    // const humanResult = this.insert ? await this.humansService.insertHuman(human) : await this.humansService.updateHuman(this.humanToEdit.id, human);
+    const humanResult = this.insert ? await this.humansService.insertHuman(human) : await this.humansService.patchHuman(this.humanToEdit.id, human);
     if (humanResult){
       this._utilsService.showMessage("Human's data was successfully updated",2000,true);
       if(this.insert){
@@ -110,7 +111,6 @@ export class HumanComponent {
       const lector = new FileReader();
       lector.onload = async () => {
         if(!this.insert){
-          console.log(archivo, "veeeeeeeeeeeeeeeeeee");
           const media: any  = {file: archivo, alt: this.humanToEdit.name, objId:this.humanToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
           const updatedHuman = await this.humansService.patchHuman(this.humanToEdit.id,{"humanImage": uploadedFile.doc.id});

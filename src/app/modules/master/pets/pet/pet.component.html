@@ -85,11 +85,12 @@
                         <input type="file" #fileInput style="display: none" (change)="changeImage($event)">
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="1">
-                        <button type="submit" mat-raised-button color="primary">{{insert ? "Insert pet's data" : "Update
-                            pet's data"}}</button>
+                        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
+                            {{insert ? "Insert pet's data" : "Update pet's data"}}
+                        </button>
                     </mat-grid-tile>
                 </mat-grid-list>
             </form>
         </mat-card-content>
     </mat-card>
-</div>
+</div> 

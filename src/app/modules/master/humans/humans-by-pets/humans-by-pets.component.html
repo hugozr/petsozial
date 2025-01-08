@@ -1,9 +1,9 @@
 <!-- https://www.angularjswiki.com/material/mat-table-serverside-pagination/ -->
 <div class="container">
     <mat-toolbar>
-        <span>They are my humans</span>
+        <span>I am {{data.pet.name}} and they are my humans</span>
         <span class="spacer"></span>
-        <button mat-raised-button color="primary" routerLink="/master/human">Add</button>
+        <!-- <button mat-raised-button color="primary" routerLink="/master/human">Add</button> -->
       </mat-toolbar>
       
       <div [hidden]="humans.length == 0">
@@ -29,6 +29,11 @@
           <ng-container matColumnDef="comment">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
             <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.date | date:'yyyy-MM-dd' }} </td>
           </ng-container>
 
           <ng-container matColumnDef="thumbnail">

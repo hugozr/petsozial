@@ -10,6 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import _ from 'lodash';
+import { AuthService } from '../../../services/auth.service';
+import { EventsService } from '../../../services/events.service';
+import { Subscription } from 'rxjs';
+import { ZonesService } from '../../../services/zones.service';
 
 @Component({
   selector: 'app-my-pets-selector',
@@ -32,48 +36,55 @@ import _ from 'lodash';
 export class MyPetsSelectorComponent {
   @Output() selectedValueChange = new EventEmitter<string>(); // Emite el valor seleccionado
 
-  userName = "abc";     //TODO: quitar abc
+  userName!: string;     //TODO: quitar abc
   pets: any[] = [];
   page = 1;
   communityGroups: any = [];
 
+  selectedZone: string = "";
+  private eventSubscription?: Subscription;
+  
   constructor(
-    private usersServices: UsersService,
-  ){}
+    private communitiesService: CommunitiesService,
+    private _authService: AuthService,
+    private eventsServices: EventsService,
+    private zonesServices: ZonesService,
+
+  ) { }
 
   ngOnInit(): void {
+    this.selectedZone = this.zonesServices.getCurrentZone();
+    this.userName = this._authService.getUserName();
     this.loadMyCommunities();
+    this.eventSubscription = this.eventsServices.event$.subscribe(data => {
+      this.selectedZone = data;
+      this.loadMyCommunities();
+      // const resetFilter: any = { filter: "community", value: null };
+      // this.selectedValueChange.emit(resetFilter);
+    });
   }
 
   onComboChange(event: Event): void {
-    const communityFilter: any = {filter: "community", value: event}
-    this.selectedValueChange.emit(communityFilter); // Emitir el valor seleccionado
+    const communityFilter: any = { filter: "community", value: event }
+    this.selectedValueChange.emit(communityFilter); 
   }
 
-  selectCommunity(elem: any) {
-    this.selectedValueChange.emit(elem); // Emitir el valor seleccionado
-  }
-    
-  async loadMyCommunities(){
+  async loadMyCommunities() {
     if (this.userName) {
-      const users: any = await this.usersServices.getUsersByName(this.userName);
-      //TODO: Pasarlo al backend
-      if (users.docs[0]) {
-        const communities = users.docs[0].communities;
-        const transformedArray = _.chain(communities)
-          .groupBy('type.id')
-          .map((items: any, typeId: any) => ({
-            id: typeId,
-            name: _.get(items[0], 'type.name', ''),
-            disabled: _.get(items[0], 'type.disable', false),
-            community: _.map(items, (item: any) => ({
-              value: item.id,
-              viewValue: item.name,
-            })),
-          }))
-          .value();
-        this.communityGroups = transformedArray;
-      }
+      const communities: any = await this.communitiesService.getCommunitiesByUsernameAndZone(this.userName, this.selectedZone);
+      const transformedArray = _.chain(communities.docs)
+        .groupBy('type')
+        .map((items: any, typeId: any) => ({
+          id: typeId,
+          name: _.get(items[0], 'type.name', ''),
+          disabled: _.get(items[0], 'type.disable', false),
+          community: _.map(items, (item: any) => ({
+            value: item.id,
+            viewValue: item.name,
+          })),
+        }))
+        .value();
+      this.communityGroups = transformedArray;
     }
   }
 

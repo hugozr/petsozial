@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -55,6 +55,7 @@ export class PetsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('input', { static: true }) inputElement!: ElementRef;
 
   pets: any[] = [];
   dataSource = new MatTableDataSource(this.pets);
@@ -79,15 +80,11 @@ export class PetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedZone = this.zonesServices.getCurrentZone();
-    // this.loadPets(this.pageSize, 0, "");
     this.loadPetsByZone(this.selectedZone, this.pageSize, 0, "");
-
-
+    //Reacciona al cambio de zonas
     this.eventSubscription = this.eventsServices.event$.subscribe(data => {
       this.selectedZone = data;
-      console.log(this.selectedZone);
       this.loadPetsByZone(this.selectedZone, this.pageSize, 0, "");
-
     });
   }
 
@@ -119,7 +116,7 @@ export class PetsComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.pets);
     this.dataSource.sort = this.sort;
-    
+
     this.totalRows = data.totalDocs;
     this.pageSize = data.limit;
   }
@@ -131,7 +128,7 @@ export class PetsComponent implements OnInit {
   applyFilter(event: Event) {
     //HZUMAETA Espera medio segundo para enviar el filtro
     const filterValue = (event.target as HTMLInputElement).value;
-    const miliSecondsToWait = 500; 
+    const miliSecondsToWait = 500;
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
         this.filter(filterValue);
@@ -139,23 +136,29 @@ export class PetsComponent implements OnInit {
  }
 
   async filter(filter: string) {
-    // const data: any = await this.petsService.filterPets(this.pageSize, 0, filter);
     const data: any = await this.petsService.filterPetsByZone(this.selectedZone, this.pageSize, 0, filter);
     this.fillPetTable(data);
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
-    if (deleted) {
-      this.loadPets(this.pageSize, 0,""); 
-      this._utilsService.showMessage("Pet record successfully deleted", 2000, true);
+    const canDelete: any = await lastValueFrom(this.petsService.canDeletePet(element.id));
+    if (canDelete.canDelete) {
+      // console.log(canDelete, "aaa")
+      const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
+      if (deleted) {
+        const filter = this.inputElement.nativeElement.value;
+        this.loadPetsByZone(this.selectedZone, this.pageSize, 0, filter);
+        this._utilsService.showMessage("Pet record successfully deleted",2000,true);
+      }
+    } else {
+      this._utilsService.showMessage("You cannot delete this oet: " + canDelete.message, 2000, true);
     }
   }
 
   edit(element: any) {
     this.router.navigate(['/master/pet/', element.id]);
   }
-  
+
   otraAccion() {
     // Lógica para otra acción
     console.log('Otra Acción');
@@ -163,13 +166,12 @@ export class PetsComponent implements OnInit {
 
   showHumans(pet: any){
     const dialogRef = this.dialog.open(HumansByPetsComponent, {
-      width: '900px',
+      width: '950px',
       height: "600px",
       data: {pet},
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(result)
       if(result) {
         // this.loadPets(this.pageSize, 0, "", this.communityId);
       }

@@ -9,6 +9,7 @@ export interface Pet {
     gender?: string,
     birthday?: Date,
     petImage?: any,
+    zone?: any,
 }
 
 interface Specie {

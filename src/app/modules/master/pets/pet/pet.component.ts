@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PetToHumanComponent } from './pet-to-human/pet-to-human.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HumansService } from '../../../../services/humans.service';
+import { ZonesService } from '../../../../services/zones.service';
 
 @Component({
   selector: 'app-pet',
@@ -55,6 +56,7 @@ export class PetComponent {
   backendURL = environment.backendPetZocialURL;
   loadMyPicture = "/assets/load-my-pet-picture.png";
   selectedGender = "";
+  actualHumanId = "";
 
   constructor(
     private speciesService: SpeciesService,
@@ -64,7 +66,8 @@ export class PetComponent {
     private route: ActivatedRoute,
     private router: Router,
     private _utilsService: UtilsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private zonesService: ZonesService,
   ) {
     this.form = this.formBuilder.group({
       name: ["", Validators.required],
@@ -84,10 +87,10 @@ export class PetComponent {
   async ngOnInit(): Promise<void> {
     await this.loadSpecies();
     this.route.params.subscribe(async (params: any) => {
-      console.log(params,"loca")
       if(params.id){
         this.insert = false;
         this.petToEdit = await this.petsService.getPet(params.id);
+        this.actualHumanId = this.petToEdit.human.humanId;
         this.selectedSpecieChanged(this.petToEdit.specie.specieId);   //HZUMAETA es importante para cargar un combo dependiente
         const imagePath = this.petToEdit?.petImage?.url;
         this.form.setValue({
@@ -109,11 +112,10 @@ export class PetComponent {
 
   async loadSpecies() {
     this.species = await this.speciesService.getSpecies();
-    console.log(this.species, "que habrá?")
+    // console.log(this.species, "que habrá?")
   }
 
   selectedSpecieChanged(specieId: string) {
-    console.log(specieId, "buscar esto carajo", this.species)
     const result = this.species.find(item => item.id === specieId);
     if (result) {
       this.breeds = result.breeds;
@@ -135,14 +137,16 @@ export class PetComponent {
       "specie": {specieId: this.form.value.specie, name: specieName},
       "breed":  {breedId: this.form.value.breed, name: breedName},
     }
+    if(this.insert) pet.zone = this.zonesService.getCurrentZone();
     const petResult: any = this.insert ? await this.petsService.insertPet(pet) : await this.petsService.updatePet(this.petToEdit.id, pet);
     if (petResult){
       let assigned = null;
-      if(this.form.value.hiddenHumanId.length>0){   //Si se ha asignado un humano a la mascota
-        
-        //TODO: Esto hay que reformularlo URGENTE
+      console.log(this.form.value.hiddenHumanId, this.actualHumanId, "ver ambos " )
+      if(this.form.value.hiddenHumanId != this.actualHumanId && !this.insert ){   //Si se ha asignado un humano a la mascota
+        // if(this.form.value.hiddenHumanId.length>0 && !this.insert && ){   //Si se ha asignado un humano a la mascota
         assigned = this.humansService.assignHumanToPet(this.form.value.hiddenHumanId, petResult.doc.id);
-      } 
+        this.actualHumanId = this.form.value.hiddenHumanId;
+      }
       this._utilsService.showMessage("Pet's data was successfully updated" + (assigned ? ", with its human.":""),2000,true);
       if(this.insert){
         this.router.navigate(["/master"]);
@@ -164,7 +168,7 @@ export class PetComponent {
           const uploadedFile: any = await this._utilsService.uploadFile(media);
           const updatedPet = await this.petsService.patchPet(this.petToEdit.id,{"petImage": uploadedFile.doc.id});
           if(updatedPet) this._utilsService.showMessage("The pet's image has been successfully updated");
-        } 
+        }
         this.form.patchValue({
           image: lector.result
         });
@@ -185,6 +189,7 @@ export class PetComponent {
         this.form.get('humanName')?.setValue(result.name);
         this.form.get('hiddenHumanId')?.setValue(result.id);
         this.form.get('hiddenHumanEmail')?.setValue(result.email);
+        
       }
     });
   }

@@ -11,6 +11,7 @@ import { HumansService } from '../../../services/humans.service';
 import { HumanRolesService } from '../../../services/humanRoles.service';
 import { MatSelectModule } from '@angular/material/select';
 import { UtilsService } from '../../../services/utils.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-pet-to-human',
@@ -42,11 +43,12 @@ export class PetContactHumanComponent {
     private humansService: HumansService,
     private humanRolesService: HumanRolesService,
     private _utilsService: UtilsService,
+    private _authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
+    const email = this._authService.getUserEmail() || "";
     this.form = this.formBuilder.group({
-      // email: ["", [Validators.required, Validators.email]],
-      email: ["abc@a.com", [Validators.required, Validators.email]],
+      email: [email, [Validators.required, Validators.email]],
     });
     this.rolesForm = this.formBuilder.group({
       roles: [[]],
@@ -83,6 +85,7 @@ export class PetContactHumanComponent {
       humanData: this.founded,
     }
     // console.log(this.rolesForm.value, "ver valores de los roles");
+    console.log(devolution,"dev")
     if (value) this.dialogRef.close(devolution);
     else this.dialogRef.close();
   }

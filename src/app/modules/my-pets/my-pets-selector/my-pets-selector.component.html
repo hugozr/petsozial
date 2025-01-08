@@ -5,7 +5,6 @@
             @for (group of communityGroups; track group) {
             <mat-optgroup [label]="group.name" [disabled]="group.disabled">
                 @for (community of group.community; track community) {
-                <!-- <mat-option [value]="community.value" (click)="selectCommunity(community)">{{ community.viewValue }}</mat-option> -->
                 <mat-option [value]="community.value">{{ community.viewValue }}</mat-option>
                 }
             </mat-optgroup>

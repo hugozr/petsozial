@@ -14,7 +14,6 @@ import { MatSort } from '@angular/material/sort';
   standalone: true,
   imports: [
     CommonModule,
-
     MatToolbarModule,
     MatButtonModule,
     MatTableModule,
@@ -40,6 +39,7 @@ export class HumansByPetsComponent {
     'name',
     'comment',
     'contact',
+    'date',
     'thumbnail',
   ];
 
@@ -54,7 +54,7 @@ export class HumansByPetsComponent {
 
   async ngOnInit(): Promise<void> {
     this.petId = this.data.pet.id;
-    console.log(this.petId,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    console.log(this.data,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     await this.loadHumans(this.pageSize, 0);
   }
 
@@ -66,7 +66,7 @@ export class HumansByPetsComponent {
 
   fillHumanTable(data: any){
     this.humans = [];
-
+console.log(data, "roca")
     for (const human of data) {
       const imagePath = human.humanImage?.sizes?.thumbnail?.url;
       this.humans.push({
@@ -78,6 +78,7 @@ export class HumansByPetsComponent {
         address: human.address,
         phone: human.phone,
         socialUrl: human.socialUrl,
+        date: human.createdAt,
         thumbnail: imagePath ? (this.backendURL + imagePath) : null
       });
     };

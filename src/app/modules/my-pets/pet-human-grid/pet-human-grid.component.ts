@@ -2,7 +2,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { UsersService } from '../../../services/users.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -17,22 +16,21 @@ import { environment } from '../../../../environments/environment';
 })
 export class PetHumanGridComponent {
   @Input() petHumans: any;
-  // data: any = [];
   backendURL = environment.backendPetZocialURL;
 
   constructor(
   ) {}
 
   async ngOnInit() {
-    this.setUrlToImage();
-    console.log("pasando por aca?");
-  }
-
-  async setUrlToImage(){
+    console.log(this.petHumans, "sss")
     this.petHumans.forEach((item: any) => {
       item.humanImageUrl = `${this.backendURL}${item.humanImageUrl}`;
     });
   }
+
+  // async setUrlToImage(){
+    
+  // }
 
   onCardClick(card: any): void {
     console.log("salta a ver los datos del usuario");

@@ -123,10 +123,15 @@ export class HumansComponent implements OnInit {
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
-    if (deleted) {
-      this.loadHumans(this.pageSize, 0); 
-      this._utilsService.showMessage("Vet record successfully deleted",2000,true);
+    const canDelete: any = await lastValueFrom(this.humansService.canDeleteHuman(element.id));
+    if (canDelete.canDelete) {
+      const deleted = await lastValueFrom(this.humansService.deleteHuman(element.id));
+      if (deleted) {
+        this.loadHumans(this.pageSize, 0); 
+        this._utilsService.showMessage("Human record successfully deleted",2000,true);
+      }
+    } else {
+      this._utilsService.showMessage("You cannot delete this human: " + canDelete.message, 2000, true);
     }
   }
 

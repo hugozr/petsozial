@@ -142,10 +142,16 @@ export class CommunitiesComponent implements OnInit {
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
-    if (deleted) {
-      this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);      //TODO: Optimizar
-      this._utilsService.showMessage("Community record successfully deleted", 2000, true);
+    const canDelete: any = await lastValueFrom(this.communitiesService.canDeleteCommunity(element.id));
+    console.log(canDelete)
+    if (canDelete.canDelete) {
+      const deleted = await lastValueFrom(this.communitiesService.deleteCommunity(element.id));
+      if (deleted) {
+        this.loadCommunitiesByZone(this.selectedZone, this.pageSize, 0);      //TODO: Optimizar
+        this._utilsService.showMessage("Community record successfully deleted", 2000, true);
+      }
+    } else {
+      this._utilsService.showMessage("You cannot delete this community: " + canDelete.message, 2000, true);
     }
   }
 

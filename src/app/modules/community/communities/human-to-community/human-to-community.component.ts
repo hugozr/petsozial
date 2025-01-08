@@ -91,8 +91,9 @@ export class HumanToCommunityComponent {
       }
     };
     const humanCommunity: any = await this.communitiesService.insertHuman(data);
+    console.log(humanCommunity, "ddddddddddddddd")
     if(humanCommunity){
-
+      this.utilsService.showMessage("Human inserted");
     }
   }
 

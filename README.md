@@ -1,33 +1,36 @@
 # Pendientes
-Controlar la integridad al eliminar las comunidades
+- MY PROFILE
+- MENU DEBE RECONOCER AL ROL DEL USUARIO
+- MY PROFILE DEL USUARIO
+- GENERO UN SERVICIO
+
+Cuando creo una mascota y le doy en la imagen, se debe poder insertar. ahora la imagen solo funciona al editar.
+Solo pueden modificar los datos de la comunidades los usuarios propietarios
 Al eliminar la mascota, eliminar tambien las relaciones con comunidades y humanos
 cuando cambian las zonas, deben cambiar las veterinarias y las petshops
-Al asignar un humano a una mascota escribir en "humanos por mascotas"
 Remitir correo al usuario cuando se le da de alta, en especial cuando se hace carga masiva.
 En pet-members.component paginar las mascotas de la comunidad
-Asociar comunidades a vets, condominios, etc. Ver manual 8.4. Linking a community to…
+Asociar comunidades a vets, condominios, etc. Ver manual 8.4. Linking a community to… cuando sean privadas
 >>> Campañas de cercanía
 My Profile: humanos de contacto, al ingresar en el login debe mandar al mantenimiento del profile 
 Todo: Scroll de pets
 Poner zonas tambien en Vets y en Cares 
-Manejar el menu prinicipal en funcion de los roles de los usuarios
 Social login
 Hacer que cuando un usuario no tenga un rol espexifico tenga el rol guest.
 Contactos por IG, Tiktok
-Manejar mejor los tipos de comunidades privadas: vets y cares
 Asociar veterinarias con petshops
 Que la aplicación se coloque en la ciudad desde donde ingresa el dispositivo
-
 Arreglar la visualizacion del mapa ... independizar la invocacion
 Pet profiles: Mis lugares favoritos, mis comidas favoritas. 
 Al eliminar un usuario en Angular, debe eliminarse de Keycloak. Lo mismo si se modifica.
-Cuando carga vets y pets, se debe considerar la zona 
-
 El paginador debe verse al botton de la ventana
 
 Jynx Maze
 
 # Atendidos
+Al asignar un humano a una mascota escribir en "humanos por mascotas"
+Controlar la integridad al eliminar las comunidades
+Al crear una mascota, poner la zona
 Organizacion de la comunidad, por ejemplo los voluntarios de los ambergues: Poner los cargos en los tipos de comunidad
 Cuando cambian las zonas debe cambiar las mascotas
 Verificación de carga masiva de humanos

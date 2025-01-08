@@ -12,15 +12,15 @@ export class PetsService {
   constructor(
     private http: HttpClient,
     private _utilsServices: UtilsService,
-    ) {}
+  ) { }
   backendURL = environment.backendPetZocialURL;
-  
+
   async getPets(limit: number, page: number, filter: string): Promise<Pet[]> {
-    return this.filterPets(limit,page,'');
+    return this.filterPets(limit, page, '');
   }
 
   async getPetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<Pet[]> {
-    return this.filterPetsByZone(zoneId, limit, page,'');
+    return this.filterPetsByZone(zoneId, limit, page, '');
   }
 
   async filterPetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<any> {
@@ -32,7 +32,7 @@ export class PetsService {
     }
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me-by-zone`, body));
   }
-  
+
   async filterPets(limit: number, page: number, filter: string): Promise<any> {
     const body = {
       filter,
@@ -42,20 +42,21 @@ export class PetsService {
     return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/filter-me`, body));
   }
 
-  
-  async filterPetsByHumanId(limit: number, page: number, filter: string, humanId: string): Promise<any> {
+
+  async filterPetsByHumanIdAndZone(limit: number, page: number, filter: string, humanId: string, zoneId: string): Promise<any> {
     const body = {
       filter,
       limit,
       page,
-      id: humanId
+      id: humanId,
+      zoneId: zoneId
     }
-    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-human-id`, body));
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/pets/by-human-id-and-zone`, body));
   }
 
 
   async getPet(id: string): Promise<Pet> {
-    const pet: any = await lastValueFrom(this.http.get<Pet[]>(`${this.backendURL}/api/pets/${id}`)); 
+    const pet: any = await lastValueFrom(this.http.get<Pet[]>(`${this.backendURL}/api/pets/${id}`));
     return pet;
   }
 
@@ -66,7 +67,7 @@ export class PetsService {
   async updatePet(id: any, pet: Pet): Promise<Pet> {
     return await lastValueFrom(this.http.put<Pet>(`${this.backendURL}/api/pets/${id}`, pet));
   }
-  
+
   async patchPet(id: any, petData: any): Promise<Pet> {
     const pet = await lastValueFrom(this.http.patch<Pet>(`${this.backendURL}/api/pets/${id}`, petData));
     return pet;
@@ -76,7 +77,11 @@ export class PetsService {
     return this.http.delete<Pet>(`${this.backendURL}/api/pets/${id}`);
   }
 
-  downloadFile(fileName: string){
+  canDeletePet(id: string): Observable<any> {
+    return this.http.get<any>(`${this.backendURL}/api/pets/${id}/can-delete`);
+  }
+
+  downloadFile(fileName: string) {
     this._utilsServices.downloadExcel(`${this.backendURL}/api/pets/download-in-excel`).subscribe(response => {
       this._utilsServices.saveFile(response.body, fileName);
     });

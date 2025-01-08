@@ -25,6 +25,21 @@ export class VetsService {
     return vets;
   }
 
+  async getVetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<Vet[]> {
+    return this.filterVetsByZone(zoneId, limit, page, '');
+  }
+
+  async filterVetsByZone(zoneId: string, limit: number, page: number, filter: string): Promise<any> {
+    const body = {
+      filter,
+      limit,
+      page,
+      zone: zoneId
+    }
+    console.log(body, "mira")
+    return await lastValueFrom(this.http.put(`${this.backendURL}/api/vets/filter-me-by-zone`, body));
+  }
+
   async filterVets(limit: number, page: number, filter: string): Promise<any> {
     const body = {
       filter,

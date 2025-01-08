@@ -55,19 +55,14 @@ export class MyPetsGridComponent {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.zoneId, "atento con la zona");
+    // console.log(this.zoneId, "atento con la zona");
     // this.loadData();
   }
 
   loadData(perPage: number, pageNumber: number) {
-    // if (this.filterOptions.scope == "all") this.loadPetsByZone(this.zoneId, 10, this.page, "");
-    // if (this.filterOptions.scope == "favorite") this.loadPetsByHumanId(10, this.page, "");
-    // if (this.filterOptions.scope == "community") this.flagFilterByCommunity = true;
-  
     if (this.filterOptions.scope == "all") this.loadPetsByZone(this.zoneId, perPage, pageNumber, "");
     if (this.filterOptions.scope == "favorite") this.loadPetsByHumanId(perPage, pageNumber, "");
     if (this.filterOptions.scope == "community") this.flagFilterByCommunity = true;
-  
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -86,14 +81,8 @@ export class MyPetsGridComponent {
     }
   }
 
-  // async loadPets(pageSize: number, page: number, filter: string) {
-  //   const data: any = await this.petsService.getPets(pageSize, page, filter);
-  //   this.pets = this.pets.concat(data.docs);
-  //   this.page++;
-  // }
-
   async loadPetsByZone(zoneId: string, pageSize: number, page: number, filter: string) {
-    console.log("trae las mascotas de la zona", zoneId)
+    // console.log("trae las mascotas de la zona", zoneId)
     const data: any = await this.petsService.getPetsByZone(zoneId, pageSize, page, filter);
     this.pets = page == 0 ?  data.docs : this.pets.concat(data.docs);
     this.page++;
@@ -105,12 +94,12 @@ export class MyPetsGridComponent {
     const humans: any = await this.humansService.getHumansByEmail(userEmail);
     if (humans.length == 0) return;
     const humanId = humans[0].id
-    const pets: any = await this.petsService.filterPetsByHumanId(pageSize, page, filter, humanId);
+    const pets: any = await this.petsService.filterPetsByHumanIdAndZone(pageSize, page, filter, humanId, this.zoneId);
     if (pets === null) {
       this.message = "Without favorite pets";
       return;
     }
-    this.pets = this.pets.concat(pets);
+    this.pets = page == 0 ? pets : this.pets.concat(pets);
     this.page++;
   }
 

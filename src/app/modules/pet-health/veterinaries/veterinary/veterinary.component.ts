@@ -17,6 +17,7 @@ import { Vet } from '../../../../interfaces/vet';
 import { VetsService } from '../../../../services/vets.service';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../../services/auth.service';
+import { ZonesService } from '../../../../services/zones.service';
 
 @Component({
   selector: 'app-veterinary',
@@ -59,6 +60,7 @@ export class VeterinaryComponent {
     private router: Router,
     private _utilsService: UtilsService,
     private _authService: AuthService,
+    private zonesService: ZonesService,
   ) {
     this.myForm = this.formBuilder.group({
       name: ["", Validators.required],
@@ -117,6 +119,8 @@ export class VeterinaryComponent {
       "vetType": this.myForm.value.vetType,
       "kcUserName": this._authService.getUserName()
     }
+    if(this.insert) vet.zone = this.zonesService.getCurrentZone();
+
     const vetResult = this.insert ? await this.vetsService.insertVet(vet) : await this.vetsService.updateVet(this.vetToEdit.id, vet);
     if (vetResult) {
       this._utilsService.showMessage("Vet's data was successfully updated", 2000, true);
