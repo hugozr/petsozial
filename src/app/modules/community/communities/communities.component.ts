@@ -164,7 +164,7 @@ export class CommunitiesComponent implements OnInit {
     this.router.navigate(['/community/community/', element.id]);
   }
 
-  goToLoation(element: any) {
+  goToLocation(element: any) {
     this.router.navigate(['/locations'], { queryParams: { community: element.id } });
   }
   goToPetMembers(element: any) {

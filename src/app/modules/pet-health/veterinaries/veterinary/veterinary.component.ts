@@ -141,8 +141,8 @@ export class VeterinaryComponent {
         if (!this.insert) {
           const media: any = { file: archivo, alt: this.vetToEdit.name, objId: this.vetToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
-          const updatedPet = await this.vetsService.patchVet(this.vetToEdit.id, { "vetImage": uploadedFile.doc.id });
-          if (updatedPet) this._utilsService.showMessage("The vet's image has been successfully updated", 2000, true);
+          const updatedVet = await this.vetsService.patchVet(this.vetToEdit.id, { "vetImage": uploadedFile.doc.id });
+          if (updatedVet) this._utilsService.showMessage("The vet's image has been successfully updated", 2000, true);
         }
         this.myForm.patchValue({
           image: lector.result

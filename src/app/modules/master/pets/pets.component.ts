@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HumansByPetsComponent } from '../humans/humans-by-pets/humans-by-pets.component';
 import { EventsService } from '../../../services/events.service';
 import { ZonesService } from '../../../services/zones.service';
+import { AppointmentsComponent } from '../../pet-health/appointments/appointments/appointments.component';
 
 @Component({
   selector: 'app-pets',
@@ -164,6 +165,8 @@ export class PetsComponent implements OnInit {
     console.log('Otra Acción');
   }
 
+
+  
   showHumans(pet: any){
     const dialogRef = this.dialog.open(HumansByPetsComponent, {
       width: '950px',
@@ -176,6 +179,9 @@ export class PetsComponent implements OnInit {
         // this.loadPets(this.pageSize, 0, "", this.communityId);
       }
     });
+  }
+  showAppointments(pet: any){
+    this.router.navigate(['/pet-health/appointments/', pet.id], { queryParams: pet });
   }
 
   downloadFile(){

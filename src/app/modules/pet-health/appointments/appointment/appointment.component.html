@@ -1,0 +1,40 @@
+<div class="container">
+    <mat-toolbar>
+        <span>Appointment</span>
+    </mat-toolbar>
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="myForm" (ngSubmit)="saveAppointment()">
+                <mat-grid-list cols="2" rowHeight="54px">
+                    <mat-grid-tile [rowspan]="rowspan">
+                        <div class="container" class="full-width">
+                            <div class="full-width">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Description</mat-label>
+                                    <input matInput placeholder="Comm's name" formControlName="description" >
+                                    @if(myForm.get('description')!.hasError('required')){
+                                        <mat-error>Please enter a valid name</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
+                        <img id="imagen" class="image" [src]="myForm.get('image')?.value" alt="Imagen"
+                            (click)="loadImage()">
+                        <input type="file" #fileInput style="display: none" (change)="changeImage($event)">
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <button 
+                        type="submit"
+                        mat-raised-button color="primary"
+                        [disabled]="myForm.invalid"
+                        >
+                        {{insert ? "Insert appointment" : "Update appointment"}}
+                        </button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

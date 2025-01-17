@@ -180,8 +180,8 @@ export class CommunityComponent {
         if (!this.insert) {
           const media: any = { file: archivo, alt: this.commToEdit.name, objId: this.commToEdit.id }
           const uploadedFile: any = await this._utilsService.uploadFile(media);
-          const updatedPet = await this.communitiesService.patchCommunity(this.commToEdit.id, { "vetImage": uploadedFile.doc.id });
-          if (updatedPet) this._utilsService.showMessage("The vet's image has been successfully updated", 2000, true);
+          const updatedcommunity = await this.communitiesService.patchCommunity(this.commToEdit.id, { "communityImage": uploadedFile.doc.id });
+          if (updatedcommunity) this._utilsService.showMessage("The community's image has been successfully updated", 2000, true);
         }
         this.myForm.patchValue({
           image: lector.result

@@ -11,6 +11,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class UtilsService {
 
   backendURL = environment.backendPetZocialURL;
+  backendHealthURL = environment.backendPetZocialHealthURL;
 
   constructor(
     private http: HttpClient,
@@ -37,7 +38,20 @@ export class UtilsService {
     formData.append('objId', mediaData.objId);
     return await lastValueFrom(this.http.post<any>(`${this.backendURL}/api/media`, formData));
   }
-  
+
+  async uploadHealthFile(mediaData: any): Promise<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data'
+      })
+    };
+    const formData = new FormData();
+    formData.append('file', mediaData.file);
+    formData.append('alt', mediaData.alt);
+    formData.append('objId', mediaData.objId);
+    return await lastValueFrom(this.http.post<any>(`${this.backendHealthURL}/api/media`, formData));
+  }
+
   async uploadExcelFile(mediaData: any): Promise<any> {
     const httpOptions = {
       headers: new HttpHeaders({
