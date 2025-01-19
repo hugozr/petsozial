@@ -4,6 +4,7 @@
 - MY PROFILE DEL USUARIO
 - GENERO UN SERVICIO
 
+Validar por backend que el usuario no tenga un nickname existente y avisar por el response
 Cuando creo una mascota y le doy en la imagen, se debe poder insertar. ahora la imagen solo funciona al editar.
 Solo pueden modificar los datos de la comunidades los usuarios propietarios
 Al eliminar la mascota, eliminar tambien las relaciones con comunidades y humanos

@@ -11,14 +11,36 @@
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>Description</mat-label>
-                                    <input matInput placeholder="Comm's name" formControlName="description" >
+                                    <textarea matInput style="margin-top: 0px" formControlName="description"></textarea>
+
                                     @if(myForm.get('description')!.hasError('required')){
                                         <mat-error>Please enter a valid name</mat-error>
                                     }
                                 </mat-form-field>
                             </div>
+                            <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Veterinary</mat-label>
+                                    <mat-select name="petshop-type" formControlName="vet" [(value)]="vetId">
+                                        @for (vet of vets; track vet) {
+                                        <mat-option [value]="vet.id">{{vet.name}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput [matDatepicker]="picker" placeholder="Select the appointment's date" formControlName="appointmentDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </mat-grid-tile>
+
+
+                    
                     <mat-grid-tile [rowspan]="rowspan" [style.background]="'lightblue'">
                         <img id="imagen" class="image" [src]="myForm.get('image')?.value" alt="Imagen"
                             (click)="loadImage()">

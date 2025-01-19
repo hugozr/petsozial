@@ -133,7 +133,13 @@ export class UtilsService {
       console.error('Error: El archivo recibido del servidor es nulo.');
     }
   }
-  
 
-
+  getToday(): string {
+    const hoy = new Date();
+    hoy.setDate(hoy.getDate() + 1); // Sumar 1 día
+    const year = hoy.getFullYear();
+    const month = String(hoy.getMonth() + 1).padStart(2, '0');
+    const day = String(hoy.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 }

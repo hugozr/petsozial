@@ -75,20 +75,23 @@
               <mat-icon>more_vert</mat-icon>
             </a>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="delete(element)">
-                <mat-icon>delete</mat-icon> Delete
-              </button>
-              <button mat-menu-item (click)="edit(element)">
-                <mat-icon>edit</mat-icon> Edit
-              </button>
               <button mat-menu-item (click)="goToPetMembers(element)">
                 <mat-icon>pets</mat-icon>Pet members
               </button>
               <button mat-menu-item (click)="goToOrganization(element)">
                 <mat-icon>diversity_3</mat-icon>Organization
               </button>
+              <button mat-menu-item (click)="linkedTo(element)">
+                <mat-icon>polyline</mat-icon>Linked to...
+              </button>
               <button mat-menu-item (click)="goToLocation(element)">
                 <mat-icon>location_on</mat-icon> Location
+              </button>
+              <button mat-menu-item (click)="edit(element)">
+                <mat-icon>edit</mat-icon> Edit
+              </button>
+              <button mat-menu-item (click)="delete(element)">
+                <mat-icon>delete</mat-icon> Delete
               </button>
             </mat-menu>
           </td>

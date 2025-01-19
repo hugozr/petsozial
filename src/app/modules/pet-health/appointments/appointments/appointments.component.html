@@ -1,9 +1,6 @@
 <div>
   <mat-toolbar>
-    <img [src]="petData.thumbnail" alt="thumbnail">
-    <span style="padding-left: 10px;">{{petData.name}}</span>
-    <span class="spacer"></span>
-    <span>{{petData.human}}</span>
+    <app-pet-header [petData]="petData"></app-pet-header>
   </mat-toolbar>
 </div>
 <div class="container">
@@ -17,12 +14,16 @@
         <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="vet">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type </th>
-            <td mat-cell *matCellDef="let element"> vet name </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Veterinary </th>
+            <td mat-cell *matCellDef="let element"> {{element.vetName}}</td>
           </ng-container>
           <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
             <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.appointmentDate | date:'yyyy-MM-dd'}} </td>
           </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> </th>
@@ -33,6 +34,9 @@
               <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="edit(element)">
                   <mat-icon>edit</mat-icon> Edit
+                </button>
+                <button mat-menu-item (click)="delete(element)">
+                  <mat-icon>delete</mat-icon> Delete
                 </button>
               </mat-menu>
             </td>

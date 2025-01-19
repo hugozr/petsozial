@@ -32,6 +32,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { environment } from '../../../../../environments/environment';
 import { AppointmentsService } from '../../../../services/appointments.service';
 import { AuthService } from '../../../../services/auth.service';
+import { PetHeaderComponent } from "../../../../navigation/data-headers/pet-header/pet-header.component";
+import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
   selector: 'app-communities',
@@ -49,14 +51,16 @@ import { AuthService } from '../../../../services/auth.service';
     MatSortModule,
     MatSnackBarModule,
     RouterModule,
-    MatDialogModule
-  ],
+    MatDialogModule,
+    PetHeaderComponent
+],
   templateUrl: './appointments.component.html',
   styleUrl: './appointments.component.css'
 })
 export class AppointmentsComponent implements OnInit {
   displayedColumns: string[] = [
     'vet',
+    'date',
     'description',
     'actions',
   ];
@@ -82,6 +86,7 @@ export class AppointmentsComponent implements OnInit {
     private _authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private _utilsService: UtilsService,
     public dialog: MatDialog,
   ) { }
 
@@ -89,7 +94,6 @@ export class AppointmentsComponent implements OnInit {
     this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
     
     this.route.queryParams.subscribe(async (params: any) => {
-      console.log(params)
       this.petData = params;
     });
 
@@ -107,11 +111,14 @@ export class AppointmentsComponent implements OnInit {
   }
 
   fillAppointmentTable(data: any) {
+    
     this.appointments = [];
     data.docs.map((elem: any) => {
       this.appointments.push({
         id: elem.id,
         description: elem.description,
+        appointmentDate: elem.appointmentDate,
+        vetName: elem.jsonData?.vet?.name || ""
       });
     });
     this.dataSource = new MatTableDataSource(this.appointments);
@@ -138,4 +145,13 @@ export class AppointmentsComponent implements OnInit {
   addAppointment() {
     this.router.navigate(['/pet-health/appointment'], { queryParams: { petId: this.petId } });
   }
+  
+  async delete(element: any) {
+      const deleted = await lastValueFrom(this.appointmentsService.deleteAppointment(element.id));
+      if (deleted) {
+        this.loadAppointments(this.petId, this.pageSize, 0);
+        this._utilsService.showMessage("Appointment record successfully deleted",2000,true);
+      }
+  }
+
 }

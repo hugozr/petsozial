@@ -20,6 +20,7 @@ import { HumansByPetsComponent } from '../humans/humans-by-pets/humans-by-pets.c
 import { EventsService } from '../../../services/events.service';
 import { ZonesService } from '../../../services/zones.service';
 import { AppointmentsComponent } from '../../pet-health/appointments/appointments/appointments.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-pets',
@@ -75,7 +76,8 @@ export class PetsComponent implements OnInit {
     private _utilsService: UtilsService,
     private eventsServices: EventsService,
     private zonesServices: ZonesService,
-    private router: Router,
+    private router: Router,    
+    private _authService: AuthService,
     public dialog: MatDialog
   ) { }
 
@@ -181,6 +183,11 @@ export class PetsComponent implements OnInit {
     });
   }
   showAppointments(pet: any){
+    if(!this._authService.isLoggedIn()){
+      this._utilsService.showMessage("You must have authenticated.");
+      // this.router.navigate(['/pet-health']);
+      return;
+    }
     this.router.navigate(['/pet-health/appointments/', pet.id], { queryParams: pet });
   }
 

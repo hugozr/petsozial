@@ -59,6 +59,7 @@ export class HumansService {
   }
 
   async insertHuman(human: Human): Promise<Human> {
+    console.log(human, "eeee")
     return await lastValueFrom(this.http.post<Human>(`${this.backendURL}/api/humans/`, human));
   }
 

@@ -171,6 +171,11 @@ export class CommunitiesComponent implements OnInit {
     this.router.navigate(['/community/pet-members', element.id]);
   }
 
+  linkedTo(community: any) {
+
+    console.log("muestra donde esta asociada la comunidad")
+  }
+
   goToOrganization(community: any) {
     const dialogRef = this.dialog.open(HumansByCommunitiesComponent, {
       width: '900px',

@@ -7,16 +7,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from '../../../../services/utils.service';
 import { environment } from '../../../../../environments/environment';
-import { Community } from '../../../../interfaces/community';
-import { CommunitiesService } from '../../../../services/communities.service';
 import { AuthService } from '../../../../services/auth.service';
 import { UsersService } from '../../../../services/users.service';
 import { ZonesService } from '../../../../services/zones.service';
 import { AppointmentsService } from '../../../../services/appointments.service';
+import { VetsService } from '../../../../services/vets.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-community',
@@ -31,7 +32,9 @@ import { AppointmentsService } from '../../../../services/appointments.service';
     MatButtonModule,
     MatSelectModule,
     FormsModule,
+    MatDatepickerModule,
     ReactiveFormsModule,
+    MatNativeDateModule,
   ],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css'
@@ -43,7 +46,10 @@ export class AppointmentComponent {
   appointmentToEdit!: any;
   insert = true;
   user: any = null;   
+  selectedZone: string = "";
 
+  vets: any = null;
+  vetId: any = null;
   backendURL = environment.backendPetZocialHealthURL;
   loadMyPicture = "/assets/load-appointment-picture.png";
   petId: any = null;
@@ -55,39 +61,43 @@ export class AppointmentComponent {
     private _utilsService: UtilsService,
     private _authService: AuthService,
     private usersService: UsersService,
+    private zonesServices: ZonesService,
+    private vetsServices: VetsService,
   ) {
     this.myForm = this.formBuilder.group({
       description: [""],
-      image: [this.loadMyPicture]
+      vet: [""],
+      image: [this.loadMyPicture],
+      appointmentDate: [this._utilsService.getToday()],
     });
   }
 
   async ngAfterViewInit(){
     //HZUMAETA Traigo al usuario para que el Id lo matricule como creador de la comunidad
+    this.selectedZone = this.zonesServices.getCurrentZone();
+    const queryVets: any = await this.vetsServices.getVetsByZone(this.selectedZone,-1,0,"");
+    this.vets = queryVets.docs
     const email = this._authService.getUserEmail();
     const userKc: any = await this.usersService.getUsersByEmail(email);
     if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
   }
 
-  async ngOnInit(): Promise<void> {
-
-    // if(!this._authService.isLoggedIn()){
-    //   this._utilsService.showMessage("You must have authenticated.");
-    //   this.router.navigate(['/pet-health/appointments']);
-    //   return;
-    // }
+    async ngOnInit(): Promise<void> {
     this.route.queryParams.subscribe(async (params: any) => {
       this.petId = params.petId;
     });
-
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
         this.appointmentToEdit = await this.appointmentsService.getAppointment(params.id);
+        console.log(this.appointmentToEdit, "sddd")
+
         const imagePath = this.appointmentToEdit?.appointmentImage?.url;
 
         this.myForm.setValue({
           description: this.appointmentToEdit.description,
+          appointmentDate: this.appointmentToEdit.appointmentDate,
+          vet: this.appointmentToEdit.vetId,
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
       }
@@ -95,13 +105,20 @@ export class AppointmentComponent {
   }
 
   async saveAppointment() {
+    const vet: any = this.vets.find((vet: any) => vet.id === this.myForm.value.vet);
     const appointment: any = {
-      "petId": this.petId,
-      "description": this.myForm.value.description,
+      vetId: this.myForm.value.vet,
+      petId: this.petId,
+      description: this.myForm.value.description,
+      zoneId: this.selectedZone,
+      appointmentDate: this.myForm.value.appointmentDate,
+      jsonData: {
+        vet: {name: vet.name}
+      }
     };
-    const communityResult: any = this.insert ? await this.appointmentsService.insertAppointment(appointment) : await this.appointmentsService.updateAppointment(this.appointmentToEdit.id, appointment);
-    if (communityResult) {
-      this._utilsService.showMessage("Community's data was successfully updated", 2000, true);
+    const appointmentResult: any = this.insert ? await this.appointmentsService.insertAppointment(appointment) : await this.appointmentsService.updateAppointment(this.appointmentToEdit.id, appointment);
+    if (appointmentResult) {
+      this._utilsService.showMessage("Appointment's data was successfully updated", 2000, true);
       if (this.insert) {
         //La comunidad se le asigna al usuario que la ha creado, ya que UN USUARIO PUEDE ADMINISTRAR VARIAS COMUNIDADES
         // const user = await this.usersService.updateCommunity(this.user.id, {"operation": "insert", "communityId": communityResult.doc.id});

@@ -55,4 +55,9 @@ export class AppointmentsService {
       const appointment = await lastValueFrom(this.http.patch<any>(`${this.backendHealthURL}/api/appointments/${id}`, appointmentData));
       return appointment;
     }
-}
+
+  deleteAppointment(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.backendHealthURL}/api/appointments/${id}`);
+  }
+
+  }
