@@ -100,4 +100,14 @@ export class VetsService {
     const vetServices = await lastValueFrom(this.http.get<any>(`${this.backendHealthURL}/api/vet-services/${vetId}/by-vet-id`));
     return vetServices;
   }
+
+  async getVetCommunitiesForVet(vetId: any): Promise<any> {
+    const vetCommunities = await lastValueFrom(this.http.get<any>(`${this.backendHealthURL}/api/vet-communities/${vetId}/by-vet-id`));
+    return vetCommunities;
+  }
+
+  canDeleteVet(id: string): Observable<any> {
+    return this.http.get<any>(`${this.backendHealthURL}/api/vet-communities/${id}/can-delete`);
+  }
+
 }

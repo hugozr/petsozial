@@ -1,17 +1,3 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-vet-communities',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './vet-communities.component.html',
-//   styleUrl: './vet-communities.component.css'
-// })
-// export class VetCommunitiesComponent {
-
-// }
-
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,16 +47,19 @@ export class VetCommunitiesComponent {
   }
 
   async addOption(community: any) {
+    console.log(community, "uuuauau")
     const body: any = {
       vetId: this.vetData.id,
       communityId: community.id,
       username: this._authService.getUserName(),
       jsonData: {
-        communityName: community.name
+        communityName: community.name,
+        forVets: community.type.forVets,
+        modality: community.modality,
+        address: community.address,
       }
     }
     const addedVetCommunity =  await this.vetCommunitiesService.setVetCommunities(body);
-    console.log(addedVetCommunity, "roooo")
     if(addedVetCommunity.doc){
       this.availableCommunities = this.availableCommunities.filter( (com: any) => com.id !== community.id);
       this.selectedCommunities.push(addedVetCommunity.doc);

@@ -5,6 +5,7 @@ import { VeterinaryComponent } from './veterinaries/veterinary/veterinary.compon
 import { Veterinary01Component } from './veterinaries/veterinary-01/veterinary-01.component';
 import { AppointmentsComponent } from './appointments/appointments/appointments.component';
 import { AppointmentComponent } from './appointments/appointment/appointment.component';
+import { VetAppointmentsComponent } from './appointments/vet-appointments/vet-appointments.component';
 
 const routes: Routes = [
   {path: "", component: VeterinariesComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: "appointments/:id", component: AppointmentsComponent},
   {path: "appointment", component: AppointmentComponent},
   {path: "appointment/:id", component: AppointmentComponent},
+  {path: "vet-appointments/:id", component: VetAppointmentsComponent},
   {path: "veterinary-01/:id", component: Veterinary01Component},
 ];
 

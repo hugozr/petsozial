@@ -18,6 +18,9 @@ import { AppointmentsService } from '../../../../services/appointments.service';
 import { VetsService } from '../../../../services/vets.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { VetCommunitiesService } from '../../../../services/vetCommunities.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PetsService } from '../../../../services/pets.service';
 
 @Component({
   selector: 'app-community',
@@ -35,6 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     ReactiveFormsModule,
     MatNativeDateModule,
+    MatCheckboxModule,
   ],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css'
@@ -49,10 +53,16 @@ export class AppointmentComponent {
   selectedZone: string = "";
 
   vets: any = null;
+  humans: any = null;
   vetId: any = null;
+  humanId: any = null;
+  // comeHome = false;
+  // contactMe = false;
   backendURL = environment.backendPetZocialHealthURL;
   loadMyPicture = "/assets/load-appointment-picture.png";
   petId: any = null;
+  pet: any = null;
+
   constructor(
     private appointmentsService: AppointmentsService,
     private formBuilder: FormBuilder,
@@ -63,10 +73,15 @@ export class AppointmentComponent {
     private usersService: UsersService,
     private zonesServices: ZonesService,
     private vetsServices: VetsService,
+    private vetCommunitiesService: VetCommunitiesService,
+    private petsServices: PetsService,
   ) {
     this.myForm = this.formBuilder.group({
       description: [""],
       vet: [""],
+      human: [""],
+      contactMe: [false],
+      comeHome: [false],
       image: [this.loadMyPicture],
       appointmentDate: [this._utilsService.getToday()],
     });
@@ -85,12 +100,12 @@ export class AppointmentComponent {
     async ngOnInit(): Promise<void> {
     this.route.queryParams.subscribe(async (params: any) => {
       this.petId = params.petId;
+      this.pet = await this.petsServices.getPet(this.petId);
     });
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.insert = false;
         this.appointmentToEdit = await this.appointmentsService.getAppointment(params.id);
-        console.log(this.appointmentToEdit, "sddd")
 
         const imagePath = this.appointmentToEdit?.appointmentImage?.url;
 
@@ -98,6 +113,9 @@ export class AppointmentComponent {
           description: this.appointmentToEdit.description,
           appointmentDate: this.appointmentToEdit.appointmentDate,
           vet: this.appointmentToEdit.vetId,
+          human: this.appointmentToEdit.humanId,
+          comeHome: this.appointmentToEdit.comeHome,
+          contactMe: this.appointmentToEdit.contactMe,
           image: imagePath ? (this.backendURL + imagePath) : this.loadMyPicture
         });
       }
@@ -106,14 +124,21 @@ export class AppointmentComponent {
 
   async saveAppointment() {
     const vet: any = this.vets.find((vet: any) => vet.id === this.myForm.value.vet);
+    const human: any = this.humans.find((human: any) => human.id === this.myForm.value.human);
+
     const appointment: any = {
       vetId: this.myForm.value.vet,
+      humanId: this.myForm.value.human,
       petId: this.petId,
       description: this.myForm.value.description,
       zoneId: this.selectedZone,
+      comeHome: this.myForm.value.comeHome,
+      contactMe: this.myForm.value.contactMe,
       appointmentDate: this.myForm.value.appointmentDate,
       jsonData: {
-        vet: {name: vet.name}
+        vet: {name: vet.name},
+        human: human ? {name: human.name, email: human.email, phone: human.phone, nickName: human.nickName} : null,
+        pet: {name: this.pet.name, specie: this.pet.specie.name, breed: this.pet.breed.name, image: this.pet.petImage.url}
       }
     };
     const appointmentResult: any = this.insert ? await this.appointmentsService.insertAppointment(appointment) : await this.appointmentsService.updateAppointment(this.appointmentToEdit.id, appointment);
@@ -149,6 +174,10 @@ export class AppointmentComponent {
       lector.readAsDataURL(archivo);
     }
   }
+  async loadPersons(vetId: string){
+    const selComms: any = await this.vetCommunitiesService.getVetCommunities(vetId);
+    const communities = selComms.docs;
+    const communityVetIds = communities.filter((item: any) => item.jsonData.forVets === true).map((item: any) => item.communityId); // Extrae solo los communityId
+    this.humans = await this.vetCommunitiesService.getHumansForVets(communityVetIds);
+  }
 }
-
-

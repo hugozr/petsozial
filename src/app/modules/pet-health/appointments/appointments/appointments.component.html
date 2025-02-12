@@ -21,10 +21,28 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
             <td mat-cell *matCellDef="let element"> {{element.description}} </td>
           </ng-container>
+          <ng-container matColumnDef="human">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Human</th>
+            <td mat-cell *matCellDef="let element"> {{element.humanName}} </td>
+          </ng-container>
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
             <td mat-cell *matCellDef="let element"> {{element.appointmentDate | date:'yyyy-MM-dd'}} </td>
           </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="contactMe">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact me</th>
+            <td mat-cell *matCellDef="let element"> {{element.contactMe}} </td>
+          </ng-container>
+          <ng-container matColumnDef="comeHome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Come home</th>
+            <td mat-cell *matCellDef="let element"> {{element.comeHome}} </td>
+          </ng-container>
+          
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element" style="text-align: right;">
@@ -35,7 +53,7 @@
                 <button mat-menu-item (click)="edit(element)">
                   <mat-icon>edit</mat-icon> Edit
                 </button>
-                <button mat-menu-item (click)="delete(element)">
+                <button mat-menu-item (click)="delete(element)" [disabled]="element.status != 'registered'">
                   <mat-icon>delete</mat-icon> Delete
                 </button>
               </mat-menu>

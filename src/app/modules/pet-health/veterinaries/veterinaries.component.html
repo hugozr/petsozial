@@ -76,21 +76,30 @@
               <mat-icon>more_vert</mat-icon>
             </a>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="delete(element)">
-                <mat-icon>delete</mat-icon> Delete
-              </button>
-              <button mat-menu-item (click)="edit(element)">
-                <mat-icon>edit</mat-icon> Edit
-              </button>
+              
               <button mat-menu-item (click)="vetServices(element)">
                 <mat-icon>pets</mat-icon> Services
               </button>
               <button mat-menu-item (click)="goToLoation(element)">
                 <mat-icon>location_on</mat-icon>Location
               </button>
-              <button mat-menu-item (click)="communities(element)" [disabled]="!element.canManageCOmmunities">
+              <button mat-menu-item (click)="communities(element)" [disabled]="!element.canManageCommunities">
                 <mat-icon>account_tree</mat-icon> Communities
               </button>
+            
+              
+              <button mat-menu-item (click)="vetAppointments(element)">
+                <mat-icon>calendar_today</mat-icon>Appointments
+              </button>
+
+              <button mat-menu-item (click)="edit(element)">
+                <mat-icon>edit</mat-icon> Edit
+              </button>
+              
+              <button mat-menu-item (click)="delete(element)">
+                <mat-icon>delete</mat-icon> Delete
+              </button>
+              
             </mat-menu>
           </td>
         </ng-container>

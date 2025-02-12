@@ -36,7 +36,7 @@ import { PetHeaderComponent } from "../../../../navigation/data-headers/pet-head
 import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
-  selector: 'app-communities',
+  selector: 'app-appointments',
   standalone: true,
   imports: [
     CommonModule,
@@ -62,6 +62,10 @@ export class AppointmentsComponent implements OnInit {
     'vet',
     'date',
     'description',
+    'human',
+    'contactMe',
+    'comeHome',
+    'status',
     'actions',
   ];
 
@@ -106,19 +110,23 @@ export class AppointmentsComponent implements OnInit {
   }
 
   async loadAppointments(petId:string, pageSize: number, page: number) {
-    const data: any = await this.appointmentsService.filterAppointments(petId, pageSize, page);
+    const data: any = await this.appointmentsService.filterAppointments('petId', petId, pageSize, page);
     this.fillAppointmentTable(data);
   }
 
   fillAppointmentTable(data: any) {
-    
+    console.log(data.docs)
     this.appointments = [];
     data.docs.map((elem: any) => {
       this.appointments.push({
         id: elem.id,
         description: elem.description,
         appointmentDate: elem.appointmentDate,
-        vetName: elem.jsonData?.vet?.name || ""
+        vetName: elem.jsonData?.vet?.name || "",
+        humanName: elem.jsonData?.human?.name || "",
+        status: elem.status,
+        contactMe: elem.contactMe,
+        comeHome: elem.comeHome,
       });
     });
     this.dataSource = new MatTableDataSource(this.appointments);
@@ -138,7 +146,7 @@ export class AppointmentsComponent implements OnInit {
 
   edit(element: any) {
     console.log(element, "que hay")
-    this.router.navigate(['/pet-health/appointment/', element.id]);
+    this.router.navigate(['/pet-health/appointment/', element.id], { queryParams: { petId: this.petId } });
   }
 
 

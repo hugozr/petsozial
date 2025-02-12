@@ -16,13 +16,14 @@ export class AppointmentsService {
   constructor(private http: HttpClient) {}
 
   async filterAppointments(
-    petId: string,
+    filterIdName: string,
+    id: string,
     limit: number,
     page: number
   ): Promise<any> {
     return await lastValueFrom(
       this.http.get(
-        `${this.backendHealthURL}/api/appointments?sort=-createdAt&where[petId][equals]=${petId}&limit=${limit}&page=${page}`
+        `${this.backendHealthURL}/api/appointments?sort=-createdAt&where[${filterIdName}][equals]=${id}&limit=${limit}&page=${page}`
       )
     );
   }

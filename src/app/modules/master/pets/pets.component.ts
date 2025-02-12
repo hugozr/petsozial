@@ -97,6 +97,7 @@ export class PetsComponent implements OnInit {
   }
 
   async loadPetsByZone(zoneId: string, pageSize: number, page: number, filter: string ) {
+    console.log(zoneId, "parte dos")
     const data: any = await this.petsService.getPetsByZone(zoneId, pageSize, page, filter);
     this.fillPetTable(data);
   }
@@ -146,7 +147,6 @@ export class PetsComponent implements OnInit {
   async delete(element: any) {
     const canDelete: any = await lastValueFrom(this.petsService.canDeletePet(element.id));
     if (canDelete.canDelete) {
-      // console.log(canDelete, "aaa")
       const deleted = await lastValueFrom(this.petsService.deletePet(element.id));
       if (deleted) {
         const filter = this.inputElement.nativeElement.value;
@@ -163,11 +163,8 @@ export class PetsComponent implements OnInit {
   }
 
   otraAccion() {
-    // Lógica para otra acción
     console.log('Otra Acción');
   }
-
-
   
   showHumans(pet: any){
     const dialogRef = this.dialog.open(HumansByPetsComponent, {

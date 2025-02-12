@@ -27,6 +27,7 @@ import { VetCommunitiesComponent } from './vet-communities/vet-communities.compo
 import { MassiveAddComponent } from '../../../panels/massive-add/massive-add.component';
 import { EventsService } from '../../../services/events.service';
 import { ZonesService } from '../../../services/zones.service';
+import { VetAppointmentsComponent } from '../appointments/vet-appointments/vet-appointments.component';
 
 @Component({
   selector: 'app-veterinaries',
@@ -125,7 +126,7 @@ export class VeterinariesComponent implements OnInit {
         phone: elem.phone,
         url: elem.url,
         thumbnail: imagePath ? this.backendURL + imagePath : null,
-        canManageCOmmunities: elem.kcUserName == this.userName && this.userName != undefined
+        canManageCommunities: elem.kcUserName == this.userName && this.userName != undefined
       });
       // console.log(elem.kcUserName, this.userName, elem.name);
     });
@@ -160,15 +161,20 @@ export class VeterinariesComponent implements OnInit {
   }
 
   async delete(element: any) {
-    const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
-    if (deleted) {
-      this.loadVets(this.pageSize, 0);
-      this._utilsService.showMessage(
-        'Vet record successfully deleted',
-        2000,
-        true
-      );
-    }
+    const canDeleteVet = await lastValueFrom(this.vetsService.canDeleteVet(element.id));
+    if (canDeleteVet.canDelete) {
+      const deleted = await lastValueFrom(this.vetsService.deleteVet(element.id));
+      if (deleted) {
+        this.loadVetsByZone(this.selectedZone, this.pageSize, 0, "");
+        this._utilsService.showMessage(
+          'Vet record successfully deleted',
+          2000,
+          true
+        );
+      }
+    } else {
+    this._utilsService.showMessage("You cannot delete this vet: " + canDeleteVet.message, 2000, true);
+  }
   }
 
   edit(element: any) {
@@ -187,6 +193,16 @@ export class VeterinariesComponent implements OnInit {
       console.log('Modal cerrado:', result);
     });
   }
+
+  async vetAppointments(element: any) {
+    if(!this._authService.isLoggedIn()){
+      this._utilsService.showMessage("You must have authenticated.");
+      return;
+    }
+    this.router.navigate(['/pet-health/vet-appointments/', element.id], { queryParams: null });
+
+  }
+
   vetServices(element: any) {
     const dialogRef = this.dialog.open(VetServicesComponent, {
       width: '1200px', 

@@ -21,7 +21,7 @@
                                 <mat-form-field class="full-width" appearance="outline">
                                     <mat-label>Modality</mat-label>
                                     <mat-select name="modality" formControlName="modality"
-                                    (selectionChange)="loadTypes($event.value)"
+                                    (selectionChange)="loadTypes($event.value)" 
                                     > 
                                         @for (modality of modalities; track modality) {
                                         <mat-option [value]="modality.value" [disabled]="modality.disabled">{{modality.label}}</mat-option>
