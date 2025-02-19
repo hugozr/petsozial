@@ -9,26 +9,31 @@
     <span>Appointments from </span>
 
 
-    <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center; margin-left: 10px;">
+    <form [formGroup]="dateRangeForm" style="margin-top: 15px; display: flex; gap: 10px; align-items: center; margin-left: 10px;">
       <mat-form-field appearance="outline">
         <mat-label>Start date</mat-label>
-        <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
+        <input matInput [matDatepicker]="picker1" formControlName="startDate">
         <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
-  to
+    
+      to
+    
       <mat-form-field appearance="outline">
         <mat-label>End date</mat-label>
-        <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate">
+        <input matInput [matDatepicker]="picker2" formControlName="endDate">
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
-
+    </form>
+    
+    <div *ngIf="isDateRangeInvalid()" style="color: red; margin-left: 10px; font-size: 14px;">
+      ⚠️ Date range is not valid
     </div>
-
+    
 
     <span class="spacer"></span>
-    <button mat-raised-button color="primary" (click)="addAppointment()">Add</button>
+    <button mat-raised-button color="primary" (click)="addVetAppointment()">Add</button>
   </mat-toolbar>
 
   <div [hidden]="appointments.length == 0">

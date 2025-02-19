@@ -82,7 +82,6 @@ export class MyPetsGridComponent {
   }
 
   async loadPetsByZone(zoneId: string, pageSize: number, page: number, filter: string) {
-    // console.log("trae las mascotas de la zona", zoneId)
     const data: any = await this.petsService.getPetsByZone(zoneId, pageSize, page, filter);
     this.pets = page == 0 ?  data.docs : this.pets.concat(data.docs);
     this.page++;

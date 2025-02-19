@@ -110,7 +110,7 @@ export class AppointmentsComponent implements OnInit {
   }
 
   async loadAppointments(petId:string, pageSize: number, page: number) {
-    const data: any = await this.appointmentsService.filterAppointments('petId', petId, pageSize, page);
+    const data: any = await this.appointmentsService.filterAppointments('petId', petId, pageSize, page, null);
     this.fillAppointmentTable(data);
   }
 

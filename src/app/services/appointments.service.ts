@@ -15,17 +15,30 @@ export class AppointmentsService {
 
   constructor(private http: HttpClient) {}
 
-  async filterAppointments(
+  async filterAppointments1(
     filterIdName: string,
     id: string,
     limit: number,
-    page: number
+    page: number,
+    dateRange: any
   ): Promise<any> {
+    const dateFilter = "&where[_and_][0][appointmentDate][greater_than_equal]=2025-02-01&where[_and_][1][appointmentDate][less_than_equal]=2025-02-14"
+    // const dateFilter = "";
     return await lastValueFrom(
       this.http.get(
-        `${this.backendHealthURL}/api/appointments?sort=-createdAt&where[${filterIdName}][equals]=${id}&limit=${limit}&page=${page}`
+        `${this.backendHealthURL}/api/appointments?sort=-createdAt&where[${filterIdName}][equals]=${id}&limit=${limit}&page=${page}${dateFilter}`
       )
     );
+  }
+  async filterAppointments(filterIdName: string, id: string, limit: number, page: number, dateRange: any): Promise<any> {
+    const body = {
+      filterIdName,
+      id,
+      limit,
+      page,
+      dateRange
+    }
+    return await lastValueFrom(this.http.put(`${this.backendHealthURL}/api/appointments/filter-me`, body));
   }
   async getAppointment(id: string): Promise<any> {
     const appointment: any = await lastValueFrom(

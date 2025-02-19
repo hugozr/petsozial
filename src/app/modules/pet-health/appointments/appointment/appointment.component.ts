@@ -79,7 +79,7 @@ export class AppointmentComponent {
     this.myForm = this.formBuilder.group({
       description: [""],
       vet: [""],
-      human: [""],
+      human: [""],    //Este es el humano de la veterinaria
       contactMe: [false],
       comeHome: [false],
       image: [this.loadMyPicture],

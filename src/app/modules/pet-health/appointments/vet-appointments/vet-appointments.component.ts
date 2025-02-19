@@ -1,31 +1,3 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-vet-appointments',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './vet-appointments.component.html',
-//   styleUrl: './vet-appointments.component.css'
-// })
-// export class VetAppointmentsComponent {
-
-// }
-
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-appointments',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './appointments.component.html',
-//   styleUrl: './appointments.component.css'
-// })
-// export class AppointmentsComponent {
-
-// }
-
 
 
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -49,9 +21,10 @@ import { AuthService } from '../../../../services/auth.service';
 import { PetHeaderComponent } from "../../../../navigation/data-headers/pet-header/pet-header.component";
 import { UtilsService } from '../../../../services/utils.service';
 import { VetsService } from '../../../../services/vets.service';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
-import { FormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ReactiveFormsModule } from '@angular/forms';  // 👈 Importar aquí
 
 @Component({
   selector: 'app-vet-appointments',
@@ -73,6 +46,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     PetHeaderComponent,
     FormsModule,
     MatNativeDateModule,
+    ReactiveFormsModule,
     MatDatepickerModule
 ],
   templateUrl: './vet-appointments.component.html',
@@ -109,36 +83,70 @@ export class VetAppointmentsComponent implements OnInit {
   startDate: Date = new Date();
   endDate: Date = new Date();
 
+  dateRangeForm!: FormGroup;
+
   constructor(
     private appointmentsService: AppointmentsService,
     private vetsService: VetsService,
-    private _authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private _authService: AuthService,
     private _utilsService: UtilsService,
     public dialog: MatDialog,
-  ) { }
+    private formBuilder: FormBuilder
+  ) {
+    const today = new Date();
+    this.dateRangeForm = this.formBuilder.group({
+      startDate: [today],  // ⏳ Inicializa con la fecha actual
+      endDate: [today]  // ⏳ Inicializa con la fecha actual
+    },
+    { validators: this.dateRangeValidator } // Aplicar validador personalizado
+    );
+   }
+
+   dateRangeValidator(group: AbstractControl) {
+    const start = group.get('startDate')?.value;
+    const end = group.get('endDate')?.value;
+
+    if (start && end && start > end) {
+      return { dateRangeInvalid: true }; // Error si startDate es mayor que endDate
+    }
+    return null; // Válido
+  }
+
+  // Método para verificar si hay error en la validación
+  isDateRangeInvalid(): boolean {
+    return this.dateRangeForm.hasError('dateRangeInvalid');
+  }
 
   ngOnInit(): void {
     this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
-    
-    // this.route.queryParams.subscribe(async (params: any) => {
-    //   this.vetData = params;
-    //   console.log(this.vetData, "ododododod")
-    // });
 
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {
         this.vetId = params.id;
         this.vetData = await this.vetsService.getVet(this.vetId);
         console.log(this.vetData, "aca")
-        this.loadAppointments(this.vetId, this.pageSize, 0);
+        this.loadAppointments(this.vetId, this.pageSize, 0, this.dateRange());
       }
     });
+
+    this.dateRangeForm.valueChanges.subscribe(value => {
+      if (value.startDate && value.endDate) {
+        this.fetchData(value.startDate, value.endDate);
+      }
+    });
+    this.fetchData(this.dateRangeForm.value.startDate, this.dateRangeForm.value.endDate);
   }
 
-  async loadAppointments(vetId:string, pageSize: number, page: number) {
-    const data: any = await this.appointmentsService.filterAppointments('vetId', vetId, pageSize, page);
+  fetchData(start: Date, end: Date) {
+    console.log('Obteniendo datos desde:', start, 'hasta:', end);
+    this.loadAppointments(this.vetId, this.pageSize, 0, this.dateRange());
+    // Aquí puedes hacer una petición HTTP para traer los datos dentro del rango de fechas
+  }
+
+  async loadAppointments(vetId:string, pageSize: number, page: number, dateRange: any) {
+    const data: any = await this.appointmentsService.filterAppointments('vetId', vetId, pageSize, page, dateRange);
     this.fillAppointmentTable(data);
   }
 
@@ -163,7 +171,7 @@ export class VetAppointmentsComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.loadAppointments(this.vetId, event.pageSize, event.pageIndex + 1);
+    this.loadAppointments(this.vetId, event.pageSize, event.pageIndex + 1, this.dateRange());
   }
 
   onRowClick(row: any) {
@@ -175,17 +183,22 @@ export class VetAppointmentsComponent implements OnInit {
     this.router.navigate(['/pet-health/appointment/', element.id]);
   }
 
-
-  addAppointment() {
-    this.router.navigate(['/pet-health/appointment'], { queryParams: { petId: this.vetId } });
+  addVetAppointment() {
+    this.router.navigate(['/pet-health/vet-appointment'], { queryParams: { vetId: this.vetId } });
   }
   
   async delete(element: any) {
       const deleted = await lastValueFrom(this.appointmentsService.deleteAppointment(element.id));
       if (deleted) {
-        this.loadAppointments(this.vetId, this.pageSize, 0);
+        this.loadAppointments(this.vetId, this.pageSize, 0, this.dateRange());
         this._utilsService.showMessage("Appointment record successfully deleted",2000,true);
       }
   }
 
+  dateRange(){
+    return {
+      startDate: this.dateRangeForm.value.startDate,
+      endDate:this.dateRangeForm.value.endDate
+    }
+  }
 }
