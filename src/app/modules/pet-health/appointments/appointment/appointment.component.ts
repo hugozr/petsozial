@@ -23,7 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PetsService } from '../../../../services/pets.service';
 
 @Component({
-  selector: 'app-community',
+  selector: 'app-appointment',
   standalone: true,
   imports: [
     CommonModule,

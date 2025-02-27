@@ -142,4 +142,46 @@ export class UtilsService {
     const day = String(hoy.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
+  setDateRangeInLocalStorage(startDate: string, endDate: string, durationMinutes: number): void {
+    // Guardar el rango de fechas en localStorage con duración configurable
+    const now = new Date().getTime();
+    const expiry = now + durationMinutes * 60 * 1000; // Convertir minutos a milisegundos
+    const item = {
+      startDate,
+      endDate,
+      expiry
+    };
+    localStorage.setItem('dateRange', JSON.stringify(item));
+  }
+  getDateRangeFromLocalStorage(): { startDate: string, endDate: string } | null {
+    // Obtener el rango de fechas y verificar si sigue válido
+    const itemStr = localStorage.getItem('dateRange');
+    if (!itemStr) {
+      return null;
+    }
+  
+    const item = JSON.parse(itemStr);
+    const now = new Date().getTime();
+  
+    if (now > item.expiry) {
+      localStorage.removeItem('dateRange'); // Eliminar si ha expirado
+      return null;
+    }
+  
+    return { startDate: item.startDate, endDate: item.endDate };
+  }
+  
+  getValidDateRange(dateRange: { startDate: string, endDate: string } | null): { startDate: string, endDate: string } {
+    if (!dateRange) {
+      const today = new Date();
+      const startDate = today.toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
+      const endDate = startDate; // Puedes modificar esto si quieres un rango mayor
+  
+      return { startDate, endDate };
+    }
+  
+    return dateRange;
+  }
+  
 }

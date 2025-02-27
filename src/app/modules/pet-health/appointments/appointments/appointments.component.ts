@@ -145,7 +145,6 @@ export class AppointmentsComponent implements OnInit {
   }
 
   edit(element: any) {
-    console.log(element, "que hay")
     this.router.navigate(['/pet-health/appointment/', element.id], { queryParams: { petId: this.petId } });
   }
 

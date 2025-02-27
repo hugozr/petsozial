@@ -21,3 +21,12 @@ img {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
   max-width: 100px;     
 }
+
+.column-40 {
+  width: 40%;
+}
+
+.center {
+  text-align: center;
+  margin-top: 10px;
+}

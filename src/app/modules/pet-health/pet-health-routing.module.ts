@@ -7,14 +7,18 @@ import { AppointmentsComponent } from './appointments/appointments/appointments.
 import { AppointmentComponent } from './appointments/appointment/appointment.component';
 import { VetAppointmentsComponent } from './appointments/vet-appointments/vet-appointments.component';
 import { VetAppointmentComponent } from './appointments/vet-appointment/vet-appointment.component';
+import { MyAppointmentsComponent } from './appointments/my-appointments/my-appointments.component';
+import { PetHealthRecordsComponent } from './appointments/pet-health-records/pet-health-records.component';
 
 const routes: Routes = [
   {path: "", component: VeterinariesComponent},
   {path: "veterinary", component: VeterinaryComponent},
   {path: "veterinary/:id", component: VeterinaryComponent},
   {path: "appointments/:id", component: AppointmentsComponent},
+  {path: "my-appointments", component: MyAppointmentsComponent},
   {path: "appointment", component: AppointmentComponent},
   {path: "appointment/:id", component: AppointmentComponent},
+  {path: "pet-health-records", component: PetHealthRecordsComponent},
   {path: "vet-appointments/:id", component: VetAppointmentsComponent},
   {path: "vet-appointment", component: VetAppointmentComponent},
   {path: "vet-appointment/:id", component: VetAppointmentComponent},

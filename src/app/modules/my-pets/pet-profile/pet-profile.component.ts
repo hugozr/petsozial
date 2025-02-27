@@ -60,7 +60,7 @@ export class PetProfileComponent {
           humanImageUrl: result.humanData.humanImage?.url,
         }
         const contact = await this.humanRolesServices.setPetContactHuman(result.humanData.id, this.data.id, result.roles, { petData, humanData });
-        console.log(contact, "que hay")
+      
         this.showContactGrid = false;
         await this.getContacts();
       }

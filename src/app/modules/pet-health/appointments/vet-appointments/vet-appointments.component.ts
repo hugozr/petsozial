@@ -25,6 +25,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';  // 👈 Importar aquí
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-vet-appointments',
@@ -47,6 +48,7 @@ import { ReactiveFormsModule } from '@angular/forms';  // 👈 Importar aquí
     FormsModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    MatTooltipModule,
     MatDatepickerModule
 ],
   templateUrl: './vet-appointments.component.html',
@@ -95,10 +97,11 @@ export class VetAppointmentsComponent implements OnInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {
-    const today = new Date();
+    const dateRange = this._utilsService.getDateRangeFromLocalStorage();
+    const validDateRange = this._utilsService.getValidDateRange(dateRange);
     this.dateRangeForm = this.formBuilder.group({
-      startDate: [today],  // ⏳ Inicializa con la fecha actual
-      endDate: [today]  // ⏳ Inicializa con la fecha actual
+      startDate: [validDateRange.startDate],  // ⏳ Inicializa con la fecha actual
+      endDate: [validDateRange.endDate]  // ⏳ Inicializa con la fecha actual
     },
     { validators: this.dateRangeValidator } // Aplicar validador personalizado
     );
@@ -126,7 +129,6 @@ export class VetAppointmentsComponent implements OnInit {
       if (params.id) {
         this.vetId = params.id;
         this.vetData = await this.vetsService.getVet(this.vetId);
-        console.log(this.vetData, "aca")
         this.loadAppointments(this.vetId, this.pageSize, 0, this.dateRange());
       }
     });
@@ -147,6 +149,7 @@ export class VetAppointmentsComponent implements OnInit {
 
   async loadAppointments(vetId:string, pageSize: number, page: number, dateRange: any) {
     const data: any = await this.appointmentsService.filterAppointments('vetId', vetId, pageSize, page, dateRange);
+    console.log(data, "ver contact me")
     this.fillAppointmentTable(data);
   }
 
@@ -158,7 +161,7 @@ export class VetAppointmentsComponent implements OnInit {
         description: elem.description,
         appointmentDate: elem.appointmentDate,
         petName: elem.jsonData?.pet?.name || "",
-        humanName: elem.jsonData?.human?.name || "",
+        humanName: elem.jsonData?.petHuman?.name || "",
         status: elem.status,
         contactMe: elem.contactMe,
         comeHome: elem.comeHome,
@@ -179,8 +182,7 @@ export class VetAppointmentsComponent implements OnInit {
   }
 
   edit(element: any) {
-    console.log(element, "que hay")
-    this.router.navigate(['/pet-health/appointment/', element.id]);
+    this.router.navigate(['/pet-health/vet-appointment/', element.id], { queryParams: { vetId: this.vetId } });
   }
 
   addVetAppointment() {
@@ -196,6 +198,7 @@ export class VetAppointmentsComponent implements OnInit {
   }
 
   dateRange(){
+    this._utilsService.setDateRangeInLocalStorage(this.dateRangeForm.value.startDate,this.dateRangeForm.value.endDate, 5);
     return {
       startDate: this.dateRangeForm.value.startDate,
       endDate:this.dateRangeForm.value.endDate

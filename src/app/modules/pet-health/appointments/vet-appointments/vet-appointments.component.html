@@ -45,7 +45,7 @@
         </ng-container>
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          <td mat-cell *matCellDef="let element" class="column-40"> {{element.description}} </td>
         </ng-container>
         <ng-container matColumnDef="human">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Human</th>
@@ -57,16 +57,36 @@
         </ng-container>
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          <td mat-cell *matCellDef="let element" class="center" [matTooltip]="'You can modify this appointment'" >
+            <mat-icon>
+              @if (element.status == "registered") {
+                edit
+              }
+            </mat-icon>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="contactMe">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact me</th>
-          <td mat-cell *matCellDef="let element"> {{element.contactMe}} </td>
-        </ng-container>
+          <td mat-cell *matCellDef="let element" class="center" [matTooltip]="'You must call me'" > 
+            <!-- {{element.contactMe}} -->
+            <mat-icon>
+            @if (element.contactMe == true) {
+              smartphone
+            }
+          </mat-icon>
+           </td>
+
+          </ng-container>
         <ng-container matColumnDef="comeHome">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Come home</th>
-          <td mat-cell *matCellDef="let element"> {{element.comeHome}} </td>
+          <td mat-cell *matCellDef="let element" class="center"  [matTooltip]="'You must come to my home'" > 
+            <mat-icon>
+            @if (element.comeHome == true) {
+              home
+            }
+          </mat-icon>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

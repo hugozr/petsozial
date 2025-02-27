@@ -168,7 +168,6 @@ export class UsersService {
 
 
   getRoleLabels(values: string[], roles: any) {
-    // console.log(roles, "que hay?");
     const selectedLabels = roles
       .filter((role:any) => values.includes(role.value))
       .map((role: any) => role.label);
