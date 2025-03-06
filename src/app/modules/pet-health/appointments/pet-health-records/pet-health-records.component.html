@@ -26,8 +26,33 @@
                                     <span class="label">Appointment date</span>
                                     <span class="value">{{appointment?.appointmentDate | date:'dd/MM/yyyy'}}</span> 
                                 </div>
-                              </div>
+                                <div class="info-item">
+                                    <span class="label">Contact me</span>
+                                    <span class="value">{{appointment?.contactMe ? 'Yes' : 'No' }}</span> 
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Come home</span>
+                                    <span class="value">{{appointment?.comeHome ? 'Yes' : 'No' }}</span> 
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="label">Vet</span>
+                                    <span class="value">{{appointment?.jsonData?.vet?.name }}</span> 
+                                </div>
+                            </div>
                               
+
+
+                            <div class="full-width">
+                                <mat-form-field class="full-width" appearance="outline" >
+                                    <mat-label>Select the vet'services </mat-label>
+                                    <mat-select name="services" formControlName="services" [(value)]="vetServices">
+                                        @for (service of vetServices; track service) {
+                                        <mat-option [value]="service.id">{{service.name}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
 
                             <div class="full-width">
                                 <mat-form-field appearance="outline" class="full-width">

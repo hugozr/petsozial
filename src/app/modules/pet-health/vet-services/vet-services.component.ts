@@ -53,6 +53,7 @@ export class VetServicesComponent {
   async addOption(service: any) {
     const body: any = {
       healthServiceId: service.id,
+      name: service.name,
       description: service.comment
     }
     const vetAddedVetService =  await this.vetsService.setHealthServices(this.vetData.id, body);

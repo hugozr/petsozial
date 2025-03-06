@@ -31,7 +31,7 @@
                             </div>
                             <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline" >
-                                    <mat-label>Select a community type</mat-label>
+                                    <mat-label>Select a community type</mat-label> 
                                     <mat-select name="community-type" formControlName="type" [(value)]="communityTypeForEdit">
                                         @for (type of types; track type) {
                                         <mat-option [value]="type.id">{{type.name}}</mat-option>

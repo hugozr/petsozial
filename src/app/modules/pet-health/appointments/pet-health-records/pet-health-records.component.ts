@@ -50,7 +50,8 @@ export class PetHealthRecordsComponent {
   appointment!: any;
   petHealthRecord!: any;
   insert = false;
-  user: any = null;   
+  user: any = null;
+  vetServices: any = null;   
   backendURL = environment.backendPetZocialHealthURL;
   loadMyPicture = "/assets/load-appointment-picture.png";
   pet: any = null;
@@ -63,8 +64,10 @@ export class PetHealthRecordsComponent {
     private _utilsService: UtilsService,
     private _authService: AuthService,
     private usersService: UsersService,
+    private vetsService: VetsService,
   ) {
     this.myForm = this.formBuilder.group({
+      services: [],
       diagnosis: [""],
       treatment: [""],
       medications: [""],    
@@ -83,12 +86,15 @@ export class PetHealthRecordsComponent {
     this.route.queryParams.subscribe(async (params: any) => {
       this.appointment = await this.appointmentsService.getAppointment(params.appointmentId);
       this.petHealthRecord = await this.appointmentsService.getPetHealthRecords(params.appointmentId);
-      console.log(this.appointment, this.petHealthRecord, "daaaaaaaaaae")
+      this.vetServices =  await this.vetsService.getVetServices(this.appointment.vetId);
+      console.log(this.vetServices, "a")
+      // console.log(this.appointment, this.petHealthRecord, "daaaaaaaaaae")
       if (this.petHealthRecord){
         const imagePath = this.petHealthRecord?.checkUpImage?.url;
         console.log(this.petHealthRecord, "ia")
         this.myForm.setValue({
 
+          services: this.petHealthRecord.services,
           diagnosis: this.petHealthRecord.diagnosis,
           treatment: this.petHealthRecord.treatment,
           medications: this.petHealthRecord.medications,    
