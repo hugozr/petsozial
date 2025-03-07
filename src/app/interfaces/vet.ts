@@ -3,7 +3,7 @@ export interface Vet {
     name: string,
     comment?: string,
     address: string,
-    email: string,
+    email?: string,
     vetType: any,
     phone: string,
     url?: string,

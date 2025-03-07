@@ -4,7 +4,8 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { User } from '../interfaces/user';
 import { environment } from '../../environments/environment';
 import { UtilsService } from './utils.service';
-import axios, { AxiosResponse } from 'axios';
+// import axios, { AxiosResponse } from 'axios';
+// import axios from 'axios';
 import * as querystring from 'querystring';
 import { PortalService } from './portal.service';
 
@@ -190,12 +191,12 @@ export class UsersService {
     };
 
     try {
-      const response: AxiosResponse<any> = await axios.post(
-        tokenPath,
-        formData,
-        config
-      );
-      return response.data;
+      // const response: AxiosResponse<any> = await axios.post(
+      //   tokenPath,
+      //   formData,
+      //   config
+      // );
+      // return response.data;
     } catch (error) {
       console.error('Error en la solicitud:', error);
       throw error;
@@ -219,13 +220,13 @@ export class UsersService {
 
       const authHeader = { Authorization: `Bearer ${token}` };
 
-      const response = await axios.post(`${this.keycloakHost}/admin/realms/${this.realm}/users`, requestBody, {
-        headers: {
-          ...authHeader,
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.statusText;
+      // const response = await axios.post(`${this.keycloakHost}/admin/realms/${this.realm}/users`, requestBody, {
+      //   headers: {
+      //     ...authHeader,
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // return response.statusText;
     } catch (error) {
       console.error('Error al crear el usuario:', error);
       throw error; // Puedes manejar el error de otra manera si es necesario
@@ -243,15 +244,15 @@ export class UsersService {
   
   async queryKeycloakUser(token: string, query: string): Promise<any> {
     try {
-      const authHeader = { Authorization: `Bearer ${token}` };
-      const response: any = await axios.get(`${this.keycloakHost}/admin/realms/${this.realm}/users?${query}`, {
-        headers: {
-          ...authHeader,
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log(response, "Usuario obtenido exitosamente.");
-      return response.data[0];
+      // const authHeader = { Authorization: `Bearer ${token}` };
+      // const response: any = await axios.get(`${this.keycloakHost}/admin/realms/${this.realm}/users?${query}`, {
+      //   headers: {
+      //     ...authHeader,
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // console.log(response, "Usuario obtenido exitosamente.");
+      // return response.data[0];
     } catch (error) {
       console.error('Error al crear el usuario:', error);
       throw error; // Puedes manejar el error de otra manera si es necesario

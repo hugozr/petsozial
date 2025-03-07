@@ -5,7 +5,7 @@ export interface Petshop {
     address: string,
     email: string,
     petshopType: any,
-    phone: string,
+    phone?: string,
     url?: string,
     petshopImage?: any,
     coordinates?: any,

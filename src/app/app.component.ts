@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 // import { KeycloakAngularModule } from 'keycloak-angular';
 
 
@@ -15,7 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule, 
     RouterOutlet, 
     NavigationComponent,
-    HttpClientModule,
+    
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+// HttpClientModule,
     // KeycloakAngularModule
   ],
 })
