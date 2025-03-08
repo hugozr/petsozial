@@ -149,7 +149,7 @@ export class CommunityComponent {
       "url": this.myForm.value.url,
       "type": this.myForm.value.type,
       "coordinates": {"x": this.myForm.value.lat, "y": this.myForm.value.lng},
-      "kcUserName": this._authService.getUserName()
+      "kcUserName": "xx"  //this._authService.getUserName()
     };
     //Si está insertando asigna la zona para la comunidad
     if(this.insert) community.zone = this.zonesService.getCurrentZone();

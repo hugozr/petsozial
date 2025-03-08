@@ -39,7 +39,8 @@ export class VetCommunitiesComponent {
   }
 
   async ngOnInit() {
-    const allCommunitiesByUsername: any = await this.communitiesService.getCommunitiesByUsername(this._authService.getUserName());
+    // const allCommunitiesByUsername: any = await this.communitiesService.getCommunitiesByUsername(this._authService.getUserName());
+    const allCommunitiesByUsername: any = await this.communitiesService.getCommunitiesByUsername("sssss");
     const selComms: any = await this.vetCommunitiesService.getVetCommunities(this.vetData.id);
     this.allMyComms = allCommunitiesByUsername.docs;
     this.selectedCommunities = selComms.docs;

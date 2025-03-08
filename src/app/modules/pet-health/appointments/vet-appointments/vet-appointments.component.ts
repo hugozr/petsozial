@@ -123,7 +123,7 @@ export class VetAppointmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userName = this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
+    this.userName = null; // this._authService.getUserName();  //HZUMAETA Solo puede crear comunidades un usuario logeado
 
     this.route.params.subscribe(async (params: any) => {
       if (params.id) {

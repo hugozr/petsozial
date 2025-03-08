@@ -41,13 +41,11 @@
                                 </div>
                             </div>
                               
-
-
                             <div class="full-width">
                                 <mat-form-field class="full-width" appearance="outline" >
                                     <mat-label>Select the vet'services </mat-label>
-                                    <mat-select name="services" formControlName="services" [(value)]="vetServices">
-                                        @for (service of vetServices; track service) {
+                                    <mat-select name="services" formControlName="services" multiple>
+                                        @for (service of services; track service) {
                                         <mat-option [value]="service.id">{{service.name}}</mat-option>
                                         }
                                     </mat-select>

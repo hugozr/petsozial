@@ -45,13 +45,13 @@ import { PetsService } from '../../../../services/pets.service';
 })
 export class PetHealthRecordsComponent {
   @ViewChild('fileInput') fileInput: any;
-  rowspan = 11;
+  rowspan = 13;
   myForm!: FormGroup;
   appointment!: any;
   petHealthRecord!: any;
   insert = false;
   user: any = null;
-  vetServices: any = null;   
+  services: any = null;   
   backendURL = environment.backendPetZocialHealthURL;
   loadMyPicture = "/assets/load-appointment-picture.png";
   pet: any = null;
@@ -77,21 +77,29 @@ export class PetHealthRecordsComponent {
   }
 
   async ngAfterViewInit(){
-    const email = this._authService.getUserEmail();
-    const userKc: any = await this.usersService.getUsersByEmail(email);
-    if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
+    // const email = this._authService.getUserEmail();
+    // const userKc: any = await this.usersService.getUsersByEmail(email);
+    // if (userKc.docs.length > 0 ) this.user = userKc.docs[0]; 
+    const user = await this._authService.getUser();
+    if(user){
+      const userKc: any = await this.usersService.getUsersByEmail(user.email);
+      if (userKc.docs.length > 0) this.user = userKc.docs[0];
+    }
   }
 
   async ngOnInit(): Promise<void> {
     this.route.queryParams.subscribe(async (params: any) => {
       this.appointment = await this.appointmentsService.getAppointment(params.appointmentId);
       this.petHealthRecord = await this.appointmentsService.getPetHealthRecords(params.appointmentId);
-      this.vetServices =  await this.vetsService.getVetServices(this.appointment.vetId);
-      console.log(this.vetServices, "a")
+
+
+      console.log(this.appointment, "pobre ruiseñor", this.appointment.vetId)
+
+      this.services =  await this.vetsService.getVetServices(this.appointment.vetId);
+      console.log(this.services, "a")
       // console.log(this.appointment, this.petHealthRecord, "daaaaaaaaaae")
       if (this.petHealthRecord){
         const imagePath = this.petHealthRecord?.checkUpImage?.url;
-        console.log(this.petHealthRecord, "ia")
         this.myForm.setValue({
 
           services: this.petHealthRecord.services,
@@ -135,6 +143,7 @@ export class PetHealthRecordsComponent {
       treatment: this.myForm.value.treatment,
       medications: this.myForm.value.medications,
       checkUpDate: this.myForm.value.checkUpDate,
+      services: this.myForm.value.services,
     }
     const appointmentResult: any = this.insert ? await this.appointmentsService.insertPetHealthRecord(record) : await this.appointmentsService.updatePetHealthRecord(this.petHealthRecord.id, record);
     if (appointmentResult) {

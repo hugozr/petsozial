@@ -82,7 +82,8 @@ export class AppointmentsComponent implements OnInit {
   totalRows: number = 0;
   pageSizeOptions: number[] = [10, 50, 100];
   timeoutId!: any;
-  userName = null;
+  // userName = null;
+  userName!: any;
   selectedZone: string = "";
 
   constructor(

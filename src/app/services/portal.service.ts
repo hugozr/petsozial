@@ -10,10 +10,10 @@ import { environment } from '../../environments/environment';
 export class PortalService {
   backendURL = environment.backendPetZocialURL;
 
-
   constructor(private http: HttpClient) {}
 
   getOptions(): Observable<AppOption[]> {
+    // console.log("yonque")
     return this.http.get<AppOption[]>(`${this.backendURL}/api/options?sort=order&limit=20`);
   }
   getWelcome(): Observable<any[]> {

@@ -5,7 +5,7 @@ export interface Vet {
     address: string,
     email?: string,
     vetType: any,
-    phone: string,
+    phone?: string,
     url?: string,
     vetImage?: any,
     coordinates?: any,

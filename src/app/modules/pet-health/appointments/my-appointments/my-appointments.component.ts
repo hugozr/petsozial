@@ -122,10 +122,16 @@ export class MyAppointmentsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const userEmail = this._authService.getUserEmail();  //HZUMAETA Solo hacer atenciones un usuario logeado
-    if (!userEmail) return;
+    // const userEmail = this._authService.getUserEmail();  //HZUMAETA Solo hacer atenciones un usuario logeado
 
-    const humans = await this.humansService.getHumansByEmail(userEmail);
+    const user = await this._authService.getUser();
+    if(!user){
+      this._utilsService.showMessage("You must to be logged in");
+      return
+    }
+  
+
+    const humans = await this.humansService.getHumansByEmail(user.email);
     this.vetHuman = humans[0];
 
     this.dateRangeForm.valueChanges.subscribe(value => {

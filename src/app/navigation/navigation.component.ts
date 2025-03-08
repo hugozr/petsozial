@@ -68,19 +68,28 @@ export class NavigationComponent {
   }
 
   async initLogged(){
-    if (this._authService.isLoggedIn()) {
-      this.userName = this._authService.getUserName();
-      const userEmail: any = this._authService.getUserEmail();
-      if(!userEmail){
+    const user = await this._authService.getUser();
+    if (user){
+      this.userName = user.username;
+      if(!user.email){
         this._utilsService.showMessage("This user does not have an email in SSO");
         return;
       }
-      const user = await this.usersService.syncronizeWithAppUser(
-        this._authService.getUserKeycloakId(), 
-        this._authService.getUserName(), 
-        userEmail);
-      console.log("amq Debe mandar al perfile del usuario, en todo caso preguntar", user); //TODO: Ir al profile si es que no se tienen todos los datos
     }
+
+    // if (this._authService.isLoggedIn()) {
+    //   this.userName = this._authService.getUserName();
+    //   const userEmail: any = this._authService.getUserEmail();
+    //   if(!userEmail){
+    //     this._utilsService.showMessage("This user does not have an email in SSO");
+    //     return;
+    //   }
+    //   const user = await this.usersService.syncronizeWithAppUser(
+    //     this._authService.getUserKeycloakId(), 
+    //     this._authService.getUserName(), 
+    //     userEmail);
+    //   console.log("amq Debe mandar al perfile del usuario, en todo caso preguntar", user); //TODO: Ir al profile si es que no se tienen todos los datos
+    // }
   }
 
   public login(){

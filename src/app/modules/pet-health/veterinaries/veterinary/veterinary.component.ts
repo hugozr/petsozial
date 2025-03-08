@@ -117,7 +117,7 @@ export class VeterinaryComponent {
       "email": this.myForm.value.email,
       "url": this.myForm.value.url,
       "vetType": this.myForm.value.vetType,
-      "kcUserName": this._authService.getUserName()
+      "kcUserName": "" //this._authService.getUserName()
     }
     if(this.insert) vet.zone = this.zonesService.getCurrentZone();
 

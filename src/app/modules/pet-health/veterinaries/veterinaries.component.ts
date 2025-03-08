@@ -90,7 +90,7 @@ export class VeterinariesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userName = this._authService.getUserName();
+    this.userName = ""; // this._authService.getUserName();
     // this.loadVets(this.pageSize, 0);
     this.selectedZone = this.zonesServices.getCurrentZone();
     this.loadVetsByZone(this.selectedZone, this.pageSize, 0, "");

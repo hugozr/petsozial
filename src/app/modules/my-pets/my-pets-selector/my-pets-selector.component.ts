@@ -54,7 +54,7 @@ export class MyPetsSelectorComponent {
 
   ngOnInit(): void {
     this.selectedZone = this.zonesServices.getCurrentZone();
-    this.userName = this._authService.getUserName();
+    this.userName = ""; // this._authService.getUserName();
     this.loadMyCommunities();
     this.eventSubscription = this.eventsServices.event$.subscribe(data => {
       this.selectedZone = data;
